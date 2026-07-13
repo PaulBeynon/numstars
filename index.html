@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Numstars | Primary Maths</title><style>
+:root{--ink:#17364a;--muted:#607887;--blue:#237fd5;--sky:#eaf8ff;--green:#24ae6b;--yellow:#ffd45d;--line:#dcebf1}*{box-sizing:border-box}body{margin:0;min-height:100vh;overflow-x:hidden;font-family:ui-rounded,"Nunito","Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(145deg,#def5ff,#fff9e8)}button{font:inherit;cursor:pointer}button:disabled{cursor:not-allowed}.app{max-width:1160px;margin:auto;padding:20px}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}.brand{font-weight:900;font-size:1.35rem}.mark{display:inline-grid;place-items:center;width:39px;height:39px;background:var(--green);border-radius:13px 13px 13px 3px;margin-right:8px;color:#fff}.streak,.tag{border:0;border-radius:99px;background:#fff;padding:9px 13px;font-size:.83rem;font-weight:850;color:#a85e11}.screen{display:none;animation:up .25s ease}.screen.active{display:block}@keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}h1{font-size:clamp(2.35rem,6vw,4.4rem);letter-spacing:-2.7px;line-height:.98;margin:13px 0}h2{font-size:clamp(1.65rem,4vw,2.45rem);letter-spacing:-1.4px;margin:8px 0}h3{margin:0 0 5px}p{color:var(--muted);line-height:1.5}.hero,.lesson-wrap{background:#fff;border-radius:31px;box-shadow:0 12px 38px #1d73911e}.hero{padding:clamp(28px,6vw,65px);display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:36px}.hero p{font-size:1.1rem;max-width:550px}.rocket{height:260px;display:grid;place-items:center;background:linear-gradient(145deg,#2b9ce5,#9ce6fa);border-radius:27px;font-size:108px}.primary,.secondary{border:0;border-radius:15px;padding:14px 20px;font-weight:900;transition:.15s}.primary{color:#fff;background:var(--green);box-shadow:0 5px 0 #14804a}.secondary{background:#e9f6ff;color:#166aab}.primary:hover,.secondary:hover{transform:translateY(-2px)}.choose{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:25px}.stage{border:2px solid var(--line);border-radius:25px;background:#fff;text-align:left;padding:27px;box-shadow:0 5px 17px #327b9810}.stage:hover{border-color:#51aaeb}.stage .num{font-size:2.25rem}.stage p{margin:7px 0 17px}.head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:4px 0 24px}.back{background:transparent;border:0;padding:0;color:#166aab;font-weight:850}.year-tabs{display:flex;gap:9px;flex-wrap:wrap;margin:17px 0 24px}.year-tab{border:0;background:#dff1fa;border-radius:13px;padding:10px 15px;font-weight:850;color:#256480}.year-tab.selected{background:var(--blue);color:#fff}.curriculum-note{background:#fff7d6;border-radius:17px;padding:13px 17px;color:#715b18;margin-bottom:20px;font-size:.92rem}.topics{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.topic{background:#fff;border:2px solid var(--line);border-radius:22px;padding:19px;display:grid;grid-template-columns:50px 1fr;gap:14px;align-items:start}.topic.locked{opacity:.55;background:#f6f8f9}.orb{display:grid;place-items:center;width:50px;height:50px;border-radius:17px;background:#e5f6ff;font-size:26px}.topic p{font-size:.88rem;margin:4px 0 13px}.topic button{padding:10px 13px;border-radius:12px;font-size:.9rem}.topic a.secondary{display:inline-block;padding:10px 13px;border-radius:12px;font-size:.9rem;text-decoration:none}.btnrow{display:flex;gap:8px;flex-wrap:wrap}.lesson-wrap{max-width:850px;margin:12px auto;padding:clamp(24px,5vw,48px)}.lesson-top{display:flex;justify-content:space-between;gap:15px;align-items:center}.steps{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin:28px 0 25px}.step{height:8px;border-radius:8px;background:#dcebf1}.step.on{background:var(--green)}.lesson-card{text-align:center;min-height:280px;display:grid;place-items:center;padding:12px}.lesson-card>div{max-width:620px}.lesson-icon{font-size:55px}.lesson-card p{font-size:1.05rem}.example{background:#eaf8ff;border-radius:20px;padding:20px;margin:20px auto 0;color:#126aa9;font-size:clamp(1.25rem,3.3vw,1.8rem);font-weight:900}.example small{font-size:.85rem;color:var(--muted);display:block;margin-top:9px}.controls{display:flex;justify-content:space-between;gap:10px;margin-top:20px}.controls button{min-width:125px}.quiz{max-width:760px;margin:18px auto}.quiz-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.question{position:relative;background:#fff;border-radius:30px;padding:clamp(28px,6vw,50px);box-shadow:0 12px 38px #1d73911e;text-align:center}.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:25px}.answer{background:#fff;border:2px solid var(--line);padding:16px;border-radius:15px;font-weight:900;color:var(--ink)}.answer:hover{border-color:var(--blue);background:#eff9ff}.answer.correct{background:#def8e9;border-color:var(--green);color:#157345}.answer.wrong{background:#ffebe9;border-color:#e26e65;color:#ad413b}.feedback{min-height:25px;margin:17px 0 0;font-weight:850}.hidden{display:none}.overview{position:relative;overflow:hidden;max-width:650px;margin:25px auto;background:#fff;border-radius:30px;padding:42px;text-align:center;box-shadow:0 12px 38px #1d73911e}.stars{font-size:3.6rem;color:#f7bd23;letter-spacing:3px;margin:15px 0}.badges{display:flex;gap:9px;flex-wrap:wrap;margin:-4px 0 22px}.badge{width:44px;height:44px;display:grid;place-items:center;background:#fff7d6;border:2px solid var(--yellow);border-radius:14px;font-size:21px}.badges-empty{color:var(--muted);font-size:.88rem;margin:-4px 0 22px}.badge-earned{margin:16px 0 0;background:#fff7d6;border-radius:15px;padding:12px;font-weight:850;color:#8a6a10}.confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}.confetti span{position:absolute;top:-24px;animation:fall 1.5s ease-in forwards}@keyframes fall{to{transform:translateY(360px) rotate(320deg);opacity:0}}.tests-card{background:#fff;border:2px solid var(--line);border-radius:22px;padding:19px;margin-top:6px}.tests-card h3{margin:0 0 3px}.tests-card p{font-size:.88rem;margin:0 0 12px}.format-legend{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}.legend-chip{background:#eef7fb;color:#256480;font-size:.78rem;font-weight:850;padding:5px 11px;border-radius:99px;white-space:nowrap}.legend-details{margin:0 0 16px;font-size:.82rem;color:var(--muted)}.legend-details summary{cursor:pointer;font-weight:850;color:#166aab;list-style:none}.legend-details summary::-webkit-details-marker{display:none}.legend-details summary::before{content:'ⓘ ';}.legend-details p{margin:8px 0 0;font-size:.82rem}.progress-path{position:relative;height:420px;margin-top:8px}.path-svg{position:absolute;inset:0;width:100%;height:100%}.path-node{position:absolute;width:56px;height:56px;border-radius:50%;border:2px solid var(--line);background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;color:var(--ink);transform:translate(-50%,-50%);gap:0;box-shadow:0 3px 8px #1d739114}.path-node .tile-num{font-size:.92rem}.path-node .tile-fmt{font-size:.58rem;line-height:1;min-height:.8em}.path-node .tile-icon{font-size:.92rem}.path-node:not(.locked):hover{border-color:var(--blue);background:#eff9ff}.path-node.locked{opacity:.45;background:#f4f7f8;cursor:not-allowed}.path-node.gold{background:linear-gradient(150deg,#fff3c4,#ffdf7e);border-color:#e0ac0f;color:#7a5b06}.rocket-marker{position:absolute;font-size:1.9rem;transform:translate(-50%,-145%);filter:drop-shadow(0 3px 4px rgba(0,0,0,.28));pointer-events:none;transition:left 3.2s cubic-bezier(.4,1.3,.6,1),top 3.2s cubic-bezier(.4,1.3,.6,1)}.rocket-marker.rocket-land{animation:rocketLand .6s ease}@keyframes rocketLand{0%{transform:translate(-50%,-260%) scale(.6) rotate(-15deg);opacity:0}65%{transform:translate(-50%,-120%) scale(1.15) rotate(4deg);opacity:1}100%{transform:translate(-50%,-145%) scale(1) rotate(0)}}.test-tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;overflow:hidden}.test-tile{aspect-ratio:1;min-width:0;border:2px solid var(--line);border-radius:14px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;color:var(--ink);gap:2px;overflow:hidden}.test-tile .tile-num{font-size:1.02rem}.test-tile .tile-fmt{font-size:.72rem;min-height:.9em;line-height:1}.test-tile .tile-icon{font-size:1.1rem}.test-tile:not(.locked):hover{border-color:var(--blue);background:#eff9ff}.test-tile.locked{opacity:.45;background:#f4f7f8;cursor:not-allowed}.test-tile.gold{background:linear-gradient(150deg,#fff3c4,#ffdf7e);border-color:#e0ac0f;color:#7a5b06}.topic.gold-topic{background:linear-gradient(150deg,#fffaea,#ffedb0);border-color:#e0ac0f;box-shadow:0 8px 22px #e8b9233b}.topic.gold-topic .orb{background:#fff3c4}@media(max-width:700px){.hero,.choose,.topics,.answers{grid-template-columns:1fr}.rocket{height:160px}.head{align-items:start;flex-direction:column}.lesson-wrap{padding:25px}.test-tiles{grid-template-columns:repeat(5,1fr);gap:6px}.test-tile .tile-num{font-size:.92rem}.test-tile .tile-fmt{font-size:.62rem}.test-tile .tile-icon{font-size:1rem}}
+.text-answer{max-width:340px;margin:25px auto 0}.text-answer-label{font-size:.85rem;color:var(--muted);font-weight:850;margin-bottom:8px}.text-answer input{width:100%;padding:14px 16px;border-radius:15px;border:2px solid var(--line);font-size:1.2rem;font-weight:800;color:var(--ink);font-family:inherit;text-align:center}.text-answer input:focus{outline:none;border-color:var(--blue)}.text-toggle{text-align:center;margin-top:22px}.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.numpad button{padding:16px 0;border-radius:14px;border:2px solid var(--line);background:#fff;font-size:1.25rem;font-weight:900;color:var(--ink)}.numpad button:active{background:#eff9ff;border-color:var(--blue)}.pad-actions{display:flex;gap:8px;margin-top:8px}.pad-actions button{flex:1;padding:15px 0;border-radius:14px;font-size:1rem;font-weight:900;border:2px solid var(--line);background:#fff;color:var(--ink)}.pad-actions .primary{color:#fff;background:var(--green);border:0;box-shadow:0 4px 0 #14804a}.answers.crazy{position:relative;min-height:230px}.answers.crazy .answer{position:absolute;width:calc(50% - 10px);transition:top .5s ease,left .5s ease}.answers.doublecrazy{min-height:340px}.answers.doublecrazy .answer{width:calc(34% - 8px);font-size:.82rem;padding:11px 6px}#questionText.ghosted{opacity:.55;font-style:italic}.boss-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:16px}.boss-wrap.hidden{display:none}.boss-char{font-size:52px;transition:transform .2s}.boss-char.hit{animation:bosshit .3s}@keyframes bosshit{0%{transform:scale(1)}45%{transform:scale(.82) rotate(-8deg)}100%{transform:scale(1)}}.boss-bar{width:100%;max-width:260px;height:16px;background:#f6dede;border-radius:10px;overflow:hidden;border:2px solid #eec2c2}.boss-bar-fill{height:100%;background:linear-gradient(90deg,#ff9169,#e2483f);transition:width .5s ease}.boss-lives{font-size:1.15rem;letter-spacing:5px}.round-intro{position:absolute;inset:0;background:rgba(255,255,255,.97);border-radius:30px;display:none;align-items:center;justify-content:center;z-index:10;text-align:center;padding:20px}.round-intro.show{display:flex}.round-intro-text{font-size:clamp(1.5rem,6vw,2.1rem);font-weight:900;color:var(--ink)}.answers.hidden{display:none}#questionText{min-height:3em;display:flex;align-items:center;justify-content:center}
+</style></head><body>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<main class="app"><header><div class="brand"><span class="mark">★</span>Numstars</div><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><span id="syncBadge" class="streak hidden">☁️ Synced</span><button id="profileBadge" class="streak" style="border:0;cursor:pointer" onclick="switchProfile()">👤 Switch</button><span id="pointsBadge" class="streak">🪙 0 points</span><span id="starsBadge" class="streak">⭐ 0 stars</span><span class="streak">🔥 3 day streak</span></div></header>
+<section id="profileScreen" class="screen"><div class="hero" style="grid-template-columns:1fr"><div><span class="tag">NUMSTARS</span><h1>Who's learning today?</h1><p>Pick your name, or add a new learner. Everyone gets their own points, stars and progress on this device.</p><div id="profileList" class="choose" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr));margin-top:22px"></div><div style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap;align-items:center"><input id="newProfileName" type="text" placeholder="Type a name…" maxlength="20" autocomplete="off" style="padding:14px 16px;border-radius:15px;border:2px solid var(--line);font-size:1rem;font-weight:800;color:var(--ink);font-family:inherit;flex:1;min-width:180px" onkeydown="if(event.key==='Enter')createProfileFromInput()"><button class="primary" onclick="createProfileFromInput()">+ Add learner</button></div><div style="margin-top:18px"><button class="secondary" onclick="openSyncScreen()">☁️ Cloud sync settings</button></div></div></div></section>
+<section id="syncScreen" class="screen"><button class="back" onclick="go('profileScreen')">← Learners</button><div class="lesson-wrap"><span class="tag">CLOUD SYNC</span><h2>Sync across devices</h2><div id="syncScreenBody"></div></div></section>
+<section id="welcome" class="screen"><div class="hero"><div><span class="tag">UK PRIMARY MATHEMATICS</span><h1>Learn maths,<br>one bright step at a time.</h1><p>Friendly, short lessons built around the main National Curriculum topics. First understand the idea, then practise it with confidence.</p><button class="primary" onclick="chooseStage()">Choose my learning path →</button></div><div class="rocket">🚀</div></div></section>
+<section id="choose" class="screen"><button class="back" onclick="go('welcome')">← Home</button><h2>Where would you like to begin?</h2><p>Pick a key stage, then choose the year that feels right. Learners can move at their own pace.</p><div class="choose"><article class="stage"><div class="num">🌱</div><h3>Key Stage 1</h3><p>Years 1–2 · Building number sense, early calculation and everyday maths.</p><button class="primary" onclick="openStage('KS1')">Explore KS1 →</button></article><article class="stage"><div class="num">🌟</div><h3>Key Stage 2</h3><p>Years 3–6 · Deepening fluency, reasoning and problem solving.</p><button class="primary" onclick="openStage('KS2')">Explore KS2 →</button></article></div></section>
+<section id="journey" class="screen"><button class="back" onclick="chooseStage()">← Key stages</button><div class="head"><div><span id="stageTag" class="tag">KEY STAGE 1</span><h2 id="journeyTitle">Your maths journey</h2><p id="journeyText">Choose a topic. Each one starts with a short, guided lesson.</p></div></div><div id="tabs" class="year-tabs"></div><div id="badges" class="badges"></div><div class="curriculum-note">Lesson routes follow the primary mathematics curriculum strands. The examples and language are designed to lead naturally into SATs-style arithmetic and reasoning practice.</div><div id="topics" class="topics"></div></section>
+<section id="module" class="screen"><button class="back" onclick="go('journey')">← All topics</button><div class="head"><div><span id="moduleTag" class="tag">YEAR 1 · TOPIC</span><h2 id="moduleTitle">Topic lessons</h2><p>Learn the idea, then work through 10 challenges. Score 4/5 to unlock the next challenge — reach Challenge 5 to unlock the next topic.</p></div></div><div id="moduleList" class="topics"></div></section>
+<section id="lesson" class="screen"><div class="lesson-wrap"><div class="lesson-top"><button class="back" onclick="go('module')">← Topic lessons</button><span id="lessonTag" class="tag">YEAR 1 · NUMBER</span></div><div id="steps" class="steps"></div><div id="lessonCard" class="lesson-card"></div><div class="controls"><button id="prev" class="secondary" onclick="move(-1)">← Back</button><button id="next" class="primary" onclick="move(1)">Next →</button></div></div></section>
+<section id="test" class="screen"><div class="quiz"><div class="quiz-head"><button class="back" onclick="exitTest()">← Exit challenge</button><div style="display:flex;gap:8px;align-items:center"><span id="speedTimer" class="tag hidden">⏱ 45s</span><span id="counter" class="tag">QUESTION 1 OF 5</span></div></div><div class="question"><div id="roundIntro" class="round-intro"><div id="roundIntroText" class="round-intro-text"></div></div><span id="testKind" class="tag">CHALLENGE</span><div id="bossWrap" class="boss-wrap hidden"><div id="bossChar" class="boss-char">🐉</div><div class="boss-bar"><div id="bossBarFill" class="boss-bar-fill"></div></div><div id="bossLivesEl" class="boss-lives"></div></div><h2 id="questionText"></h2><div id="answers" class="answers"></div><div id="textToggleWrap" class="text-toggle hidden"><button type="button" class="secondary" onclick="toggleTextAnswer()">⌨️ Or type your answer</button></div><div id="textAnswerWrap" class="text-answer hidden"><div id="textAnswerLabel" class="text-answer-label"></div><input id="textAnswerInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type your answer…" onkeydown="if(event.key==='Enter')submitTextAnswer()"><div id="numpad" class="numpad"><button type="button" onclick="padInsert('1')">1</button><button type="button" onclick="padInsert('2')">2</button><button type="button" onclick="padInsert('3')">3</button><button type="button" onclick="padInsert('4')">4</button><button type="button" onclick="padInsert('5')">5</button><button type="button" onclick="padInsert('6')">6</button><button type="button" onclick="padInsert('7')">7</button><button type="button" onclick="padInsert('8')">8</button><button type="button" onclick="padInsert('9')">9</button><button type="button" onclick="padInsert('.')">.</button><button type="button" onclick="padInsert('0')">0</button><button type="button" onclick="padInsert('/')">/</button></div><div class="pad-actions"><button type="button" onclick="padBackspace()">⌫ Delete</button><button type="button" class="primary" id="textAnswerBtn" onclick="submitTextAnswer()">Enter ↵</button></div></div><div id="feedback" class="feedback"></div><button id="testNext" class="primary hidden" onclick="nextQuestion()">Next question →</button></div></div></section>
+<section id="results" class="screen"><div class="overview"><div id="confetti" class="confetti"></div><div id="resultIcon" style="font-size:56px">🎉</div><span id="resultKind" class="tag">CHALLENGE COMPLETE</span><h2 id="resultTitle">Great work!</h2><div id="stars" class="stars">★★★★☆</div><p id="resultText"></p><div id="badgeEarned" class="badge-earned hidden"></div><button id="resultButton" class="primary" onclick="go('journey')">Continue to next lesson →</button></div></section>
+</main><script>
+function logBSError(where,e){
+ try{
+  console.error('BrightSteps error @'+where,e);
+  let bar=document.getElementById('bsErrorBar');
+  if(!bar){bar=document.createElement('div');bar.id='bsErrorBar';bar.style.cssText='position:fixed;left:0;right:0;bottom:0;background:#ad413b;color:#fff;font:13px/1.4 sans-serif;padding:10px 14px;z-index:99999;white-space:pre-wrap';document.body.appendChild(bar)}
+  bar.textContent='Numstars hit a snag ('+where+'): '+(e&&e.message?e.message:String(e));
+ }catch(_){}
+}
+window.addEventListener('error',function(ev){logBSError('window',ev.error||ev.message)});
+window.addEventListener('unhandledrejection',function(ev){logBSError('promise',ev.reason)});
+const storage=(function(){
+ try{const k='__bsTest__';window.localStorage.setItem(k,'1');window.localStorage.removeItem(k);return window.localStorage}
+ catch(e){let mem={};return{getItem:k=>Object.prototype.hasOwnProperty.call(mem,k)?mem[k]:null,setItem:(k,v)=>{mem[k]=String(v)},removeItem:k=>{delete mem[k]}}}
+})();
+const data={
+Y1:[['🔢','Numbers to 100','Count forwards and backwards; read, write, compare and order numbers.','Number & place value','10 + 4','Ten and four ones make fourteen.'],['➕','Addition & subtraction','Use objects, pictures and number bonds to add and subtract within 20.','Calculation','7 + 5','Start at 7 and count on 5: 8, 9, 10, 11, 12.'],['✖️','Early multiplication','Make and count equal groups, including doubles.','Multiplication & division','3 groups of 2','2 + 2 + 2 = 6.'],['🍰','Halves & quarters','Recognise and find half and quarter of shapes and quantities.','Fractions','Half of 8','Split 8 equally: 4 and 4.'],['🕒','Measure & time','Compare lengths, mass and capacity; recognise coins and notes; tell time to the hour and half hour.','Measurement','Half past 3','The minute hand points to 6.'],['🔺','Shape & position','Name common 2D and 3D shapes and describe turns and positions.','Geometry','A triangle','It has 3 straight sides.']],
+Y2:[['🔢','Numbers to 100','Understand tens and ones; compare, order and use number facts.','Number & place value','47','4 tens and 7 ones.'],['➕','Adding & subtracting','Use mental methods and written pictures to calculate within 100.','Calculation','36 + 24','Add tens, then ones: 30 + 20 and 6 + 4.'],['✖️','2, 5 and 10 times tables','Use equal groups, arrays and repeated addition.','Multiplication & division','5 × 3','Five groups of 3 make 15.'],['🍰','Simple fractions','Find 1/2, 1/3, 1/4 and 3/4 of shapes and amounts.','Fractions','¼ of 12','Share 12 into four equal groups: 3 in each.'],['💷','Money, time & measure','Use pounds and pence; tell time in 5-minute intervals; measure accurately.','Measurement','£1 − 35p','100p − 35p = 65p.'],['📊','Shape & data','Describe properties of shapes and interpret simple tables and pictograms.','Geometry & statistics','A square','4 equal sides and 4 corners.']],
+Y3:[['🔢','Numbers to 1,000','Use hundreds, tens and ones; estimate and round to the nearest 10.','Number & place value','368','3 hundreds, 6 tens, 8 ones.'],['➕','Written calculation','Add and subtract up to three-digit numbers using place value.','Calculation','247 + 36','Add ones, then tens, then hundreds.'],['✖️','3, 4 and 8 times tables','Recall multiplication and division facts and solve word problems.','Multiplication & division','4 × 6','Four lots of six are 24.'],['🍰','Unit fractions','Recognise tenths and equivalent fractions, and add fractions with the same denominator.','Fractions','2/8','Two eighths are the same as one quarter.'],['📏','Measure, money & time','Use units, calculate perimeter and read time to the minute.','Measurement','Perimeter','Add every side around the outside.'],['📊','Shapes & graphs','Draw 2D shapes, identify right angles, and read bar charts.','Geometry & statistics','Right angle','It is exactly a quarter turn.']],
+Y4:[['🔢','Numbers to 10,000','Place value, rounding and negative numbers in context.','Number & place value','6,042','6 thousands, 0 hundreds, 4 tens, 2 ones.'],['➕','Four-digit calculation','Use efficient written addition and subtraction methods.','Calculation','3,645 − 278','Exchange when there are not enough ones or tens.'],['✖️','Times tables to 12 × 12','Recall multiplication facts and use factor pairs.','Multiplication & division','12 × 7','Ten sevens plus two sevens: 70 + 14 = 84.'],['🍰','Fractions & decimals','Find equivalent fractions, add fractions and understand decimal tenths.','Fractions','0.7','Seven tenths.'],['📏','Measure & perimeter','Convert units, calculate perimeter and area, and convert between units of time.','Measurement','2.5 m','Two metres and fifty centimetres.'],['📐','Angles, shape & charts','Compare angles, identify symmetry and interpret graphs.','Geometry & statistics','Line of symmetry','Both sides match when folded.']],
+Y5:[['🔢','Numbers to 100,000','Use place value, Roman numerals and rounding to solve problems.','Number & place value','43,709','4 ten-thousands, 3 thousands, 7 hundreds, 0 tens, 9 ones.'],['➗','Four operations','Use formal calculation, inverse operations and estimation to check.','Calculation','4,506 ÷ 6','Share thousands, hundreds, tens and ones carefully.'],['✖️','Multiples, factors & primes','Identify multiples, factors, square numbers and prime numbers.','Multiplication & division','Factors of 12','1, 2, 3, 4, 6 and 12.'],['🍰','Fractions, decimals & percent','Compare, convert and calculate with fractions and decimals.','Fractions','0.25','Twenty-five hundredths = one quarter = 25%.'],['📏','Measure & volume','Convert units, calculate area, and estimate volume.','Measurement','Area of a rectangle','Length × width.'],['📐','Properties & statistics','Use angles, coordinates and tables to reason about data.','Geometry & statistics','180°','Angles on a straight line total 180°.']],
+Y6:[['🔢','Numbers to 10,000,000','Use place value, rounding and negative numbers in calculation.','Number & place value','5,204,019','5 millions, 2 hundred-thousands, 4 thousands, 1 ten, 9 ones.'],['➗','Fluent calculation','Choose efficient methods for all four operations and check answers.','Calculation','3,584 × 7','Partition or use a formal written method.'],['⚖️','Ratio, proportion & algebra','Use ratio, scaling and simple formulae or missing-number problems.','Ratio & algebra','3 : 2','For every 3 of one thing, there are 2 of another.'],['🍰','Fractions, decimals & percent','Calculate with fractions and use equivalence to solve problems.','Fractions','3/5 of 40','Find one fifth first (8), then multiply by 3.'],['📏','Measure & geometry','Calculate area, perimeter and volume; use coordinates and angles.','Measurement & geometry','Volume','Length × width × height.'],['📊','Statistics & reasoning','Interpret charts, averages and data questions; explain your method.','Statistics','Mean','The total shared equally between all values.']]};
+const measureData={
+Y1:[
+ {icon:'📏',title:'Length, mass & capacity',blurb:'Compare long/short, heavy/light and full/empty using everyday objects.',rule:'We compare things using words like longer/shorter, heavier/lighter, and full/empty — without needing to measure with numbers yet.',example:'A pencil is longer than a paperclip.',note:'Longer, shorter, heavier, lighter, full and empty are all comparing words.',
+  gen:()=>[mc('Which of these is usually the heaviest?','an elephant',['a feather','a balloon','a leaf']),mc('Which of these holds the most water?','a bathtub',['a teaspoon','a cup','an eggcup']),mc('Which of these is usually the longest?','a bus',['a pencil','a paperclip','a spoon']),mc('Which word means "not empty at all"?','full',['empty','light','short']),mc('Which of these is usually the shortest?','a paperclip',['a bus','a ladder','a giraffe'])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'💰',title:'Coins & money',blurb:'Recognise the value of different coins and notes.',rule:'UK coins and notes each have a value shown on them. Coins range from 1p to £2, and notes start at £5.',example:'A 50p coin is worth 50 pence.',note:'The number on a coin tells you its value.',
+  gen:()=>[mc('Which coin is worth the most?','£2',['50p','20p','5p']),mc('Which coin is worth the least?','1p',['£1','10p','5p']),mc('How much is a 20p coin worth?','20 pence',['2 pence','12 pence','200 pence']),mc('Which note is worth £5?','a five-pound note',['a five-pence coin','a fifty-pound note','a five hundred pound note']),mc('How many pence is £1 worth?','100 pence',['10 pence','1 pence','1000 pence'])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'🕒',title:'Telling the time',blurb:'Tell the time to the hour and half hour.',rule:'A clock has two hands. At an o’clock time the minute hand points to 12; at half past it points to 6.',example:'Half past 3',note:'The minute hand points to 6 and the hour hand sits between 3 and 4.',
+  gen:()=>{let h=rand(1,11),n=(h%12)+1;return [mc('At an o’clock time, where does the minute hand point?',12,[3,6,9]),mc(`At half past ${h}, where does the minute hand point?`,6,[12,3,9]),mc(`What comes half an hour after ${h} o’clock?`,`half past ${h}`,['quarter past '+h,'half past '+n,`${n} o’clock`])]}}
+],
+Y2:[
+ {icon:'📐',title:'Standard units',blurb:'Choose and use m/cm, kg/g and l/ml to estimate and measure.',rule:'We measure length in metres and centimetres, mass in kilograms and grams, and capacity in litres and millilitres.',example:'A pencil is about 15 cm long.',note:'cm is short for centimetres.',
+  gen:()=>[mc('Which unit would you use to measure the length of a classroom?','metres',['grams','millilitres','degrees']),mc('Which unit would you use to weigh an apple?','grams',['metres','litres','hours']),mc('Which unit would you use to measure a glass of juice?','millilitres',['kilograms','metres','minutes']),mc('Which is bigger, 1 metre or 1 centimetre?','1 metre',['1 centimetre','they are equal','neither']),mc('Which is heavier, 1 kilogram or 1 gram?','1 kilogram',['1 gram','they are equal','neither'])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'💷',title:'Money & change',blurb:'Use £ and p, and give change from £1.',rule:'Money is measured in pounds and pence. One pound is exactly 100 pence.',example:'£1 − 35p = 65p',note:'100p − 35p = 65p.',
+  gen:()=>{let cost=rand(10,80),change=100-cost,pounds=rand(2,9);return [mc('How many pence are in £1?',100,[10,50,1000]),mc(`What is the change from £1 when something costs ${cost}p?`,change,[change-10,change+10,cost]),mc(`How many pence are in £${pounds}?`,pounds*100,['20','90','100'])]}},
+ {icon:'🕓',title:'Telling time to 5 minutes',blurb:'Read quarter past, quarter to, and 5-minute intervals.',rule:'The minute hand points to a new number every 5 minutes. Quarter past is 15 minutes after the hour; quarter to is 15 minutes before the next hour.',example:'Quarter past 4',note:'The minute hand points to 3, which means 15 minutes.',
+  gen:()=>{let h=rand(1,11),n=(h%12)+1;return [mc(`At quarter past ${h}, where does the minute hand point?`,3,[6,9,12]),mc(`At quarter to ${n}, where does the minute hand point?`,9,[3,6,12]),mc('How many minutes are there in a quarter of an hour?',15,[5,10,30])]}}
+],
+Y3:[
+ {icon:'📏',title:'Length, mass & capacity',blurb:'Measure and convert between mm, cm and m.',rule:'100 centimetres make 1 metre, and 1000 millimetres make 1 metre. We use these facts to convert between units.',example:'3 m = 300 cm',note:'Multiply metres by 100 to get centimetres.',
+  gen:()=>{let metres=rand(2,9);return [mc(`How many centimetres are in ${metres} metres?`,metres*100,[metres*10,metres*1000,metres]),mc('How many millimetres are in 1 metre?',1000,[10,100,10000]),mc('Which statement is correct?','100 cm = 1 m',['100 mm = 1 m','10 cm = 1 m','1,000 cm = 1 m'])]}},
+ {icon:'🟩',title:'Perimeter',blurb:'Find the total distance around a shape.',rule:'Perimeter is the total distance all the way around the outside of a shape. Add up the length of every side.',example:'5cm + 3cm + 5cm + 3cm = 16cm',note:'Add all four sides together.',
+  gen:()=>{let a=rand(3,12),b=rand(2,9),p=2*(a+b);return [mc(`A rectangle has sides ${a}cm and ${b}cm. What is its perimeter?`,p,[p-2,p+2,a*b]),mc(`A square has sides of ${a}cm. What is its perimeter?`,a*4,[a*3,a*2,a+4]),mc('What is the perimeter of a shape?','the distance all the way around the outside',['the space inside the shape','the number of corners','the length of one side'])]}},
+ {icon:'⏱️',title:'Time facts',blurb:'Seconds, days, months and Roman numeral clocks.',rule:'There are 60 seconds in a minute. Different months have different numbers of days, and a leap year has one extra day in February.',example:'60 seconds = 1 minute',note:'A leap year happens roughly every 4 years.',
+  gen:()=>[mc('How many seconds are in a minute?',60,[100,50,30]),mc('How many days are in a leap year?',366,[365,360,370]),mc('Which Roman numeral means 12?','XII',['VII','IX','XV'])]}
+],
+Y4:[
+ {icon:'📐',title:'Converting units',blurb:'Convert between km, m, cm and time units.',rule:'To convert between metric units, multiply or divide by 10, 100 or 1000 depending on the units.',example:'2 km = 2000 m',note:'Multiply kilometres by 1000 to get metres.',
+  gen:()=>{let km=rand(2,9);return [mc(`How many metres are in ${km} kilometres?`,km*1000,[km*100,km*10,km]),mc('How many centimetres are in 1 metre?',100,[10,1000,10000]),mc('How many minutes are in 2 hours?',120,[60,90,150])]}},
+ {icon:'🟦',title:'Perimeter & area',blurb:'Find the perimeter and area of rectangles.',rule:'Perimeter is the distance around a shape. Area is the amount of space inside it — for rectangles, multiply length × width.',example:'4cm × 3cm = 12cm²',note:'Multiply length by width to find area.',
+  gen:()=>{let l=rand(3,9),w=rand(2,7);return [mc(`What is the area of a rectangle ${l}cm by ${w}cm?`,l*w,[l+w,l*w+1,l*w-1]),mc(`What is the perimeter of a rectangle ${l}cm by ${w}cm?`,2*(l+w),[l*w,2*(l+w)-1,2*(l+w)+1]),mc('How do you find the area of a rectangle?','multiply length by width',['add all the sides','multiply the two longest sides','count the corners'])]}},
+ {icon:'⏳',title:'Time conversions',blurb:'Convert between hours, minutes, days and weeks.',rule:'We can convert between units of time: 60 minutes = 1 hour, 24 hours = 1 day, 7 days = 1 week, 12 months = 1 year.',example:'3 hours = 180 minutes',note:'Multiply hours by 60 to get minutes.',
+  gen:()=>{let hrs=rand(2,6),weeks=rand(2,8);return [mc(`How many minutes are in ${hrs} hours?`,hrs*60,[hrs*30,hrs*100,hrs]),mc(`How many days are in ${weeks} weeks?`,weeks*7,[weeks*5,weeks*10,weeks]),mc('How many months are in a year?',12,[10,52,365])]}}
+],
+Y5:[
+ {icon:'🌍',title:'Metric & imperial conversions',blurb:'Convert metric units and compare to imperial ones.',rule:'We can compare metric units to imperial ones: about 1 kilometre is roughly 5/8 of a mile, and 1 kilogram is about 2.2 pounds.',example:'5 miles ≈ 8 km',note:'These are approximate, everyday conversions.',
+  gen:()=>{let g=rand(2,9),ml=rand(2,9);return [mc(`How many grams are in ${g} kilograms?`,g*1000,[g*100,g*10,g]),mc(`How many millilitres are in ${ml} litres?`,ml*1000,[ml*100,ml*10,ml]),mc('Roughly how many kilometres are in 5 miles?',8,[5,3,15])]}},
+ {icon:'🟨',title:'Area of rectangles',blurb:'Calculate area using standard square units.',rule:'Area of a rectangle = length × width. We measure area in square units, like cm² or m².',example:'6m × 4m = 24m²',note:'Multiply the two side lengths.',
+  gen:()=>{let l=rand(4,12),w=rand(3,9);return [mc(`What is the area of a rectangle ${l}m by ${w}m?`,`${l*w}m²`,[`${l+w}m²`,`${l*w+2}m²`,`${2*(l+w)}m²`]),mc(`A square has sides of ${w}m. What is its area?`,`${w*w}m²`,[`${w*4}m²`,`${w*w-1}m²`,`${w*w+1}m²`]),mc('Which unit is used to measure area?','square centimetres (cm²)',['centimetres (cm)','cubic centimetres (cm³)','millilitres (ml)'])]}},
+ {icon:'🧊',title:'Volume & capacity',blurb:'Estimate volume by counting cubes.',rule:'Volume is the amount of space something takes up. We can estimate it by counting how many 1cm cubes fit inside a shape.',example:'2 × 3 × 4 cubes = 24 cubes',note:'Multiply length × width × height.',
+  gen:()=>{let l=rand(2,6),w=rand(2,5),h=rand(2,4);return [mc(`A cuboid is built from cubes ${l} long, ${w} wide and ${h} high. How many cubes is that in total?`,l*w*h,[l+w+h,l*w,l*w*h+1]),mc('What do we call the amount of space inside a 3D shape?','volume',['area','perimeter','mass']),mc('Which unit measures capacity?','millilitres',['centimetres','grams','degrees'])]}}
+],
+Y6:[
+ {icon:'🔢',title:'Converting with decimals',blurb:'Convert units using decimal notation, and miles to km.',rule:'We can convert between units using decimal notation, for example 1.5 km = 1500 m, and convert between miles and kilometres.',example:'1.5 km = 1500 m',note:'Multiply by 1000 and adjust the decimal point.',
+  gen:()=>{let opts=[1.2,2.5,3.4,4.8,0.75],km=opts[rand(0,4)];return [mc(`Convert ${km} km to metres.`,Math.round(km*1000),[Math.round(km*100),Math.round(km*10000),Math.round(km*10)]),mc('Roughly how many kilometres are in 10 miles?',16,[10,20,6]),mc('Which is longer, 1.5 km or 1500 m?','they are equal',['1.5 km','1500 m','cannot tell'])]}},
+ {icon:'🔺',title:'Area of triangles & parallelograms',blurb:'Use the base × height formulas.',rule:'Area of a triangle = ½ × base × height. Area of a parallelogram = base × height.',example:'base 8cm, height 5cm → ½ × 8 × 5 = 20cm²',note:'Halve the base times height for a triangle.',
+  gen:()=>{let b=rand(2,6)*2,h=rand(3,10);return [mc(`What is the area of a triangle with base ${b}cm and height ${h}cm?`,`${(b*h)/2}cm²`,[`${b*h}cm²`,`${(b*h)/2+1}cm²`,`${b+h}cm²`]),mc(`What is the area of a parallelogram with base ${b}cm and height ${h}cm?`,`${b*h}cm²`,[`${(b*h)/2}cm²`,`${b*h+2}cm²`,`${b+h}cm²`]),mc('What is the formula for the area of a triangle?','½ × base × height',['base × height','2 × base × height','base + height'])]}},
+ {icon:'📦',title:'Volume of cuboids',blurb:'Calculate volume using length × width × height.',rule:'Volume of a cuboid = length × width × height, measured in cubic units like cm³.',example:'4cm × 3cm × 2cm = 24cm³',note:'Multiply all three dimensions.',
+  gen:()=>{let l=rand(2,8),w=rand(2,6),h=rand(2,5);return [mc(`What is the volume of a cuboid ${l}cm × ${w}cm × ${h}cm?`,`${l*w*h}cm³`,[`${l*w}cm³`,`${l+w+h}cm³`,`${l*w*h+2}cm³`]),mc('Which unit measures volume?','cubic centimetres (cm³)',['square centimetres (cm²)','centimetres (cm)','litres per second']),mc('What is the formula for the volume of a cuboid?','length × width × height',['length + width + height','length × width','2 × (length + width)'])]}}
+]};
+const geoStatsData={
+Y1:[
+ {icon:'🔺',title:'Shape properties',blurb:'Name and describe 2D and 3D shapes.',rule:'2D shapes are flat, like circles and triangles. 3D shapes are solid, like cubes and spheres. We name them by their properties.',example:'A triangle has 3 straight sides.',note:'Circles have no straight sides at all.',
+  gen:()=>[mc('How many sides does a triangle have?',3,[2,4,5]),mc('How many corners does a square have?',4,[3,5,6]),mc('Which shape has 3 straight sides?','triangle',['circle','square','rectangle']),mc('Which of these is a 3D shape?','cube',['triangle','circle','square']),mc('Which shape has no straight sides?','circle',['triangle','square','rectangle'])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'🧭',title:'Position & direction',blurb:'Describe position, direction and turns.',rule:'We describe position and direction using words like left/right and above/below, and turns like whole, half and quarter turns.',example:'A quarter turn is like turning to face a new wall in a room.',note:'Four quarter turns make a whole turn back to where you started.',
+  gen:()=>[mc('Which word describes turning all the way around?','a whole turn',['a quarter turn','a half turn','no turn']),mc('How many quarter turns make a half turn?',2,[1,3,4]),mc('Which word means the opposite of "above"?','below',['beside','forward','near']),mc('If you turn halfway around, how much have you turned?','a half turn',['a quarter turn','a whole turn','a third turn']),mc('Which direction is opposite to "left"?','right',['up','down','forward'])].sort(()=>Math.random()-.5).slice(0,3)}
+],
+Y2:[
+ {icon:'🔺',title:'Shape properties',blurb:'Sides, corners, edges, vertices and faces.',rule:'2D shapes are described by sides and corners. 3D shapes are described by faces, edges and vertices.',example:'A cube has 6 faces, 12 edges and 8 vertices.',note:'A face is a flat surface, an edge is where two faces meet, a vertex is a corner point.',
+  gen:()=>[mc('How many equal sides does a square have?',4,[2,3,5]),mc('How many corners does a rectangle have?',4,[3,5,6]),mc('How many faces does a cube have?',6,[4,5,8]),mc('Which shape has 4 equal sides?','square',['triangle','circle','rectangle']),mc('How many sides does a pentagon have?',5,[3,4,6])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'🧭',title:'Position & direction',blurb:'Clockwise, anticlockwise and right-angle turns.',rule:'We describe turns as clockwise or anticlockwise, and measure them in quarter, half and three-quarter turns using right angles.',example:'A quarter turn is the same size as a right angle.',note:'Four quarter turns make a whole turn.',
+  gen:()=>[mc("Which way does a clock's hands move?",'clockwise',['anticlockwise','side to side','up and down']),mc('How many quarter turns make a whole turn?',4,[2,3,6]),mc('A quarter turn is the same size as…','a right angle',['a straight line','a half turn','two right angles']),mc('Which is the opposite of clockwise?','anticlockwise',['upwards','forwards','sideways']),mc('How many right-angle turns make a half turn?',2,[1,3,4])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'📊',title:'Statistics',blurb:'Read pictograms, tally charts and block diagrams.',rule:'Pictograms use pictures to show amounts, and tally charts use marks to count. Block diagrams use bars to compare totals.',example:'If each picture means 2 apples, 3 pictures mean 6 apples.',note:'Always check what one picture or unit is worth first.',
+  gen:()=>[mc('In a pictogram, if each picture stands for 2, and there are 3 pictures, what is the total?',6,[3,5,8]),mc('What do we call a chart that uses picture symbols to show data?','a pictogram',['a tally chart','a number line','a clock']),mc('Which chart uses bars to compare amounts?','a block diagram',['a pictogram','a clock face','a number line']),mc('If 5 children like red and 3 like blue, how many children is that altogether?',8,[5,3,15]),mc('What does a tally group of five usually look like?','four lines with one crossing through',['five separate dots','a circle','a triangle'])].sort(()=>Math.random()-.5).slice(0,3)}
+],
+Y3:[
+ {icon:'🔺',title:'Shape properties',blurb:'Right angles and perpendicular/parallel lines.',rule:'A right angle is a quarter turn — like the corner of a square. Two right angles make a half turn.',example:'A right angle measures a quarter turn.',note:'A rectangle has 4 right angles.',
+  gen:()=>[mc('How many right angles make a half turn?',2,[1,3,4]),mc('Which lines never meet, staying the same distance apart?','parallel lines',['perpendicular lines','curved lines','diagonal lines']),mc('Which lines cross at a right angle?','perpendicular lines',['parallel lines','curved lines','diagonal lines']),mc('Which of these is a right angle?','a quarter turn',['a half turn','a whole turn','a third turn']),mc('A rectangle has how many right angles?',4,[2,3,6])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'📊',title:'Statistics',blurb:'Read scaled bar charts and pictograms.',rule:'Bar charts and pictograms can use scales, where each unit stands for more than one, like 2, 5 or 10.',example:'If each square is worth 5, a bar reaching 3 squares represents 15.',note:'Always check the scale before reading the chart.',
+  gen:()=>[mc('On a scaled pictogram, if each symbol = 5 and there are 4 symbols, what is the total?',20,[9,15,25]),mc('A bar chart bar reaches the 20 mark. What does this show?','a total of 20',['a total of 2','a total of 200','nothing']),mc('Why do charts sometimes use a scale of 2, 5 or 10?','to represent larger numbers clearly',['to make the chart smaller','to make it harder to read','there is no reason']),mc('If one bar shows 15 and each square = 5, how many squares tall is the bar?',3,[5,10,15]),mc('Which question can a bar chart help answer?','How many more of one thing than another?',['What colour is the chart?','How old is the data?','none of these'])].sort(()=>Math.random()-.5).slice(0,3)}
+],
+Y4:[
+ {icon:'🔺',title:'Shape properties',blurb:'Classify triangles, quadrilaterals and angles.',rule:'Triangles and quadrilaterals can be classified by their sides and angles. Angles smaller than a right angle are acute; angles bigger than a right angle (but less than a straight line) are obtuse.',example:'A triangle with all sides equal is equilateral.',note:'Isosceles triangles have exactly two equal sides.',
+  gen:()=>[mc('What do we call an angle smaller than a right angle?','acute',['obtuse','reflex','straight']),mc('What do we call an angle bigger than a right angle but less than a straight line?','obtuse',['acute','reflex','right']),mc('What is a triangle with all sides equal called?','equilateral',['isosceles','scalene','right-angled']),mc('A square has how many lines of symmetry?',4,[1,2,3]),mc('What is a triangle with two equal sides called?','isosceles',['equilateral','scalene','obtuse'])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'🧭',title:'Position & direction',blurb:'Coordinates and translation on a grid.',rule:'We describe position using coordinates (x, y), where x tells us how far across and y tells us how far up.',example:'The point (2, 5) is 2 across and 5 up.',note:'x (across) always comes before y (up).',
+  gen:()=>[mc('In the coordinate (3, 4), which number tells you how far across?',3,[4,7,1]),mc('In the coordinate (3, 4), which number tells you how far up?',4,[3,7,1]),mc('What do we call moving a shape without turning or flipping it?','a translation',['a rotation','a reflection','an enlargement']),mc('Which comes first in a coordinate pair?','the across (x) value',['the up (y) value','it does not matter','neither']),mc('Moving a point from (2,2) to (2,5) is a movement of…','3 up',['3 across','3 down','3 diagonal'])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'📊',title:'Statistics',blurb:'Bar charts and time graphs.',rule:'Bar charts show data in categories. Time graphs show how something changes over time.',example:'A time graph might show temperature rising through the day.',note:'Discrete data is counted; continuous data is measured.',
+  gen:()=>[mc('Which type of graph shows how something changes over time?','a time graph',['a pictogram','a tally chart','a Venn diagram']),mc('Which is an example of discrete data?','number of pets owned',['temperature throughout the day','height of a growing plant','distance travelled over time']),mc('On a bar chart, what does a taller bar usually mean?','a bigger amount',['a smaller amount','an older item','nothing']),mc('What is data called that can take any value, like height or temperature?','continuous data',['discrete data','tally data','sorted data']),mc('Which is a comparison question for bar charts?','How many more X than Y?',['What colour is X?','What shape is X?','none of these'])].sort(()=>Math.random()-.5).slice(0,3)}
+],
+Y5:[
+ {icon:'🔺',title:'Shape properties',blurb:'Angles in degrees, and regular polygons.',rule:'Angles are measured in degrees. Angles at a point add up to 360°, and angles on a straight line add up to 180°.',example:'Angles at a point total 360°.',note:'Angles on a straight line total 180°.',
+  gen:()=>[mc('How many degrees do angles at a point add up to?',360,[180,90,270]),mc('How many degrees do angles on a straight line add up to?',180,[90,270,360]),mc('What is a shape called if all its sides and angles are equal?','a regular polygon',['an irregular polygon','a prism','a net']),mc('An angle greater than 180° is called…','a reflex angle',['an acute angle','an obtuse angle','a right angle']),mc('A right angle measures how many degrees?',90,[45,180,360])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'🧭',title:'Position & direction',blurb:'Reflection and translation of shapes.',rule:"A reflection flips a shape over a line, like a mirror image. The shape's size stays the same.",example:'Reflecting a shape in a vertical line flips it left-to-right.',note:'Reflections and translations never change the size of a shape.',
+  gen:()=>[mc("What happens to a shape's size when it is reflected?",'it stays the same',['it doubles','it halves','it disappears']),mc('What do we call a shape flipped over a line like a mirror?','a reflection',['a translation','a rotation','an enlargement']),mc('What do we call sliding a shape without turning or flipping it?','a translation',['a reflection','a rotation','an enlargement']),mc('A shape and its reflection are always…','the same size and shape',['different sizes','different shapes','impossible to compare']),mc('If you reflect a point in a vertical line, what changes?','only the x-value',['only the y-value','both values','neither value'])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'📊',title:'Statistics',blurb:'Line graphs, tables and timetables.',rule:'Line graphs show how a value changes over time, connected by a line. Tables and timetables organise information in rows and columns.',example:"A line graph could show a plant's height measured each week.",note:'A steep line means a fast change.',
+  gen:()=>[mc('What does a line graph usually show?','change over time',['a single fixed value','shapes','colours']),mc('In a timetable, what do the rows and columns usually represent?','times and events/places',['colours and shapes','random information','nothing important']),mc('If a line graph rises steeply, what does that suggest?','a fast increase',['a fast decrease','no change','an error']),mc('Which is best for showing a train timetable?','a table',['a pictogram','a pie chart','a Venn diagram']),mc('What is the difference between two points on a line graph called?','the difference or change',['the mean','the mode','the total'])].sort(()=>Math.random()-.5).slice(0,3)}
+],
+Y6:[
+ {icon:'📈',title:'Charts & graphs',blurb:'Pie charts and line graphs.',rule:'A pie chart shows data as slices of a circle — the whole circle represents 100% or 360°. Line graphs show how values change over time.',example:'A 90° slice represents a quarter of the data, since 90° is a quarter of 360°.',note:'A half-circle slice represents 50% of the data.',
+  gen:()=>[mc('A full pie chart represents how many degrees?',360,[180,90,270]),mc('A quarter of a pie chart is how many degrees?',90,[180,45,270]),mc('What does a pie chart show?','how data splits into proportions',['change over time','a single number','a list of names']),mc('What is a line graph best used for?','showing change over time',['showing proportions of a whole','listing names','showing exact coordinates only']),mc('If a pie chart slice is half the circle, what percentage does it represent?','50%',['25%','75%','10%'])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'➗',title:'Mean average',blurb:'Find the mean of a set of numbers.',rule:'The mean is found by adding all the values together and sharing the total equally between how many values there are.',example:'For 4, 6 and 8: total = 18, then 18 ÷ 3 = 6.',note:'The mean is also called the average.',
+  gen:()=>{let a=rand(2,8),b=rand(3,9),c=rand(4,10),mean=(a+b+c)/3;while(!Number.isInteger(mean)){c=rand(4,10);mean=(a+b+c)/3}return [mc(`What is the mean of ${a}, ${b} and ${c}?`,mean,[mean-1,mean+1,mean+2]),mc('To find the mean, you first…','add all the values',['multiply all the values','choose the largest value','choose the smallest value']),mc('The mean is found by…','sharing the total equally',['adding 10','doubling the largest value','counting the smallest value'])]}}
+]};
+const fractionData={
+Y4:[
+ {icon:'🍕',title:'Equivalent fractions',blurb:'Find fractions that have the same value.',rule:'Equivalent fractions have the same value even though they look different. Multiply or divide the top and bottom by the same number to find them.',example:'1/2 = 2/4 = 4/8',note:'Whatever you do to the top, do to the bottom too.',
+  gen:()=>[mc('Which fraction is equivalent to 1/2?','2/4',['1/4','3/4','1/3']),mc('Which fraction is equivalent to 1/3?','2/6',['1/6','3/6','2/3']),mc('To find an equivalent fraction, you…','multiply the top and bottom by the same number',['add the same number to top and bottom','only change the top number','only change the bottom number']),mc('Which fraction is NOT equivalent to 2/4?','2/3',['1/2','3/6','4/8']),mc('Simplify 4/8 to its simplest form.','1/2',['2/4','1/4','2/8'])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'🔟',title:'Decimals',blurb:'Understand tenths and hundredths.',rule:'Tenths and hundredths are decimal fractions. The first digit after the decimal point is tenths; the second is hundredths.',example:'0.7 means seven tenths.',note:'0.25 means twenty-five hundredths.',
+  gen:()=>[mc('What does 0.7 mean?','seven tenths',['seven hundredths','seventy','seven ones']),mc('What does 0.25 mean?','twenty-five hundredths',['twenty-five tenths','two point five','twenty-five ones']),mc('Which decimal equals 3/4?','0.75',['0.25','0.5','0.34']),mc('Which decimal equals 1/4?','0.25',['0.75','0.5','0.14']),mc('How many hundredths are in one tenth?',10,[100,1,1000])].sort(()=>Math.random()-.5).slice(0,3)}
+],
+Y5:[
+ {icon:'🍕',title:'Fractions',blurb:'Compare, order and convert mixed numbers.',rule:'An improper fraction has a top number bigger than the bottom number. We can convert it to a mixed number.',example:'6/5 = 1 1/5',note:'The whole number shows how many wholes fit in.',
+  gen:()=>[mc('What is 6/5 written as a mixed number?','1 1/5',['1 2/5','2 1/5','5/6']),mc('Which is bigger, 3/4 or 1/2?','3/4',['1/2','they are equal','cannot tell']),mc('What do we call a fraction where the top number is bigger than the bottom?','an improper fraction',['a mixed number','a unit fraction','a decimal fraction']),mc('What is 2 1/3 written as an improper fraction?','7/3',['6/3','5/3','8/3']),mc('Which fraction is equivalent to 4/8?','1/2',['1/4','3/4','2/3'])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'🔟',title:'Decimals',blurb:'Round decimals and compare decimal places.',rule:'Decimals can go beyond hundredths to thousandths. The third digit after the point is thousandths.',example:'0.125 has 1 tenth, 2 hundredths and 5 thousandths.',note:'Round up if the next digit is 5 or more.',
+  gen:()=>[mc('Round 3.6 to the nearest whole number.',4,[3,3.5,4.5]),mc('Which is bigger, 0.4 or 0.35?','0.4',['0.35','they are equal','0.04']),mc('What is 0.5 as a fraction?','1/2',['1/5','5/100','1/50']),mc('How many decimal places does "thousandths" need?',3,[1,2,4]),mc('Round 0.68 to one decimal place.','0.7',['0.6','0.68','0.8'])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'💯',title:'Percentages',blurb:'Understand per cent and its equivalents.',rule:"Per cent means 'out of 100'. 50% is the same as 1/2 or 0.5.",example:'25% = 1/4 = 0.25',note:'To turn a percentage into a decimal, divide by 100.',
+  gen:()=>[mc('What does 50% equal as a fraction?','1/2',['1/4','1/5','1/10']),mc('What does 25% equal as a decimal?','0.25',['0.025','2.5','0.5']),mc('What does the % symbol mean?','out of 100',['out of 10','out of 1000','out of 50']),mc('What is 10% of 100?',10,[1,100,50]),mc('Which percentage equals 1/4?','25%',['50%','75%','10%'])].sort(()=>Math.random()-.5).slice(0,3)}
+],
+Y6:[
+ {icon:'🍕',title:'Fractions',blurb:'Add, subtract and multiply fractions.',rule:'To add or subtract fractions with different denominators, first find equivalent fractions with the same denominator.',example:'1/2 + 1/8 = 4/8 + 1/8 = 5/8',note:'You cannot add fractions until the denominators match.',
+  gen:()=>[mc('What is 1/2 + 1/4?','3/4',['2/6','1/6','2/4']),mc('What is 1/3 × 1/2?','1/6',['1/5','2/3','1/2']),mc('Before adding fractions with different denominators, you must first…','find a common denominator',['add the denominators','multiply the numerators only','ignore the denominators']),mc('What is 3/4 − 1/4?','1/2',['1/4','3/8','1/8']),mc('What is 2/3 of 9?',6,[3,4,7])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'🔟',title:'Decimals',blurb:'Convert fractions to decimals and round.',rule:'We can convert a fraction to a decimal by dividing the top number by the bottom number.',example:'3 ÷ 8 = 0.375',note:'Divide the numerator by the denominator.',
+  gen:()=>[mc('What is 1/4 as a decimal?','0.25',['0.4','0.14','2.5']),mc('What is 3 ÷ 4 as a decimal?','0.75',['0.34','0.43','7.5']),mc('Round 4.678 to two decimal places.','4.68',['4.67','4.7','4.6']),mc('Which decimal is equivalent to 1/8?','0.125',['0.18','0.8','1.8']),mc('What is 0.5 × 4?',2,[4.5,20,0.9])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'💯',title:'Percentages',blurb:'Calculate percentages of amounts.',rule:'To find a percentage of an amount, first find 1% by dividing by 100, then multiply.',example:'15% of 200 = (200 ÷ 100) × 15 = 30',note:'Finding 10% first (divide by 10) can make this quicker.',
+  gen:()=>[mc('What is 10% of 50?',5,[10,15,50]),mc('What is 50% of 84?',42,[40,44,21]),mc('What is 25% of 200?',50,[25,100,150]),mc('To find 1% of an amount, you…','divide by 100',['multiply by 100','divide by 10','multiply by 10']),mc('What is 20% as a fraction in simplest form?','1/5',['1/4','2/5','1/10'])].sort(()=>Math.random()-.5).slice(0,3)}
+]};
+const multData={
+Y5:[
+ {icon:'🔍',title:'Multiples & factors',blurb:'Factors, multiples and prime numbers.',rule:'A factor divides exactly into a number. A multiple is what you get when you multiply a number by a whole number. A prime number has exactly two factors: 1 and itself.',example:'Factors of 12: 1, 2, 3, 4, 6, 12',note:'Prime numbers below 20: 2, 3, 5, 7, 11, 13, 17, 19.',
+  gen:()=>[mc('Which number is a factor of 24?',6,[5,7,11]),mc('Which number is prime?',13,[12,15,21]),mc('How many factors does a prime number have?',2,[1,3,4]),mc('Which pair are both factors of 18?','3 and 6',['4 and 5','5 and 7','8 and 9']),mc('Which number is a multiple of 6?',24,[20,22,25])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'✖️',title:'Multiplying & dividing',blurb:'Formal methods, squares and cubes.',rule:'We use long multiplication for bigger numbers, and short division to divide by a single digit. Square numbers are multiplied by themselves; cube numbers are multiplied by themselves twice more.',example:'5² = 5 × 5 = 25. 5³ = 5 × 5 × 5 = 125',note:'The small ² or ³ tells you how many times to multiply.',
+  gen:()=>[mc('What is 5 squared (5²)?',25,[10,15,20]),mc('What is 2 cubed (2³)?',8,[6,4,9]),mc('What is 144 ÷ 4?',36,[34,38,40]),mc('What is 23 × 10?',230,[23,2300,203]),mc('Which symbol means "squared"?','²',['³','%','÷'])].sort(()=>Math.random()-.5).slice(0,3)}
+],
+Y6:[
+ {icon:'⚖️',title:'Ratio & proportion',blurb:'Compare quantities using ratios.',rule:'A ratio compares two quantities. It tells us how many of one thing there are for every amount of another.',example:'3 : 2 means 3 of one thing for every 2 of another.',note:'Multiply or divide both sides of a ratio by the same number to find an equivalent ratio.',
+  gen:()=>[mc('What does the ratio 3 : 2 mean?','3 of one thing for every 2 of another',['3 more than 2','3 divided by 2','2 of one thing for every 3 of another']),mc('Double the ratio 3 : 2.', '6 : 4',['5 : 3','6 : 2','3 : 4']),mc('Complete the equivalent ratio 4 : 3 = 8 : □',6,[4,5,8]),mc('For every 5 red counters there are 2 blue counters. What is the ratio red : blue?','5 : 2',['2 : 5','7 : 1','5 : 7']),mc('Which ratio is equivalent to 2 : 1?','6 : 3',['4 : 1','3 : 2','2 : 2'])].sort(()=>Math.random()-.5).slice(0,3)},
+ {icon:'🔤',title:'Algebra',blurb:'Use letters to represent unknown numbers.',rule:'In algebra, letters stand for unknown numbers. We can use simple formulae and solve for missing values.',example:'If a + b = 10 and a = 4, then b = 6',note:'Whatever operation is done, do the opposite to find the unknown.',
+  gen:()=>[mc('If x + 5 = 12, what is x?',7,[6,8,17]),mc('If 3y = 18, what is y?',6,[3,9,15]),mc('What does a letter usually represent in algebra?','an unknown number',['a fixed word','a shape','a unit of measurement']),mc('If a = 4 and b = 4, what is a + b?',8,[16,4,0]),mc('Which is a formula for the perimeter of a square with side s?','4 × s',['s × s','s + 4','2 × s'])].sort(()=>Math.random()-.5).slice(0,3)}
+]};
+let stage='KS1',year='Y1',topic=null,topicIndex=0,part=0,testIndex=0,score=0,testQuestions=[],currentTestTier=1;
+let testFormat='standard',testInputMode='choice',speedSecondsLeft=45,speedInterval=null,ghostTimer=null,crazyInterval=null,speedCorrect=0,speedAttempted=0,speedQueue=[],bossHP=100,bossLives=3,bossMaxLives=3,roundIntroTimeout=null;
+function getNextSpeedQuestion(ti,tier){if(speedQueue.length===0)speedQueue=makeTieredQuestions(year,ti,tier);return speedQueue.shift()}
+function tierFormat(tier){if(tier===4||tier===8)return'speed';if(tier===2||tier===6)return'ghost';if(tier===3)return'crazy';if(tier===7)return'doublecrazy';if(tier===5||tier===10)return'boss';return'standard'}
+function tierInputMode(tier){let f=tierFormat(tier);if(f==='ghost'||f==='crazy'||f==='doublecrazy')return'choice';return tier>=6?'text':'choice'}
+function resetBoss(tier){bossMaxLives=tier===10?1:2;bossHP=100;bossLives=bossMaxLives;updateBossUI()}
+function updateBossUI(){let fill=document.getElementById('bossBarFill');if(fill)fill.style.width=Math.max(0,bossHP)+'%';let lives=document.getElementById('bossLivesEl');if(lives)lives.textContent='❤️'.repeat(Math.max(0,bossLives))+'🖤'.repeat(Math.max(0,bossMaxLives-bossLives))}
+function bossHit(correct){if(correct){bossHP=Math.max(0,bossHP-20);let ch=document.getElementById('bossChar');if(ch){ch.classList.remove('hit');void ch.offsetWidth;ch.classList.add('hit')}}else{bossLives=Math.max(0,bossLives-1)}updateBossUI()}
+function padInsert(ch){let input=document.getElementById('textAnswerInput');if(input.disabled)return;input.value+=ch}
+function padBackspace(){let input=document.getElementById('textAnswerInput');if(input.disabled)return;input.value=input.value.slice(0,-1)}
+function toggleTextAnswer(){document.getElementById('textToggleWrap').classList.add('hidden');document.getElementById('textAnswerWrap').classList.remove('hidden')}
+function stopTestTimers(){if(speedInterval){clearInterval(speedInterval);speedInterval=null}if(ghostTimer){clearTimeout(ghostTimer);ghostTimer=null}if(crazyInterval){clearInterval(crazyInterval);crazyInterval=null}if(roundIntroTimeout){clearTimeout(roundIntroTimeout);roundIntroTimeout=null}let st=document.getElementById('speedTimer');if(st)st.classList.add('hidden');let ri=document.getElementById('roundIntro');if(ri)ri.classList.remove('show')}
+function showRoundIntro(format,callback,tier){
+ let labels={ghost:'👻 Ghost Round!',crazy:'🌀 Crazy Round!',doublecrazy:'🌪️ Double Crazy Round!',speed:'⏱️ Speed Round!',boss:tier===10?'🐲 Big Boss Battle!':'🐉 Mini Boss Battle!'};
+ let el=document.getElementById('roundIntro'),txt=document.getElementById('roundIntroText');
+ if(!labels[format]){el.classList.remove('show');callback();return}
+ txt.textContent=labels[format];
+ el.classList.add('show');
+ roundIntroTimeout=setTimeout(()=>{roundIntroTimeout=null;el.classList.remove('show');callback()},1800);
+}
+function exitTest(){stopTestTimers();go('journey')}
+function startSpeedTimer(){speedSecondsLeft=45;let st=document.getElementById('speedTimer');st.classList.remove('hidden');st.textContent=`⏱ ${speedSecondsLeft}s`;speedInterval=setInterval(()=>{speedSecondsLeft--;if(st)st.textContent=`⏱ ${speedSecondsLeft}s`;if(speedSecondsLeft<=0){clearInterval(speedInterval);speedInterval=null;timeUpEndTest()}},1000)}
+function finalizeSpeedScore(){if(speedCorrect>=12)score=5;else if(speedCorrect>=8)score=4;else if(speedCorrect>=5)score=3;else if(speedCorrect>=3)score=2;else if(speedCorrect>=1)score=1;else score=0}
+function timeUpEndTest(){let fb=document.getElementById('feedback');fb.textContent="⏰ Time's up!";fb.style.color='#ad413b';document.querySelectorAll('.answer').forEach(b=>b.disabled=true);let inp=document.getElementById('textAnswerInput'),btn=document.getElementById('textAnswerBtn');if(inp)inp.disabled=true;if(btn)btn.disabled=true;finalizeSpeedScore();setTimeout(()=>showResult(),900)}
+function startCrazyMovement(){let isDouble=document.getElementById('answers').classList.contains('doublecrazy'),leftMax=isDouble?66:50,topMax=isDouble?78:68;function shuffle(){document.querySelectorAll('#answers.crazy .answer').forEach(btn=>{btn.style.top=rand(0,topMax)+'%';btn.style.left=rand(0,leftMax)+'%'})}shuffle();crazyInterval=setInterval(shuffle,1300)}
+function normalizeAnswer(s){return String(s).toLowerCase().trim().replace(/\s+/g,' ').replace(/[°²³]/g,'').replace(/[.,;:!?'"()]/g,'')}
+const years={KS1:['Y1','Y2'],KS2:['Y3','Y4','Y5','Y6']};
+const bbcLinks={Y1:{0:'https://www.bbc.co.uk/bitesize/articles/z7pnm39#zqvdfdm',3:'https://www.bbc.co.uk/bitesize/topics/zphdp9q'},Y2:{0:'https://www.bbc.co.uk/bitesize/articles/z7pnm39#zqvdfdm'}};
+function resourceLink(y,ti){let real=bbcLinks[y]&&bbcLinks[y][ti];if(real)return{url:real,icon:'📺',tag:'EXTRA HELP',title:'Watch on BBC Bitesize',desc:'A short video that explains this topic a different way — handy if you want it explained again.',label:'Watch now'};let q=encodeURIComponent(`bbc bitesize ${data[y][ti][1]} year ${y.slice(1)}`);return{url:`https://www.youtube.com/results?search_query=${q}`,icon:'🔎',tag:'EXTRA HELP',title:'Find a video about this',desc:'Search for videos that explain this topic a different way.',label:'Search now'}}
+const subSets={2:multData,3:fractionData,4:measureData,5:geoStatsData};
+function getSubs(ti,y){return (subSets[ti]&&subSets[ti][y])?subSets[ti][y]:null}
+let currentProfileId=null;
+function pKey(suffix){return `bs_${currentProfileId}_${suffix}`}
+function getProfiles(){try{return JSON.parse(storage.getItem('numstarsProfiles')||'[]')}catch(e){return []}}
+function saveProfilesListRaw(list){storage.setItem('numstarsProfiles',JSON.stringify(list))}
+function saveProfilesList(list){saveProfilesListRaw(list);queueCloudPush()}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+const profileIcons=['🦄','🚀','🐯','🦊','🐬','🦉','🐙','🌟','🐸','🦋'];
+function renderProfileScreen(){
+ let profiles=getProfiles(),list=document.getElementById('profileList');
+ if(!list)return;
+ list.innerHTML=(profiles.length?profiles.map(p=>`<article class="stage" style="cursor:pointer;text-align:center;padding:22px" onclick="selectProfile('${p.id}')"><div class="num">${p.icon}</div><h3>${escapeHtml(p.name)}</h3><button class="secondary" style="margin-top:8px;font-size:.78rem;padding:7px 11px" onclick="event.stopPropagation();deleteProfile('${p.id}')">Remove</button></article>`).join(''):'<p style="grid-column:1/-1">No learners yet — add one below to get started!</p>');
+}
+function createProfileFromInput(){
+ let input=document.getElementById('newProfileName'),name=(input.value||'').trim();
+ if(!name)return;
+ addProfile(name);
+ input.value='';
+}
+function addProfile(name){
+ let profiles=getProfiles();
+ if(profiles.length>=6){alert('You can have up to 6 learners on this device.');return}
+ let id='p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),icon=profileIcons[profiles.length%profileIcons.length];
+ profiles.push({id,name,icon});
+ saveProfilesList(profiles);
+ selectProfile(id);
+}
+function deleteProfile(id){
+ if(!confirm('Remove this learner and all their progress? This cannot be undone.'))return;
+ let profiles=getProfiles().filter(p=>p.id!==id);
+ saveProfilesList(profiles);
+ ['points','progress','lessonProgress','testProgress'].forEach(k=>storage.removeItem(`bs_${id}_${k}`));
+ if(currentProfileId===id){currentProfileId=null;storage.removeItem('numstarsCurrentProfile')}
+ renderProfileScreen();
+}
+function loadProfileData(){
+ points=parseInt(storage.getItem(pKey('points'))||'0',10);
+ progress=JSON.parse(storage.getItem(pKey('progress'))||'{}');
+ lessonProgress=JSON.parse(storage.getItem(pKey('lessonProgress'))||'{}');
+ testProgress=JSON.parse(storage.getItem(pKey('testProgress'))||'{}');
+ updatePoints();updateStars();
+}
+function updateProfileBadge(){
+ let el=document.getElementById('profileBadge');if(!el)return;
+ let p=getProfiles().find(x=>x.id===currentProfileId);
+ el.textContent=p?`${p.icon} ${p.name} ▾`:'👤 Switch';
+}
+function selectProfile(id){
+ currentProfileId=id;
+ storage.setItem('numstarsCurrentProfile',id);
+ loadProfileData();
+ stage='KS1';year='Y1';topic=null;topicIndex=0;
+ updateProfileBadge();
+ go('welcome');
+}
+function switchProfile(){renderProfileScreen();go('profileScreen')}
+let cloudDb=null,firebaseConfigObj=null,familyCode=null,cloudSyncEnabled=false,cloudPushTimer=null,familyDocUnsub=null;
+function loadCloudConfig(){
+ try{let raw=storage.getItem('numstarsFirebaseConfig');firebaseConfigObj=raw?JSON.parse(raw):null}catch(e){firebaseConfigObj=null}
+ familyCode=storage.getItem('numstarsFamilyCode')||null;
+}
+function updateSyncBadge(state){
+ let el=document.getElementById('syncBadge');if(!el)return;
+ let map={connecting:'☁️ Connecting…',syncing:'☁️ Syncing…',synced:'☁️ Synced',error:'☁️ Sync error'};
+ let text=map[state];
+ if(!text){el.classList.add('hidden');return}
+ el.textContent=text;el.classList.remove('hidden');
+}
+function initCloudSync(){
+ if(!firebaseConfigObj||!familyCode)return;
+ try{
+  if(typeof firebase==='undefined'){logBSError('cloudInit','Firebase SDK did not load. If you\'re viewing this inside an app preview (like Claude\'s file preview), open the saved HTML file directly in Safari/Chrome instead — previews often block external connections. Otherwise, check your internet connection.');updateSyncBadge('error');return}
+  if(!firebase.apps.length)firebase.initializeApp(firebaseConfigObj);
+  cloudDb=firebase.firestore();
+  cloudSyncEnabled=true;
+  updateSyncBadge('connecting');
+  subscribeToFamily();
+ }catch(e){logBSError('cloudInit',e);updateSyncBadge('error')}
+}
+function subscribeToFamily(){
+ if(familyDocUnsub){familyDocUnsub();familyDocUnsub=null}
+ familyDocUnsub=cloudDb.collection('numstarsFamilies').doc(familyCode).onSnapshot(doc=>{
+  if(doc.metadata.hasPendingWrites)return;
+  if(doc.exists)applyCloudData(doc.data());
+  updateSyncBadge('synced');
+ },err=>{logBSError('cloudSnapshot',err);updateSyncBadge('error')});
+}
+function applyCloudData(data){
+ if(!data||!data.profiles)return;
+ let cloudProfiles=data.profiles,cloudIds=Object.keys(cloudProfiles),localList=getProfiles();
+ let newList=cloudIds.map(id=>{let cp=cloudProfiles[id],existing=localList.find(p=>p.id===id);return{id,name:cp.name,icon:cp.icon||(existing&&existing.icon)||'⭐'}});
+ saveProfilesListRaw(newList);
+ cloudIds.forEach(id=>{
+  let cp=cloudProfiles[id];
+  storage.setItem(`bs_${id}_points`,String(cp.points||0));
+  storage.setItem(`bs_${id}_progress`,JSON.stringify(cp.progress||{}));
+  storage.setItem(`bs_${id}_lessonProgress`,JSON.stringify(cp.lessonProgress||{}));
+  storage.setItem(`bs_${id}_testProgress`,JSON.stringify(cp.testProgress||{}));
+ });
+ if(currentProfileId&&cloudIds.includes(currentProfileId))loadProfileData();
+ if(document.getElementById('profileScreen'))renderProfileScreen();
+ updateProfileBadge();
+}
+function queueCloudPush(){
+ if(!cloudSyncEnabled)return;
+ if(cloudPushTimer)clearTimeout(cloudPushTimer);
+ cloudPushTimer=setTimeout(()=>{cloudPushTimer=null;pushToCloud()},1200);
+}
+function pushToCloud(){
+ if(!cloudSyncEnabled||!cloudDb||!familyCode)return;
+ let profiles=getProfiles(),payload={profiles:{},updatedAt:Date.now()};
+ profiles.forEach(p=>{
+  payload.profiles[p.id]={
+   name:p.name,icon:p.icon,
+   points:parseInt(storage.getItem(`bs_${p.id}_points`)||'0',10),
+   progress:JSON.parse(storage.getItem(`bs_${p.id}_progress`)||'{}'),
+   lessonProgress:JSON.parse(storage.getItem(`bs_${p.id}_lessonProgress`)||'{}'),
+   testProgress:JSON.parse(storage.getItem(`bs_${p.id}_testProgress`)||'{}')
+  };
+ });
+ updateSyncBadge('syncing');
+ cloudDb.collection('numstarsFamilies').doc(familyCode).set(payload)
+  .then(()=>updateSyncBadge('synced'))
+  .catch(e=>{logBSError('cloudPush',e);updateSyncBadge('error')});
+}
+function extractObjectLiteralAt(text,start){
+ let depth=0,inStr=false,strChar='';
+ for(let i=start;i<text.length;i++){
+  let ch=text[i];
+  if(inStr){
+   if(ch==='\\'){i++;continue}
+   if(ch===strChar)inStr=false;
+   continue;
+  }
+  if(ch==='"'||ch==="'"||ch==='`'){inStr=true;strChar=ch;continue}
+  if(ch==='{')depth++;
+  else if(ch==='}'){depth--;if(depth===0)return text.slice(start,i+1)}
+ }
+ return null;
+}
+function findConfigObjectText(text){
+ let match=text.match(/firebaseConfig\s*[:=]\s*/);
+ let searchFrom=match?match.index+match[0].length:0;
+ let braceStart=text.indexOf('{',searchFrom);
+ if(braceStart===-1)return null;
+ return extractObjectLiteralAt(text,braceStart);
+}
+function parseFirebaseConfigText(text){
+ if(!text||!text.trim())return{error:'The box is empty — paste your firebaseConfig object in first.'};
+ let normalized=text.replace(/[\u201c\u201d]/g,'"').replace(/[\u2018\u2019]/g,"'").replace(/[\u2013\u2014]/g,'-');
+ let objText=findConfigObjectText(normalized);
+ if(!objText)return{error:'No { ... } object found in that text. Make sure you copied the whole firebaseConfig block, including the curly braces.'};
+ let obj;
+ try{obj=new Function('return ('+objText+')')()}
+ catch(e){return{error:'That text isn\'t valid — ('+e.message+'). Try copying directly from the Firebase console rather than a screenshot or notes app.'}}
+ if(!obj||typeof obj!=='object')return{error:'That did not turn into a config object.'};
+ if(!obj.apiKey||!obj.projectId)return{error:'Missing apiKey or projectId — make sure you copied the entire firebaseConfig object.'};
+ return{config:obj};
+}
+function showSyncError(msg){let el=document.getElementById('syncError');if(el){el.textContent=msg;el.classList.remove('hidden')}}
+function clearSyncError(){let el=document.getElementById('syncError');if(el){el.textContent='';el.classList.add('hidden')}}
+function generateFamilyCode(){let chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',code='';for(let i=0;i<6;i++)code+=chars[Math.floor(Math.random()*chars.length)];return code}
+function openSyncScreen(){renderSyncScreen();go('syncScreen')}
+function renderSyncScreen(){
+ let el=document.getElementById('syncScreenBody');if(!el)return;
+ if(firebaseConfigObj&&familyCode){
+  el.innerHTML=`<p>Cloud sync is <b>ON</b> for this device.</p><div class="example" style="font-size:1.5rem;letter-spacing:3px">${familyCode}</div><p style="font-size:.85rem">On your other device: open Cloud sync settings, paste the <b>same Firebase config</b>, and enter this code under "Join family".</p><button class="secondary" onclick="disconnectCloudSync()">Disconnect this device</button>`;
+ } else {
+  el.innerHTML=`<p>Paste the Firebase config from your Firebase console (Project settings → Your apps → Web app):</p><textarea id="fbConfigInput" rows="6" autocorrect="off" autocapitalize="off" spellcheck="false" style="width:100%;padding:12px;border-radius:14px;border:2px solid var(--line);font-family:monospace;font-size:.8rem;color:var(--ink)" placeholder="const firebaseConfig = { apiKey: ... }"></textarea><div id="syncError" class="hidden" style="color:#ad413b;font-weight:800;margin-top:10px;font-size:.85rem"></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center"><button class="primary" onclick="createNewFamily()">Create a new family</button><span style="color:var(--muted);font-size:.85rem">— or —</span><input id="joinCodeInput" type="text" placeholder="Family code" maxlength="8" autocorrect="off" autocapitalize="off" spellcheck="false" style="padding:12px;border-radius:14px;border:2px solid var(--line);font-weight:800;text-transform:uppercase;width:130px"><button class="secondary" onclick="joinExistingFamily()">Join family</button></div>`;
+ }
+}
+function createNewFamily(){
+ let result=parseFirebaseConfigText(document.getElementById('fbConfigInput').value);
+ if(result.error){showSyncError(result.error);return}
+ clearSyncError();
+ firebaseConfigObj=result.config;familyCode=generateFamilyCode();
+ storage.setItem('numstarsFirebaseConfig',JSON.stringify(firebaseConfigObj));
+ storage.setItem('numstarsFamilyCode',familyCode);
+ initCloudSync();
+ queueCloudPush();
+ renderSyncScreen();
+}
+function joinExistingFamily(){
+ let result=parseFirebaseConfigText(document.getElementById('fbConfigInput').value);
+ let code=(document.getElementById('joinCodeInput').value||'').trim().toUpperCase();
+ if(result.error){showSyncError(result.error);return}
+ if(!code||code.length<4){showSyncError('Please enter the family code from your other device.');return}
+ if(!confirm("This will replace the learners on this device with your family's cloud learners. Continue?"))return;
+ clearSyncError();
+ firebaseConfigObj=result.config;familyCode=code;
+ storage.setItem('numstarsFirebaseConfig',JSON.stringify(firebaseConfigObj));
+ storage.setItem('numstarsFamilyCode',code);
+ initCloudSync();
+ renderSyncScreen();
+}
+function disconnectCloudSync(){
+ if(familyDocUnsub){familyDocUnsub();familyDocUnsub=null}
+ cloudSyncEnabled=false;
+ storage.removeItem('numstarsFirebaseConfig');
+ storage.removeItem('numstarsFamilyCode');
+ firebaseConfigObj=null;familyCode=null;
+ updateSyncBadge(null);
+ renderSyncScreen();
+}
+let points=0;
+function addPoints(n){points+=n;storage.setItem(pKey('points'),String(points));updatePoints();queueCloudPush()}
+function updatePoints(){document.getElementById('pointsBadge').textContent=`🪙 ${points} points`}
+let progress={};
+let lessonProgress={};
+let testProgress={};
+function getTP(y,ti){testProgress[y]=testProgress[y]||{};if(!testProgress[y][ti])testProgress[y][ti]={unlocked:1,star:{},gold:{}};return testProgress[y][ti]}
+function saveTP(){storage.setItem(pKey('testProgress'),JSON.stringify(testProgress));queueCloudPush()}
+function calcTotalStars(){let total=0;for(let y in testProgress){for(let ti in testProgress[y]){let tp=testProgress[y][ti];if(tp&&tp.star)total+=Object.keys(tp.star).length}}return total}
+function updateStars(){let el=document.getElementById('starsBadge');if(el)el.textContent=`⭐ ${calcTotalStars()} stars`}
+function isTopicMastered(y,ti){let tp=getTP(y,ti);for(let i=1;i<=10;i++){if(!tp.gold[i])return false}return true}
+let topicLessons=[],lessonNumber=0,activeLesson=null,practiceMode=false,totalQuestions=5,activeSub=null,lessonViews=[];
+function go(id,opts){
+ try{if(id==='journey')renderJourney()}catch(e){logBSError('renderJourney',e)}
+ try{if(id==='module'&&topic)renderModule()}catch(e){logBSError('renderModule',e)}
+ try{document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active')}catch(e){logBSError('screenSwitch',e)}
+ try{
+  if(id==='module'&&rocketNeedsSlide){
+   rocketNeedsSlide=false;
+   requestAnimationFrame(()=>requestAnimationFrame(()=>{try{updateRocketPosition()}catch(e){logBSError('rocketMove',e)}}))
+  }
+ }catch(e){logBSError('rocketSchedule',e)}
+ try{
+  if(opts&&opts.scrollTo){
+   requestAnimationFrame(()=>{try{let el=document.getElementById(opts.scrollTo);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});else window.scrollTo({top:0,behavior:'smooth'})}catch(e){logBSError('scrollTarget',e)}})
+  } else {
+   window.scrollTo({top:0,behavior:'smooth'})
+  }
+ }catch(e){logBSError('scroll',e)}
+}
+function chooseStage(){go('choose')}
+function openStage(s){stage=s;year=years[s][0];renderJourney();go('journey')}
+function renderJourney(){document.getElementById('stageTag').textContent=stage==='KS1'?'KEY STAGE 1 · YEARS 1–2':'KEY STAGE 2 · YEARS 3–6';document.getElementById('journeyTitle').textContent=stage==='KS1'?'Build the foundations':'Strengthen fluency and reasoning';document.getElementById('journeyText').textContent='Every topic contains a sequence of short lessons. Score at least 4 stars to unlock the next lesson.';document.getElementById('tabs').innerHTML=years[stage].map(y=>`<button class="year-tab ${y===year?'selected':''}" onclick="year='${y}';renderJourney()">Year ${y.slice(1)}</button>`).join('');let unlocked=progress[year]||0;document.getElementById('badges').innerHTML=unlocked>0?data[year].slice(0,unlocked).map(t=>`<span class="badge" title="${t[1]}">${t[0]}</span>`).join(''):'<span class="badges-empty">Complete your first lesson to start earning badges! 🏅</span>';document.getElementById('topics').innerHTML=data[year].map((t,i)=>{let open=i<=unlocked,gold=open&&isTopicMastered(year,i);return `<article class="topic ${open?'':'locked'} ${gold?'gold-topic':''}"><div class="orb">${open?(gold?'🌟':t[0]):'🔒'}</div><div><span class="tag">${gold?'FULL MARKS · GOLD':t[3].toUpperCase()}</span><h3>${t[1]}</h3><p>${t[2]}</p><button class="${open?'primary':'secondary'}" ${open?'':'disabled'} onclick="openModule(${i})">${i<unlocked?'Review lessons':open?'View lessons →':'Locked'}</button></div></article>`}).join('')}
+function openModule(i){topicIndex=i;topic=data[year][i];go('module')}
+function renderModule(){document.getElementById('moduleTag').textContent=`YEAR ${year.slice(1)} · ${topic[3].toUpperCase()}`;document.getElementById('moduleTitle').textContent=topic[1];let subs=getSubs(topicIndex,year),res=resourceLink(year,topicIndex);
+ let resCard=`<article class="topic"><div class="orb">${res.icon}</div><div><span class="tag">${res.tag}</span><h3>${res.title}</h3><p>${res.desc}</p><a class="secondary" href="${res.url}" target="_blank" rel="noopener">${res.label} →</a></div></article>`;
+ if(subs){
+  document.getElementById('moduleList').innerHTML=subs.map((s,si)=>`<article class="topic"><div class="orb">${s.icon}</div><div><span class="tag">SUB-TOPIC ${si+1}</span><h3>${s.title}</h3><p>${s.blurb}</p><div class="btnrow"><button class="primary" onclick="openSubLesson(${topicIndex},${si})">Learn →</button><button class="secondary" onclick="startSubPractice(${topicIndex},${si})">Practise →</button></div></div></article>`).join('')+resCard;
+ } else {
+  document.getElementById('moduleList').innerHTML=`<article class="topic"><div class="orb">${topic[0]}</div><div><span class="tag">LESSON</span><h3>Learn the idea</h3><p>${topic[2]}</p><button class="primary" onclick="openLesson(${topicIndex})">Start lesson →</button></div></article>${resCard}<article class="topic"><div class="orb">🎯</div><div><span class="tag">OPTIONAL</span><h3>Quick practice</h3><p>A short 3-question warm-up. Have as many goes as you like — it's just for fun and won't change your stars.</p><button class="secondary" onclick="startPractice(${topicIndex})">Start practice →</button></div></article>`;
+ }
+ renderTestsPanel();
+}
+function tierFormatIcon(tier){let f=tierFormat(tier);if(f==='ghost')return'👻';if(f==='crazy')return'🌀';if(f==='doublecrazy')return'🌪️';if(f==='speed')return'⏱️';if(f==='boss')return'🐉';if(tierInputMode(tier)==='text')return'✍️';return''}
+function pathNodeCoords(){
+ let coords=[],rows=5,rowH=100/rows;
+ for(let idx=0;idx<10;idx++){
+  let r=Math.floor(idx/2),col=idx%2,leftCol=(r%2===0)?col:1-col;
+  coords.push({x:leftCol===0?18:82,y:r*rowH+rowH/2});
+ }
+ return coords;
+}
+let lastPathTopicKey=null,rocketNeedsSlide=false;
+function updateRocketPosition(){
+ if(!topic)return;
+ let tp=getTP(year,topicIndex),coords=pathNodeCoords(),rocket=document.getElementById('rocketMarker');
+ if(!rocket)return;
+ rocket.classList.remove('rocket-land');
+ void rocket.offsetWidth;
+ let rocketCoord=coords[Math.min(9,Math.max(0,tp.unlocked-1))];
+ rocket.style.left=rocketCoord.x+'%';
+ rocket.style.top=rocketCoord.y+'%';
+}
+function renderTestsPanel(){
+ let tp=getTP(year,topicIndex),mastered=isTopicMastered(year,topicIndex);
+ let topicKey=year+'-'+topicIndex;
+ let coords=pathNodeCoords();
+ let card=document.getElementById('testsCard');
+ let sameTopic=card&&lastPathTopicKey===topicKey;
+ let rocketCoord=coords[Math.min(9,Math.max(0,tp.unlocked-1))];
+ if(sameTopic){
+  document.getElementById('testsCardTitle').textContent=mastered?'🌟 Challenges — full marks!':'Challenges';
+  for(let i=1;i<=10;i++){
+   let node=document.getElementById('pathNode'+i);if(!node)continue;
+   let locked=i>tp.unlocked,icon=tp.gold[i]?'🌟':tp.star[i]?'⭐':locked?'🔒':'▫️';
+   node.className='path-node'+(locked?' locked':'')+(tp.gold[i]?' gold':'');
+   node.disabled=locked;
+   let iconEl=node.querySelector('.tile-icon');if(iconEl)iconEl.textContent=icon;
+  }
+  rocketNeedsSlide=true;
+  return;
+ }
+ rocketNeedsSlide=false;
+ if(card)card.remove();
+ card=document.createElement('div');card.id='testsCard';card.className='tests-card';
+ let nodes='',pathD='';
+ coords.forEach((c,idx)=>{
+  let i=idx+1;
+  pathD+=(idx===0?'M':'L')+` ${c.x} ${c.y} `;
+  let locked=i>tp.unlocked,icon=tp.gold[i]?'🌟':tp.star[i]?'⭐':locked?'🔒':'▫️',fmt=tierFormatIcon(i);
+  nodes+=`<button id="pathNode${i}" class="path-node ${locked?'locked':''} ${tp.gold[i]?'gold':''}" style="left:${c.x}%;top:${c.y}%" ${locked?'disabled':''} onclick="startTierTest(${topicIndex},${i})"><span class="tile-num">${i}</span><span class="tile-fmt">${fmt}</span><span class="tile-icon">${icon}</span></button>`;
+ });
+ card.innerHTML=`<h3 id="testsCardTitle">${mastered?'🌟 Challenges — full marks!':'Challenges'}</h3><p>Score 4/5 to unlock the next challenge — reach Challenge 5 to unlock the next topic.</p><div class="format-legend"><span class="legend-chip">👻 Ghost</span><span class="legend-chip">🌀 Crazy</span><span class="legend-chip">🌪️ Double Crazy</span><span class="legend-chip">⏱️ Speed</span><span class="legend-chip">🐉 Boss</span><span class="legend-chip">✍️ Type</span></div><details class="legend-details"><summary>How scoring works</summary><p>Score 5/5 for a gold star. Speed rounds need 8 correct to pass, 12 for gold. You can always type your answer instead of tapping.</p></details><div class="progress-path"><svg class="path-svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${pathD.trim()}" fill="none" stroke="#bfe0f0" stroke-width="3" vector-effect="non-scaling-stroke" stroke-dasharray="2 7" stroke-linecap="round" stroke-linejoin="round"/></svg>${nodes}<div id="rocketMarker" class="rocket-marker rocket-land" style="left:${rocketCoord.x}%;top:${rocketCoord.y}%">🚀</div></div>`;
+ document.getElementById('moduleList').after(card);
+ lastPathTopicKey=topicKey;
+}
+function openLesson(i){topic=data[year][i];topicIndex=i;part=0;activeSub=null;renderLesson();go('lesson')}
+function openSubLesson(i,si){topic=data[year][i];topicIndex=i;activeSub=getSubs(i,year)[si];part=0;renderLesson();go('lesson')}
+function startSubPractice(i,si){stopTestTimers();testFormat='standard';testInputMode='choice';topic=data[year][i];topicIndex=i;practiceMode=true;testIndex=0;score=0;testQuestions=getSubs(i,year)[si].gen();totalQuestions=testQuestions.length;renderQuestion();go('test')}
+function lessonPlan(){let y=Number(year.slice(1));let core=[['Place value tells us what each digit is worth. The digit’s position shows whether it means ones, tens, hundreds or more.','In 47, the 4 means 4 tens and the 7 means 7 ones. So 47 = 40 + 7.'],['Addition puts amounts together. Subtraction finds how many are left or the difference between two amounts.','To solve 8 + 5, start with 8 and count on five: 9, 10, 11, 12, 13.'],['Multiplication means equal groups. Division is the inverse: it shares or groups an amount equally.','3 groups of 4 means 4 + 4 + 4, which is 12. So 3 × 4 = 12.'],['Fractions are equal parts of a whole or a group. The bottom number tells us how many equal parts there are.','To find 1/4 of 12, share 12 into 4 equal groups. Each group has 3.'],['Measurement uses standard units so everyone measures in the same way.','Measure carefully and write the number together with its unit.'],['Mathematical properties help us describe shapes, position and data accurately.','Look for one property at a time: sides, angles, symmetry or the values in a data set.']];
+ if(topicIndex===2&&y===5)return ['A factor divides exactly into a number. A prime number has exactly two factors: 1 and itself.','The factors of 12 are 1, 2, 3, 4, 6 and 12. 13 is prime because only 1 and 13 divide into it exactly.'];
+ if(topicIndex===2&&y===6)return ['A ratio compares quantities. It tells us how many of one thing there are for every amount of another.','The ratio 3 : 2 means 3 of the first thing for every 2 of the second thing. Doubling it gives 6 : 4.'];
+ if(topicIndex===4){if(y===1)return ['A clock has two hands. At an o’clock time the minute hand points to 12; at half past it points to 6.','At half past 3, the minute hand points to 6 and the hour hand is between 3 and 4.'];if(y===2)return ['Money is measured in pounds and pence. One pound is exactly 100 pence.','£1 = 100p. If something costs 35p, the change from £1 is 100p − 35p = 65p.'];return ['Metric units have fixed conversion rules: 100 centimetres = 1 metre and 1,000 millimetres = 1 metre.','3 m = 300 cm because each metre contains 100 cm. 2,000 mm = 2 m because 1,000 mm = 1 m.']}
+ if(topicIndex===5){if(y===1)return ['A shape can be identified by its properties, especially its number of sides and corners.','A triangle has 3 straight sides and 3 corners.'];if(y===2)return ['2D shapes can be described by their sides and corners. A square has four equal sides and four corners.','A rectangle has 4 corners and 4 sides; its opposite sides are equal.'];if(y===3)return ['A right angle is exactly a quarter turn. It is the same size as the corner of a square.','A right angle measures 90°. Two right angles make a half turn.'];if(y===4)return ['A line of symmetry splits a shape into two matching halves.','A square has 4 lines of symmetry: vertical, horizontal and two diagonal lines.'];if(y===5)return ['Angles on a straight line add up to 180°.','If one angle on a straight line is 120°, the other is 180° − 120° = 60°.'];return ['The mean is the total of all values shared equally between the number of values.','For 4, 6 and 8: total = 18. Share 18 between 3 values: 18 ÷ 3 = 6.']}
+ return core[topicIndex]}
+function renderLesson(){
+ let views;
+ if(activeSub){
+  views=[['Lesson','The key idea',`This is the key idea for <b>${activeSub.title.toLowerCase()}</b>.`,activeSub.rule,'Read the rule first.'],['Worked example','See the method','This example uses the same idea you will meet in practice questions.',activeSub.example,activeSub.note]];
+  document.getElementById('lessonTag').textContent=`YEAR ${year.slice(1)} · MEASUREMENT · ${activeSub.title.toUpperCase()}`;
+ } else {
+  let plan=lessonPlan();
+  views=[['Lesson','The key idea',`This is the exact rule used in the challenges for <b>${topic[1].toLowerCase()}</b>.`,plan[0],'Read the rule first.'],['Worked example','See the method','This example uses the same rule you will need in the challenges.',plan[1],'Worked example']];
+  if(topicIndex===1){let y=Number(year.slice(1)),base=[9,23,140,2300,12000,25000][y-1],extra=[6,17,68,900,3300,4200][y-1],total=base+extra;views.push(['Missing numbers','Find the missing number','Tests sometimes ask you to find a missing number, using the opposite (inverse) operation to work it out.',`${base} + ▢ = ${total}`,`▢ = ${total} − ${base} = ${extra}`])}
+  document.getElementById('lessonTag').textContent=`YEAR ${year.slice(1)} · ${topic[3].toUpperCase()}`;
+ }
+ lessonViews=views;
+ let v=views[part];
+ document.getElementById('steps').style.gridTemplateColumns=`repeat(${views.length},1fr)`;
+ document.getElementById('steps').innerHTML=views.map((_,i)=>`<div class="step ${i<=part?'on':''}"></div>`).join('');
+ document.getElementById('lessonCard').innerHTML=`<div><div class="lesson-icon">${activeSub?activeSub.icon:topic[0]}</div><span class="tag">${v[0].toUpperCase()}</span><h2>${v[1]}</h2><p>${v[2]}</p><div class="example">${v[3]}<small>${v[4]}</small></div></div>`;
+ document.getElementById('prev').style.visibility=part===0?'hidden':'visible';
+ document.getElementById('next').textContent=part===views.length-1?'Back to topic →':'See example →';
+}
+function move(d){if(part+d<0)return;if(part+d>lessonViews.length-1){go('module',{scrollTo:'testsCard'});return}part+=d;renderLesson()}
+function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min}
+function shuffle(items){return [...items].sort(()=>Math.random()-.5)}
+function addPhrase(a,b,sum){let t=[`What is ${a} + ${b}?`,`${a} add ${b} is?`,`Find the total of ${a} and ${b}.`,`${a} + ${b} = ?`,`If you have ${a} and get ${b} more, how many do you have?`];return t[rand(0,t.length-1)]}
+function subPhrase(total,e,f){let t=[`What is ${total} - ${e}?`,`Take ${e} away from ${total}.`,`Find the difference: ${total} - ${e}.`,`${total} minus ${e} equals?`,`There are ${total}. ${e} are taken away. How many are left?`];return t[rand(0,t.length-1)]}
+function mulPhrase(a,b,p){let t=[`What is ${a} × ${b}?`,`${a} multiplied by ${b} is?`,`Find the product of ${a} and ${b}.`,`There are ${a} groups of ${b}. How many altogether?`];return t[rand(0,t.length-1)]}
+function divPhrase(r,e,f){let t=[`What is ${r} ÷ ${e}?`,`Share ${r} equally into ${e} groups. How many in each group?`,`${r} divided by ${e} equals?`,`${r} shared between ${e} people — how many does each person get?`];return t[rand(0,t.length-1)]}
+function fracPhrase(d,u){let t=[`What is 1/${d} of ${u}?`,`${u} shared equally into ${d} groups — how many in each group?`,`Divide ${u} by ${d}.`,`Find 1/${d} of ${u}.`];return t[rand(0,t.length-1)]}
+function safeOffset(n,mag){if(n-mag<0)return n+mag;return Math.random()<0.5?n-mag:n+mag}
+function numberQuestionGenerators(){
+ return [
+  n=>mc(`Which number is greater than ${n}?`,n+1,[n,Math.max(0,n-1),Math.max(0,n-2)]),
+  n=>mc(`Which number is smaller than ${n}?`,Math.max(0,n-1),[n,n+1,n+2]),
+  n=>mc(`What number comes after ${n}?`,n+1,[Math.max(0,n-1),n+2,n+3]),
+  n=>mc(`What number comes before ${n}?`,Math.max(0,n-1),[n+1,n+2,Math.max(0,n-2)]),
+  n=>mc(`What number is one less than ${n}?`,Math.max(0,n-1),[n+1,n+2,Math.max(0,n-2)]),
+  n=>mc(`What number is one more than ${n}?`,n+1,[n,Math.max(0,n-1),n+2]),
+  n=>{let closeMag=rand(1,4),farMags=[rand(6,9),rand(10,14),rand(15,20)],closeVal=safeOffset(n,closeMag),farVals=farMags.map(m=>safeOffset(n,m));return mc(`Which of these numbers is closest to ${n}?`,closeVal,farVals)},
+  n=>{let nums=[n,n+1,n+2,n+3],display=shuffle(nums.slice());return mc(`Put these in order: ${display.join(', ')}. Which comes first?`,n,[n+1,n+2,n+3])},
+  n=>mc(`Is ${n} an odd or even number?`,n%2===0?'even':'odd',[n%2===0?'odd':'even','a fraction','neither']),
+  n=>n>=10?mc(`What digit is in the tens place of ${n}?`,Math.floor(n/10)%10,[n%10,(Math.floor(n/10)+1)%10,(Math.floor(n/10)+9)%10]):null
+ ];
+}
+function buildNumberQuestions(genN){
+ let gens=shuffle(numberQuestionGenerators()),out=[];
+ for(let g of gens){if(out.length>=5)break;let q=g(genN());if(q)out.push(q)}
+ while(out.length<5)out.push(numberQuestionGenerators()[0](genN()));
+ return out.slice(0,5);
+}
+function mc(question,correct,wrong){let correctText=String(correct),answers=[correctText];for(let item of wrong.map(String)){if(!answers.includes(item))answers.push(item)}let fallback=1;while(answers.length<4){let extra=Number.isFinite(Number(correct))?String(Number(correct)+fallback):`Other answer ${fallback}`;if(!answers.includes(extra))answers.push(extra);fallback++}answers=shuffle(answers.slice(0,4));return [question,answers,answers.indexOf(correctText)]}
+function makeQuestions(){let level=Number(year.slice(1)),type=topicIndex,limit=[20,100,1000,10000,100000,1000000][level-1];
+ if(type===0){let genN=()=>rand(Math.max(10,Math.floor(limit*.25)),Math.floor(limit*.75));return buildNumberQuestions(genN)}
+ if(type===1){let max=[10,50,100,500,1000,5000][level-1],pairs=[],seen=new Set(),tries=0;while(pairs.length<5&&tries<300){tries++;let a=rand(2,Math.floor(max*.7)),b=rand(1,Math.floor(max*.3)),key=`${a}+${b}`;if(!seen.has(key)){seen.add(key);pairs.push([a,b,a+b])}}while(pairs.length<5){let a=rand(2,Math.floor(max*.7)),b=rand(1,Math.floor(max*.3));pairs.push([a,b,a+b])}let [a,b,sum]=pairs[0],[c,d,total]=pairs[1],[e,f,amount]=pairs[2],[g,h,result]=pairs[3],[j,k,answer]=pairs[4];return [mc(addPhrase(a,b,sum),sum,[sum-1,sum+1,sum+2]),mc(addPhrase(c,d,total),total,[total-1,total+1,total+2]),mc(subPhrase(amount,e,f),f,[f-1,f+1,f+2]),mc(addPhrase(g,h,result),result,[result-1,result+1,result+2]),mc(`Complete: ${j} + □ = ${answer}`,k,[k-1,k+1,k+2])]}
+ if(type===2){if(level===5)return [mc('Which number is a factor of 24?',6,[5,7,11]),mc('Which number is prime?',13,[12,15,21]),mc('How many factors does a prime number have?',2,[1,3,4]),mc('Which pair are both factors of 18?','3 and 6',['4 and 5','5 and 7','8 and 9']),mc('Which number is a multiple of 6?',24,[20,22,25])];if(level===6)return [mc('What does the ratio 3 : 2 mean?','3 of one thing for every 2 of another',['3 more than 2','3 divided by 2','2 of one thing for every 3 of another']),mc('Double the ratio 3 : 2.', '6 : 4',['5 : 3','6 : 2','3 : 4']),mc('Complete the equivalent ratio 4 : 3 = 8 : □',6,[4,5,8]),mc('For every 5 red counters there are 2 blue counters. What is the ratio red : blue?','5 : 2',['2 : 5','7 : 1','5 : 7']),mc('Which ratio is equivalent to 2 : 1?','6 : 3',['4 : 1','3 : 2','2 : 2'])];let facts=[],seen=new Set(),tries=0;while(facts.length<5&&tries<300){tries++;let a=rand(2,Math.min(12,level+2)),b=rand(2,Math.min(12,level+3)),key=`${a}x${b}`;if(!seen.has(key)){seen.add(key);facts.push([a,b,a*b])}}while(facts.length<5){let a=rand(2,Math.min(12,level+2)),b=rand(2,Math.min(12,level+3));facts.push([a,b,a*b])}let [a,b,p]=facts[0],[c,d,q]=facts[1],[e,f,r]=facts[2],[g,h,s]=facts[3],[j,k,t]=facts[4];return [mc(mulPhrase(a,b,p),p,[p-a,p+a,p+1]),mc(`There are ${d} groups of ${c}. How many altogether?`,q,[q-1,q+1,c+d]),mc(divPhrase(r,e,f),f,[f-1,f+1,e]),mc(`Complete: ${g} × □ = ${s}`,h,[h-1,h+1,h+2]),mc(divPhrase(t,k,j),j,[j-1,j+1,k])]}
+ if(type===3){let denominator=level<3?2:level<5?4:5,unit=rand(2,10)*denominator,part=unit/denominator;return [mc(fracPhrase(denominator,unit),part,[part-1,part+1,part+2]),mc(`How many equal parts make a whole when using fifths?`,5,[2,3,4]),mc('Which fraction is equal to one half?','2/4',['1/4','3/4','1/3']),mc(`If ${unit} sweets are shared equally between ${denominator} children, how many does each child get?`,part,[part-1,part+1,part+2]),mc('Which is the largest fraction?','3/4',['1/4','1/2','1/3'])]}
+ if(level===1)return [mc('How many sides does a triangle have?',3,[2,4,5]),mc('How many corners does a square have?',4,[3,5,6]),mc('Which shape has 3 straight sides?','triangle',['circle','square','rectangle']),mc('How many sides does a rectangle have?',4,[2,3,5]),mc('Which shape has no straight sides?','circle',['triangle','square','rectangle'])];if(level===2)return [mc('How many equal sides does a square have?',4,[2,3,5]),mc('How many corners does a rectangle have?',4,[3,5,6]),mc('Which shape has 4 equal sides?','square',['triangle','circle','rectangle']),mc('How many sides does a pentagon have?',5,[3,4,6]),mc('Which shape has 3 corners?','triangle',['square','rectangle','circle'])];if(level===3)return [mc('How many degrees are in a right angle?',90,[45,180,360]),mc('How many right angles make a half turn?',2,[1,3,4]),mc('A right angle is the same as a…','quarter turn',['half turn','full turn','three-quarter turn']),mc('How many degrees are in two right angles?',180,[90,270,360]),mc('Which shape has four right angles?','rectangle',['triangle','circle','pentagon'])];if(level===4)return [mc('How many lines of symmetry does a square have?',4,[1,2,3]),mc('What does a line of symmetry make?','two matching halves',['two different halves','a right angle','a circle']),mc('How many lines of symmetry does a rectangle have?',2,[1,3,4]),mc('Which shape has no line of symmetry?','scalene triangle',['square','rectangle','circle']),mc('A vertical line of symmetry goes…','up and down',['side to side','in a circle','at a right angle only'])];if(level===5){let angle=rand(40,140),other=180-angle;return [mc(`One angle on a straight line is ${angle}°. What is the other angle?`,other,[other-10,other+10,angle]),mc('Angles on a straight line total…','180°',['90°','270°','360°']),mc('If one angle is 90° on a straight line, the other is…','90°',['45°','180°','270°']),mc(`What is 180° − ${angle}?`,other,[other-1,other+1,angle]),mc('A straight line is equal to…','180°',['90°','270°','360°'])]}let a=rand(2,8),b=rand(3,9),c=rand(4,10),mean=(a+b+c)/3;while(!Number.isInteger(mean)){c=rand(4,10);mean=(a+b+c)/3}return [mc(`What is the mean of ${a}, ${b} and ${c}?`,mean,[mean-1,mean+1,mean+2]),mc(`What is the total of ${a}, ${b} and ${c}?`,a+b+c,[a+b+c-1,a+b+c+1,a+b]),mc('To find the mean, you first…','add all the values',['multiply all the values','choose the largest value','choose the smallest value']),mc(`Share ${a+b+c} equally between 3. What is the answer?`,mean,[mean-1,mean+1,mean+2]),mc('The mean is found by…','sharing the total equally',['adding 10','doubling the largest value','counting the smallest value'])]}
+function tieredSubQuestions(subs,tier){let n=subs.length,unlockedCount=tier>=8?n:Math.min(n,Math.floor((tier-1)*n/10)+1),pool=subs.slice(0,unlockedCount),qs=[],guard=0;while(qs.length<5&&guard<10){pool.forEach(s=>{qs=qs.concat(s.gen())});guard++}return shuffle(qs).slice(0,5)}
+function makeTieredQuestions(y,ti,tier){
+ let level=Number(y.slice(1)),subs=getSubs(ti,y);
+ if(subs)return tieredSubQuestions(subs,tier);
+ if(ti===0){let limitBase=[20,100,1000,10000,100000,1000000][level-1],lowFrac=0.05+0.08*(tier-1),highFrac=Math.min(.95,lowFrac+.15),genN=()=>{let lo=Math.max(2,Math.floor(limitBase*lowFrac)),hi=Math.max(lo+1,Math.floor(limitBase*highFrac));return rand(lo,hi)};return buildNumberQuestions(genN)}
+ if(ti===1){let maxBase=[10,50,100,500,1000,5000][level-1],effMax=Math.max(10,Math.round(maxBase*Math.min(1,0.2+0.08*tier))),pairs=[],seen=new Set(),tries=0;while(pairs.length<5&&tries<300){tries++;let a=rand(2,Math.max(3,Math.floor(effMax*.7))),b=rand(1,Math.max(2,Math.floor(effMax*.3))),key=`${a}+${b}`;if(!seen.has(key)){seen.add(key);pairs.push([a,b,a+b])}}while(pairs.length<5){let a=rand(2,Math.max(3,Math.floor(effMax*.7))),b=rand(1,Math.max(2,Math.floor(effMax*.3)));pairs.push([a,b,a+b])}let [a,b,sum]=pairs[0],[c,d,total]=pairs[1],[e,f,amount]=pairs[2],[g,h,result]=pairs[3],[j,k,answer]=pairs[4];return [mc(addPhrase(a,b,sum),sum,[sum-1,sum+1,sum+2]),mc(addPhrase(c,d,total),total,[total-1,total+1,total+2]),mc(subPhrase(amount,e,f),f,[f-1,f+1,f+2]),mc(addPhrase(g,h,result),result,[result-1,result+1,result+2]),mc(`Complete: ${j} + □ = ${answer}`,k,[k-1,k+1,k+2])]}
+ if(ti===2){let factorMax=Math.min(12,3+tier),facts=[],seen=new Set(),tries=0;while(facts.length<5&&tries<300){tries++;let a=rand(2,factorMax),b=rand(2,factorMax),key=`${a}x${b}`;if(!seen.has(key)){seen.add(key);facts.push([a,b,a*b])}}while(facts.length<5){let a=rand(2,factorMax),b=rand(2,factorMax);facts.push([a,b,a*b])}let [a,b,p]=facts[0],[c,d,q]=facts[1],[e,f,r]=facts[2],[g,h,s]=facts[3],[j,k,t]=facts[4];return [mc(mulPhrase(a,b,p),p,[p-a,p+a,p+1]),mc(`There are ${d} groups of ${c}. How many altogether?`,q,[q-1,q+1,c+d]),mc(divPhrase(r,e,f),f,[f-1,f+1,e]),mc(`Complete: ${g} × □ = ${s}`,h,[h-1,h+1,h+2]),mc(divPhrase(t,k,j),j,[j-1,j+1,k])]}
+ let denomsByLevel={1:[2,4],2:[2,3,4,6],3:[2,4,5,8,10]},opts=denomsByLevel[level]||[2,4,5,8,10],denominator=opts[Math.min(opts.length-1,Math.floor((tier-1)*opts.length/10))],unit=rand(2,10)*denominator,part=unit/denominator;return [mc(fracPhrase(denominator,unit),part,[part-1,part+1,part+2]),mc(`How many equal parts make a whole when using fifths?`,5,[2,3,4]),mc('Which fraction is equal to one half?','2/4',['1/4','3/4','1/3']),mc(`If ${unit} sweets are shared equally between ${denominator} children, how many does each child get?`,part,[part-1,part+1,part+2]),mc('Which is the largest fraction?','3/4',['1/4','1/2','1/3'])]
+}
+function expandQuestionsToEight(qs){
+ let allAnswers=[];qs.forEach(q=>q[1].forEach(a=>allAnswers.push(a)));
+ return qs.map(q=>{
+  let [question,answers,correctIdx]=q,correctVal=answers[correctIdx],need=8-answers.length;
+  if(need<=0)return q;
+  let extra=[],candidates=shuffle(allAnswers.filter(a=>!answers.includes(a)));
+  for(let c of candidates){if(extra.length>=need)break;if(!extra.includes(c))extra.push(c)}
+  if(extra.length<need){
+   let numCorrect=Number(correctVal),i=1;
+   while(extra.length<need&&Number.isFinite(numCorrect)&&i<60){
+    let cand=numCorrect+(i%2===0?1:-1)*Math.ceil(i/2)*3,cs=String(cand);
+    if(cand>=0&&!answers.includes(cs)&&!extra.includes(cs))extra.push(cs);
+    i++;
+   }
+  }
+  let gi=1;while(extra.length<need){let cs=`Option ${gi}`;if(!answers.includes(cs)&&!extra.includes(cs))extra.push(cs);gi++}
+  let combined=shuffle([...answers,...extra]);
+  return [question,combined,combined.indexOf(correctVal)];
+ });
+}
+function startTierTest(ti,tier){
+ stopTestTimers();
+ topic=data[year][ti];topicIndex=ti;practiceMode=false;currentTestTier=tier;
+ testFormat=tierFormat(tier);testInputMode=tierInputMode(tier);
+ testIndex=0;score=0;
+ if(testFormat==='boss')resetBoss(tier);
+ if(testFormat==='speed'){
+  speedCorrect=0;speedAttempted=0;speedQueue=[];
+  testQuestions=[getNextSpeedQuestion(ti,tier)];
+  totalQuestions=Infinity;
+ } else {
+  testQuestions=makeTieredQuestions(year,ti,tier);
+  if(testFormat==='doublecrazy')testQuestions=expandQuestionsToEight(testQuestions);
+  totalQuestions=5;
+ }
+ document.getElementById('counter').textContent='';
+ document.getElementById('testKind').textContent='';
+ document.getElementById('questionText').textContent='';
+ document.getElementById('answers').innerHTML='';
+ document.getElementById('bossWrap').classList.add('hidden');
+ document.getElementById('textAnswerWrap').classList.add('hidden');
+ document.getElementById('textToggleWrap').classList.add('hidden');
+ go('test');
+ showRoundIntro(testFormat,()=>{
+  renderQuestion();
+  if(testFormat==='speed')startSpeedTimer();
+ },tier);
+}
+function startPractice(i){stopTestTimers();testFormat='standard';testInputMode='choice';topic=data[year][i];topicIndex=i;practiceMode=true;testIndex=0;score=0;testQuestions=makeQuestions().slice(0,3);totalQuestions=testQuestions.length;renderQuestion();go('test')}
+function renderQuestion(){
+ if(ghostTimer){clearTimeout(ghostTimer);ghostTimer=null}
+ if(crazyInterval){clearInterval(crazyInterval);crazyInterval=null}
+ let q=testQuestions[testIndex];
+ document.getElementById('testKind').textContent=practiceMode?'QUICK PRACTICE':`CHALLENGE ${currentTestTier} OF 10`;
+ document.getElementById('counter').textContent=testFormat==='speed'?`⚡ ${speedCorrect} CORRECT SO FAR`:`QUESTION ${testIndex+1} OF ${totalQuestions}`;
+ let qEl=document.getElementById('questionText');qEl.textContent=q[0];qEl.classList.remove('ghosted');
+ document.getElementById('feedback').textContent='';
+ document.getElementById('testNext').classList.add('hidden');
+ document.getElementById('bossWrap').classList.toggle('hidden',testFormat!=='boss');
+ if(testFormat==='boss')updateBossUI();
+ let answersEl=document.getElementById('answers'),textWrap=document.getElementById('textAnswerWrap'),toggleWrap=document.getElementById('textToggleWrap'),input=document.getElementById('textAnswerInput'),label=document.getElementById('textAnswerLabel');
+ input.value='';input.disabled=false;
+ document.querySelectorAll('#numpad button,.pad-actions button').forEach(b=>b.disabled=false);
+ if(testInputMode==='text'){
+  answersEl.className='answers hidden';answersEl.innerHTML='';
+  toggleWrap.classList.add('hidden');
+  textWrap.classList.remove('hidden');
+  label.textContent='';
+ } else {
+  answersEl.classList.remove('hidden');
+  answersEl.className='answers'+(testFormat==='crazy'?' crazy':testFormat==='doublecrazy'?' crazy doublecrazy':'');
+  answersEl.innerHTML=q[1].map((a,i)=>`<button class="answer" onclick="answer(${i})">${a}</button>`).join('');
+  if(testFormat==='crazy'||testFormat==='doublecrazy')startCrazyMovement();
+  textWrap.classList.add('hidden');
+  toggleWrap.classList.remove('hidden');
+  label.textContent='Or type your answer:';
+ }
+ if(testFormat==='ghost'){ghostTimer=setTimeout(()=>{qEl.innerHTML='🫥 <em>Question hidden — answer from memory!</em>';qEl.classList.add('ghosted')},1500)}
+}
+function registerAnswer(correct,selectedIdx){
+ if(crazyInterval){clearInterval(crazyInterval);crazyInterval=null}
+ if(ghostTimer){clearTimeout(ghostTimer);ghostTimer=null}
+ let q=testQuestions[testIndex],buttons=[...document.querySelectorAll('.answer')];
+ buttons.forEach(b=>b.disabled=true);
+ document.getElementById('textAnswerInput').disabled=true;
+ document.querySelectorAll('#numpad button,.pad-actions button').forEach(b=>b.disabled=true);
+ document.getElementById('textToggleWrap').classList.add('hidden');
+ if(buttons.length){buttons[q[2]].classList.add('correct');if(selectedIdx!=null&&selectedIdx!==q[2])buttons[selectedIdx].classList.add('wrong')}
+ let qEl=document.getElementById('questionText');qEl.textContent=q[0];qEl.classList.remove('ghosted');
+ let fb=document.getElementById('feedback'),next=document.getElementById('testNext'),hasButtons=buttons.length>0;
+ if(testFormat==='boss')bossHit(correct);
+ if(testFormat==='speed'){
+  speedAttempted++;
+  if(correct){speedCorrect++;addPoints(5);fb.textContent='Correct!';fb.style.color='#157345'}
+  else{fb.textContent=hasButtons?'Not quite!':`Not quite — the answer was "${q[1][q[2]]}".`;fb.style.color='#ad413b'}
+  next.textContent='Next question →';next.classList.remove('hidden');
+  return;
+ }
+ if(correct){score++;addPoints(practiceMode?5:15);fb.textContent='Correct!';fb.style.color='#157345'}
+ else{fb.textContent=hasButtons?'Not quite — the correct answer is highlighted.':`Not quite — the correct answer was "${q[1][q[2]]}".`;fb.style.color='#ad413b'}
+ next.textContent=testIndex===totalQuestions-1?'See result →':'Next question →';next.classList.remove('hidden')
+}
+function answer(selected){let q=testQuestions[testIndex];registerAnswer(selected===q[2],selected)}
+function submitTextAnswer(){
+ let input=document.getElementById('textAnswerInput');
+ if(input.disabled||!input.value.trim())return;
+ let q=testQuestions[testIndex],correct=normalizeAnswer(input.value)===normalizeAnswer(q[1][q[2]]);
+ registerAnswer(correct,null);
+}
+function nextQuestion(){
+ if(testFormat==='speed'){testIndex++;testQuestions[testIndex]=getNextSpeedQuestion(topicIndex,currentTestTier);renderQuestion();return}
+ testIndex++;if(testIndex<totalQuestions){renderQuestion()}else{showResult()}
+}
+function celebrate(big){let pieces=['🎉','✨','⭐','🎊','🏅','🌟','🚀'],c=document.getElementById('confetti'),count=big?38:16,dur=big?2600:1800;c.innerHTML='';for(let i=0;i<count;i++){let s=document.createElement('span');s.textContent=pieces[rand(0,pieces.length-1)];s.style.left=rand(2,94)+'%';s.style.fontSize=((big?20:16)+rand(0,big?18:10))+'px';s.style.animationDelay=(Math.random()*(big?.6:.4))+'s';s.style.animationDuration=(1.5+(big?Math.random()*.6:0))+'s';c.appendChild(s)}setTimeout(()=>{c.innerHTML=''},dur)}
+function showResult(){
+ stopTestTimers();
+ document.getElementById('badgeEarned').classList.add('hidden');
+ if(practiceMode){
+  document.getElementById('confetti').innerHTML='';
+  document.getElementById('resultIcon').textContent='💪';
+  document.getElementById('resultKind').textContent='QUICK PRACTICE';
+  document.getElementById('resultTitle').textContent='Nice practice!';
+  document.getElementById('stars').textContent='★'.repeat(score)+'☆'.repeat(totalQuestions-score);
+  document.getElementById('resultText').textContent=`You got ${score} out of ${totalQuestions} correct, and earned ${score*5} points. Practise as many times as you like before you take the real test.`;
+  let b=document.getElementById('resultButton');b.textContent='Back to lessons →';b.onclick=()=>go('module');
+  go('results');return;
+ }
+ let tier=currentTestTier,tp=getTP(year,topicIndex),isBigBoss=testFormat==='boss'&&tier===10,passed=isBigBoss?score===5:score>=4,firstStar=false,newGold=false,newTopicUnlock=false,nextTopicName=null;
+ if(passed){
+  if(!tp.star[tier]){tp.star[tier]=true;firstStar=true}
+  if(score===5&&!tp.gold[tier]){tp.gold[tier]=true;newGold=true}
+  if(tier===tp.unlocked&&tp.unlocked<10)tp.unlocked=tier+1;
+  if(tier>=5){let before=progress[year]||0;if(before<topicIndex+1){progress[year]=topicIndex+1;storage.setItem(pKey('progress'),JSON.stringify(progress));newTopicUnlock=true;nextTopicName=data[year][topicIndex+1]?data[year][topicIndex+1][1]:null}}
+  addPoints((testFormat==='speed'?0:score*15)+(firstStar?30:0)+(newTopicUnlock?50:0));
+  saveTP();
+  updateStars();
+ }
+ let newMastery=passed&&isTopicMastered(year,topicIndex);
+ if(newMastery)addPoints(100);
+ let bossFailTitle=testFormat==='boss'?(tier===10?'Big boss gobbled you up!':'Mini boss gobbled you up!'):null;
+ document.getElementById('resultIcon').textContent=!passed?(testFormat==='boss'?'😱':'📘'):newMastery?'🌟':newTopicUnlock?'🚀':'🎉';
+ document.getElementById('resultKind').textContent=`CHALLENGE ${tier} OF 10`;
+ document.getElementById('resultTitle').textContent=passed?(tier<10?'Challenge passed!':'Final challenge complete!'):(bossFailTitle||'Almost there');
+ document.getElementById('stars').textContent='★'.repeat(score)+'☆'.repeat(5-score);
+ let msg=testFormat==='speed'?[`You answered ${speedAttempted} question${speedAttempted===1?'':'s'} in 45 seconds and got ${speedCorrect} correct.`]:[`You scored ${score} out of 5.`];
+ if(passed){
+  if(testFormat==='speed'){let bonus=[];if(firstStar)bonus.push('30');if(newTopicUnlock)bonus.push('50');msg.push(`You earned 5 points per correct answer${bonus.length?' plus '+bonus.join('+')+' bonus':''}.`)}
+  else msg.push(`You earned ${score*15}${firstStar?' + 30 bonus':''}${newTopicUnlock?' + 50 bonus':''} points.`);
+  if(tier<10)msg.push(`Challenge ${tier+1} is now unlocked.`);
+  if(newTopicUnlock)msg.push('The next topic is now unlocked!');
+  if(score===5)msg.push(testFormat==='boss'?(tier===10?'💥 Big boss defeated — gold star earned!':'💥 Mini boss defeated — gold star earned!'):'Perfect score — gold star earned for this challenge!');
+ } else if(testFormat==='boss'&&tier===10){
+  msg.push('The big boss needs a perfect 5 out of 5 — no mistakes allowed. Give it another go!');
+ } else {
+  msg.push('You need 4 out of 5 to unlock the next challenge. Give it another go!');
+ }
+ document.getElementById('resultText').textContent=msg.join(' ');
+ let badgeEl=document.getElementById('badgeEarned');
+ if(newMastery){badgeEl.textContent=`🌟 Full marks on every challenge — ${topic[1]} is now GOLD!`;badgeEl.classList.remove('hidden')}
+ else if(newTopicUnlock){badgeEl.textContent=nextTopicName?`🚀 New topic unlocked: ${nextTopicName}!`:'🚀 New topic unlocked!';badgeEl.classList.remove('hidden')}
+ else badgeEl.classList.add('hidden');
+ let b=document.getElementById('resultButton');
+ if(passed){b.textContent='Back to topic →';b.onclick=()=>go('module',{scrollTo:'testsCard'})}
+ else {b.textContent='Try again →';b.onclick=()=>startTierTest(topicIndex,tier)}
+ go('results');
+ if(newMastery||newTopicUnlock)celebrate(true);else if(newGold)celebrate();else document.getElementById('confetti').innerHTML='';
+}
+(function boot(){
+ loadCloudConfig();
+ if(firebaseConfigObj&&familyCode)initCloudSync();
+ let savedId=storage.getItem('numstarsCurrentProfile'),profiles=getProfiles();
+ if(savedId&&profiles.some(p=>p.id===savedId)){
+  currentProfileId=savedId;
+  loadProfileData();
+  updateProfileBadge();
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  document.getElementById('welcome').classList.add('active');
+ } else {
+  renderProfileScreen();
+  updateProfileBadge();
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  document.getElementById('profileScreen').classList.add('active');
+ }
+})();
+</script></body></html>
