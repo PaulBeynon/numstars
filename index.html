@@ -5,6 +5,7 @@
 </style></head><body>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <main class="app"><header><div class="brand"><span class="mark">★</span>Numstars</div><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><span id="syncBadge" class="streak hidden">☁️ Synced</span><button id="profileBadge" class="streak" style="border:0;cursor:pointer" onclick="switchProfile()">👤 Switch</button><span id="pointsBadge" class="streak">🪙 0 points</span><span id="starsBadge" class="streak">⭐ 0 stars</span><span class="streak">🔥 3 day streak</span></div></header>
 <section id="profileScreen" class="screen"><div class="hero" style="grid-template-columns:1fr"><div><span class="tag">NUMSTARS</span><h1>Who's learning today?</h1><p>Pick your name, or add a new learner. Everyone gets their own points, stars and progress on this device.</p><div id="profileList" class="choose" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr));margin-top:22px"></div><div style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap;align-items:center"><input id="newProfileName" type="text" placeholder="Type a name…" maxlength="20" autocomplete="off" style="padding:14px 16px;border-radius:15px;border:2px solid var(--line);font-size:1rem;font-weight:800;color:var(--ink);font-family:inherit;flex:1;min-width:180px" onkeydown="if(event.key==='Enter')createProfileFromInput()"><button class="primary" onclick="createProfileFromInput()">+ Add learner</button></div><div style="margin-top:18px"><button class="secondary" onclick="openSyncScreen()">☁️ Cloud sync settings</button></div></div></div></section>
 <section id="syncScreen" class="screen"><button class="back" onclick="go('profileScreen')">← Learners</button><div class="lesson-wrap"><span class="tag">CLOUD SYNC</span><h2>Sync across devices</h2><div id="syncScreenBody"></div></div></section>
@@ -251,11 +252,8 @@ function selectProfile(id){
  go('welcome');
 }
 function switchProfile(){renderProfileScreen();go('profileScreen')}
-let cloudDb=null,firebaseConfigObj=null,familyCode=null,cloudSyncEnabled=false,cloudPushTimer=null,familyDocUnsub=null;
-function loadCloudConfig(){
- try{let raw=storage.getItem('numstarsFirebaseConfig');firebaseConfigObj=raw?JSON.parse(raw):null}catch(e){firebaseConfigObj=null}
- familyCode=storage.getItem('numstarsFamilyCode')||null;
-}
+const FIREBASE_CONFIG={apiKey:"AIzaSyCP6KnhIExknF9TTBJEfvdgty4M9sk9SvM",authDomain:"numstars-a019c.firebaseapp.com",projectId:"numstars-a019c",storageBucket:"numstars-a019c.firebasestorage.app",messagingSenderId:"905703284183",appId:"1:905703284183:web:4d8e1e15ba6529cb6d7f92"};
+let cloudDb=null,cloudUser=null,cloudSyncEnabled=false,cloudPushTimer=null,familyDocUnsub=null;
 function updateSyncBadge(state){
  let el=document.getElementById('syncBadge');if(!el)return;
  let map={connecting:'☁️ Connecting…',syncing:'☁️ Syncing…',synced:'☁️ Synced',error:'☁️ Sync error'};
@@ -263,20 +261,29 @@ function updateSyncBadge(state){
  if(!text){el.classList.add('hidden');return}
  el.textContent=text;el.classList.remove('hidden');
 }
-function initCloudSync(){
- if(!firebaseConfigObj||!familyCode)return;
+function initFirebase(){
  try{
   if(typeof firebase==='undefined'){logBSError('cloudInit','Firebase SDK did not load. If you\'re viewing this inside an app preview (like Claude\'s file preview), open the saved HTML file directly in Safari/Chrome instead — previews often block external connections. Otherwise, check your internet connection.');updateSyncBadge('error');return}
-  if(!firebase.apps.length)firebase.initializeApp(firebaseConfigObj);
+  if(!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG);
   cloudDb=firebase.firestore();
-  cloudSyncEnabled=true;
-  updateSyncBadge('connecting');
-  subscribeToFamily();
+  firebase.auth().onAuthStateChanged(user=>{
+   cloudUser=user;
+   if(familyDocUnsub){familyDocUnsub();familyDocUnsub=null}
+   if(user){
+    cloudSyncEnabled=true;
+    updateSyncBadge('connecting');
+    subscribeToFamily();
+   } else {
+    cloudSyncEnabled=false;
+    updateSyncBadge(null);
+   }
+   renderSyncScreen();
+  });
  }catch(e){logBSError('cloudInit',e);updateSyncBadge('error')}
 }
 function subscribeToFamily(){
- if(familyDocUnsub){familyDocUnsub();familyDocUnsub=null}
- familyDocUnsub=cloudDb.collection('numstarsFamilies').doc(familyCode).onSnapshot(doc=>{
+ if(!cloudUser)return;
+ familyDocUnsub=cloudDb.collection('numstarsFamilies').doc(cloudUser.uid).onSnapshot(doc=>{
   if(doc.metadata.hasPendingWrites)return;
   if(doc.exists)applyCloudData(doc.data());
   updateSyncBadge('synced');
@@ -304,7 +311,7 @@ function queueCloudPush(){
  cloudPushTimer=setTimeout(()=>{cloudPushTimer=null;pushToCloud()},1200);
 }
 function pushToCloud(){
- if(!cloudSyncEnabled||!cloudDb||!familyCode)return;
+ if(!cloudSyncEnabled||!cloudDb||!cloudUser)return;
  let profiles=getProfiles(),payload={profiles:{},updatedAt:Date.now()};
  profiles.forEach(p=>{
   payload.profiles[p.id]={
@@ -316,89 +323,53 @@ function pushToCloud(){
   };
  });
  updateSyncBadge('syncing');
- cloudDb.collection('numstarsFamilies').doc(familyCode).set(payload)
+ cloudDb.collection('numstarsFamilies').doc(cloudUser.uid).set(payload)
   .then(()=>updateSyncBadge('synced'))
   .catch(e=>{logBSError('cloudPush',e);updateSyncBadge('error')});
 }
-function extractObjectLiteralAt(text,start){
- let depth=0,inStr=false,strChar='';
- for(let i=start;i<text.length;i++){
-  let ch=text[i];
-  if(inStr){
-   if(ch==='\\'){i++;continue}
-   if(ch===strChar)inStr=false;
-   continue;
-  }
-  if(ch==='"'||ch==="'"||ch==='`'){inStr=true;strChar=ch;continue}
-  if(ch==='{')depth++;
-  else if(ch==='}'){depth--;if(depth===0)return text.slice(start,i+1)}
- }
- return null;
-}
-function findConfigObjectText(text){
- let match=text.match(/firebaseConfig\s*[:=]\s*/);
- let searchFrom=match?match.index+match[0].length:0;
- let braceStart=text.indexOf('{',searchFrom);
- if(braceStart===-1)return null;
- return extractObjectLiteralAt(text,braceStart);
-}
-function parseFirebaseConfigText(text){
- if(!text||!text.trim())return{error:'The box is empty — paste your firebaseConfig object in first.'};
- let normalized=text.replace(/[\u201c\u201d]/g,'"').replace(/[\u2018\u2019]/g,"'").replace(/[\u2013\u2014]/g,'-');
- let objText=findConfigObjectText(normalized);
- if(!objText)return{error:'No { ... } object found in that text. Make sure you copied the whole firebaseConfig block, including the curly braces.'};
- let obj;
- try{obj=new Function('return ('+objText+')')()}
- catch(e){return{error:'That text isn\'t valid — ('+e.message+'). Try copying directly from the Firebase console rather than a screenshot or notes app.'}}
- if(!obj||typeof obj!=='object')return{error:'That did not turn into a config object.'};
- if(!obj.apiKey||!obj.projectId)return{error:'Missing apiKey or projectId — make sure you copied the entire firebaseConfig object.'};
- return{config:obj};
-}
 function showSyncError(msg){let el=document.getElementById('syncError');if(el){el.textContent=msg;el.classList.remove('hidden')}}
 function clearSyncError(){let el=document.getElementById('syncError');if(el){el.textContent='';el.classList.add('hidden')}}
-function generateFamilyCode(){let chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',code='';for(let i=0;i<6;i++)code+=chars[Math.floor(Math.random()*chars.length)];return code}
+function friendlyAuthError(e){
+ let map={
+  'auth/email-already-in-use':'That email is already registered — try signing in instead.',
+  'auth/invalid-email':"That email address doesn't look right.",
+  'auth/weak-password':'Password should be at least 6 characters.',
+  'auth/wrong-password':'Incorrect password.',
+  'auth/user-not-found':'No account found with that email — try creating one instead.',
+  'auth/invalid-credential':'Incorrect email or password.',
+  'auth/too-many-requests':'Too many attempts — please wait a bit and try again.'
+ };
+ return map[e.code]||e.message;
+}
 function openSyncScreen(){renderSyncScreen();go('syncScreen')}
 function renderSyncScreen(){
  let el=document.getElementById('syncScreenBody');if(!el)return;
- if(firebaseConfigObj&&familyCode){
-  el.innerHTML=`<p>Cloud sync is <b>ON</b> for this device.</p><div class="example" style="font-size:1.5rem;letter-spacing:3px">${familyCode}</div><p style="font-size:.85rem">On your other device: open Cloud sync settings, paste the <b>same Firebase config</b>, and enter this code under "Join family".</p><button class="secondary" onclick="disconnectCloudSync()">Disconnect this device</button>`;
+ if(cloudUser){
+  el.innerHTML=`<p>Signed in as <b>${escapeHtml(cloudUser.email)}</b>.</p><p style="font-size:.85rem">Sign in with the same email and password on any other device to sync this family's learners automatically.</p><button class="secondary" onclick="signOutCloud()">Sign out</button>`;
  } else {
-  el.innerHTML=`<p>Paste the Firebase config from your Firebase console (Project settings → Your apps → Web app):</p><textarea id="fbConfigInput" rows="6" autocorrect="off" autocapitalize="off" spellcheck="false" style="width:100%;padding:12px;border-radius:14px;border:2px solid var(--line);font-family:monospace;font-size:.8rem;color:var(--ink)" placeholder="const firebaseConfig = { apiKey: ... }"></textarea><div id="syncError" class="hidden" style="color:#ad413b;font-weight:800;margin-top:10px;font-size:.85rem"></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center"><button class="primary" onclick="createNewFamily()">Create a new family</button><span style="color:var(--muted);font-size:.85rem">— or —</span><input id="joinCodeInput" type="text" placeholder="Family code" maxlength="8" autocorrect="off" autocapitalize="off" spellcheck="false" style="padding:12px;border-radius:14px;border:2px solid var(--line);font-weight:800;text-transform:uppercase;width:130px"><button class="secondary" onclick="joinExistingFamily()">Join family</button></div>`;
+  el.innerHTML=`<p>Sign in to sync learners and progress across devices.</p><input id="authEmail" type="email" placeholder="Email address" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false" style="width:100%;padding:14px 16px;border-radius:15px;border:2px solid var(--line);font-size:1rem;font-weight:700;color:var(--ink);font-family:inherit;margin-top:12px"><input id="authPassword" type="password" placeholder="Password" autocomplete="current-password" style="width:100%;padding:14px 16px;border-radius:15px;border:2px solid var(--line);font-size:1rem;font-weight:700;color:var(--ink);font-family:inherit;margin-top:10px"><div id="syncError" class="hidden" style="color:#ad413b;font-weight:800;margin-top:10px;font-size:.85rem"></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button class="primary" onclick="handleSignIn()">Sign in</button><button class="secondary" onclick="handleSignUp()">Create account</button></div>`;
  }
 }
-function createNewFamily(){
- let result=parseFirebaseConfigText(document.getElementById('fbConfigInput').value);
- if(result.error){showSyncError(result.error);return}
+function readAuthInputs(){return{email:(document.getElementById('authEmail').value||'').trim(),password:document.getElementById('authPassword').value||''}}
+function handleSignIn(){
+ let{email,password}=readAuthInputs();
+ if(!email||!password){showSyncError('Enter your email and password.');return}
+ if(getProfiles().length>0){
+  if(!confirm("Signing in will replace this device's learners with your account's cloud learners. Continue?"))return;
+ }
  clearSyncError();
- firebaseConfigObj=result.config;familyCode=generateFamilyCode();
- storage.setItem('numstarsFirebaseConfig',JSON.stringify(firebaseConfigObj));
- storage.setItem('numstarsFamilyCode',familyCode);
- initCloudSync();
- queueCloudPush();
- renderSyncScreen();
+ firebase.auth().signInWithEmailAndPassword(email,password).catch(e=>showSyncError(friendlyAuthError(e)));
 }
-function joinExistingFamily(){
- let result=parseFirebaseConfigText(document.getElementById('fbConfigInput').value);
- let code=(document.getElementById('joinCodeInput').value||'').trim().toUpperCase();
- if(result.error){showSyncError(result.error);return}
- if(!code||code.length<4){showSyncError('Please enter the family code from your other device.');return}
- if(!confirm("This will replace the learners on this device with your family's cloud learners. Continue?"))return;
+function handleSignUp(){
+ let{email,password}=readAuthInputs();
+ if(!email||!password){showSyncError('Enter an email and password.');return}
+ if(password.length<6){showSyncError('Password should be at least 6 characters.');return}
  clearSyncError();
- firebaseConfigObj=result.config;familyCode=code;
- storage.setItem('numstarsFirebaseConfig',JSON.stringify(firebaseConfigObj));
- storage.setItem('numstarsFamilyCode',code);
- initCloudSync();
- renderSyncScreen();
+ firebase.auth().createUserWithEmailAndPassword(email,password)
+  .then(()=>queueCloudPush())
+  .catch(e=>showSyncError(friendlyAuthError(e)));
 }
-function disconnectCloudSync(){
- if(familyDocUnsub){familyDocUnsub();familyDocUnsub=null}
- cloudSyncEnabled=false;
- storage.removeItem('numstarsFirebaseConfig');
- storage.removeItem('numstarsFamilyCode');
- firebaseConfigObj=null;familyCode=null;
- updateSyncBadge(null);
- renderSyncScreen();
-}
+function signOutCloud(){firebase.auth().signOut()}
 let points=0;
 function addPoints(n){points+=n;storage.setItem(pKey('points'),String(points));updatePoints();queueCloudPush()}
 function updatePoints(){document.getElementById('pointsBadge').textContent=`🪙 ${points} points`}
@@ -736,8 +707,7 @@ function showResult(){
  if(newMastery||newTopicUnlock)celebrate(true);else if(newGold)celebrate();else document.getElementById('confetti').innerHTML='';
 }
 (function boot(){
- loadCloudConfig();
- if(firebaseConfigObj&&familyCode)initCloudSync();
+ initFirebase();
  let savedId=storage.getItem('numstarsCurrentProfile'),profiles=getProfiles();
  if(savedId&&profiles.some(p=>p.id===savedId)){
   currentProfileId=savedId;
