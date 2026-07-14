@@ -304,10 +304,13 @@ const FIREBASE_CONFIG={apiKey:"AIzaSyCP6KnhIExknF9TTBJEfvdgty4M9sk9SvM",authDoma
 let cloudDb=null,cloudUser=null,cloudSyncEnabled=false,cloudPushTimer=null,familyDocUnsub=null;
 function updateSyncBadge(state){
  let el=document.getElementById('syncBadge');if(!el)return;
- let map={connecting:'☁️ Connecting…',syncing:'☁️ Syncing…',synced:'☁️ Synced',error:'☁️ Sync error'};
+ let map={connecting:'☁️ Connecting…',syncing:'☁️ Syncing…',synced:'☁️ Synced',error:'☁️ Sync error',off:'☁️ Not syncing — tap to sign in'};
  let text=map[state];
  if(!text){el.classList.add('hidden');return}
  el.textContent=text;el.classList.remove('hidden');
+ el.style.color=state==='off'?'#8a99a3':state==='error'?'#ad413b':'';
+ el.style.cursor=state==='off'?'pointer':'';
+ el.onclick=state==='off'?openSyncScreen:null;
 }
 function initFirebase(){
  try{
@@ -323,7 +326,7 @@ function initFirebase(){
     subscribeToFamily();
    } else {
     cloudSyncEnabled=false;
-    updateSyncBadge(null);
+    updateSyncBadge('off');
    }
    renderSyncScreen();
    renderProfileScreen();
