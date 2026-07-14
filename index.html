@@ -365,9 +365,9 @@ function pushToCloud(){
  if(!cloudSyncEnabled||!cloudDb||!cloudUser)return;
  let profiles=getProfiles();
  if(!profiles.length)return;
- let payload={updatedAt:Date.now()};
+ let payload={updatedAt:Date.now(),profiles:{}};
  profiles.forEach(p=>{
-  payload[`profiles.${p.id}`]={
+  payload.profiles[p.id]={
    name:p.name,icon:p.icon,
    points:parseInt(storage.getItem(`bs_${p.id}_points`)||'0',10),
    progress:JSON.parse(storage.getItem(`bs_${p.id}_progress`)||'{}'),
