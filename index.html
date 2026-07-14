@@ -167,19 +167,19 @@ Y6:[
   gen:()=>[mc('If x + 5 = 12, what is x?',7,[6,8,17]),mc('If 3y = 18, what is y?',6,[3,9,15]),mc('What does a letter usually represent in algebra?','an unknown number',['a fixed word','a shape','a unit of measurement']),mc('If a = 4 and b = 4, what is a + b?',8,[16,4,0]),mc('Which is a formula for the perimeter of a square with side s?','4 × s',['s × s','s + 4','2 × s'])].sort(()=>Math.random()-.5).slice(0,3)}
 ]};
 let stage='KS1',year='Y1',topic=null,topicIndex=0,part=0,testIndex=0,score=0,testQuestions=[],currentTestTier=1;
-let testFormat='standard',testInputMode='choice',speedSecondsLeft=45,speedInterval=null,ghostTimer=null,crazyInterval=null,speedCorrect=0,speedAttempted=0,speedQueue=[],bossHP=100,bossLives=3,bossMaxLives=3,roundIntroTimeout=null;
+let testFormat='standard',testInputMode='choice',speedSecondsLeft=45,speedInterval=null,ghostTimer=null,crazyInterval=null,speedCorrect=0,speedAttempted=0,speedQueue=[],bossHP=100,bossLives=3,bossMaxLives=3,roundIntroTimeout=null,currentStreak=0,lightningInterval=null,lightningSecondsLeft=6;
 function getNextSpeedQuestion(ti,tier){if(speedQueue.length===0)speedQueue=makeTieredQuestions(year,ti,tier);return speedQueue.shift()}
-function tierFormat(tier){if(tier===4||tier===8)return'speed';if(tier===2||tier===6)return'ghost';if(tier===3)return'crazy';if(tier===7)return'doublecrazy';if(tier===5||tier===10)return'boss';return'standard'}
-function tierInputMode(tier){let f=tierFormat(tier);if(f==='ghost'||f==='crazy'||f==='doublecrazy')return'choice';return tier>=6?'text':'choice'}
+function tierFormat(tier){if(tier===4)return'speed';if(tier===8)return'lightning';if(tier===2)return'ghost';if(tier===6)return'streak';if(tier===3)return'crazy';if(tier===7)return'doublecrazy';if(tier===5||tier===10)return'boss';return'standard'}
+function tierInputMode(tier){let f=tierFormat(tier);if(f==='ghost'||f==='crazy'||f==='doublecrazy'||f==='streak')return'choice';return tier>=6?'text':'choice'}
 function resetBoss(tier){bossMaxLives=tier===10?1:2;bossHP=100;bossLives=bossMaxLives;updateBossUI()}
 function updateBossUI(){let fill=document.getElementById('bossBarFill');if(fill)fill.style.width=Math.max(0,bossHP)+'%';let lives=document.getElementById('bossLivesEl');if(lives)lives.textContent='❤️'.repeat(Math.max(0,bossLives))+'🖤'.repeat(Math.max(0,bossMaxLives-bossLives))}
 function bossHit(correct){if(correct){bossHP=Math.max(0,bossHP-20);let ch=document.getElementById('bossChar');if(ch){ch.classList.remove('hit');void ch.offsetWidth;ch.classList.add('hit')}}else{bossLives=Math.max(0,bossLives-1)}updateBossUI()}
 function padInsert(ch){let input=document.getElementById('textAnswerInput');if(input.disabled)return;input.value+=ch}
 function padBackspace(){let input=document.getElementById('textAnswerInput');if(input.disabled)return;input.value=input.value.slice(0,-1)}
 function toggleTextAnswer(){document.getElementById('textToggleWrap').classList.add('hidden');document.getElementById('textAnswerWrap').classList.remove('hidden')}
-function stopTestTimers(){if(speedInterval){clearInterval(speedInterval);speedInterval=null}if(ghostTimer){clearTimeout(ghostTimer);ghostTimer=null}if(crazyInterval){clearInterval(crazyInterval);crazyInterval=null}if(roundIntroTimeout){clearTimeout(roundIntroTimeout);roundIntroTimeout=null}let st=document.getElementById('speedTimer');if(st)st.classList.add('hidden');let ri=document.getElementById('roundIntro');if(ri)ri.classList.remove('show')}
+function stopTestTimers(){if(speedInterval){clearInterval(speedInterval);speedInterval=null}if(ghostTimer){clearTimeout(ghostTimer);ghostTimer=null}if(crazyInterval){clearInterval(crazyInterval);crazyInterval=null}if(lightningInterval){clearInterval(lightningInterval);lightningInterval=null}if(roundIntroTimeout){clearTimeout(roundIntroTimeout);roundIntroTimeout=null}let st=document.getElementById('speedTimer');if(st)st.classList.add('hidden');let ri=document.getElementById('roundIntro');if(ri)ri.classList.remove('show')}
 function showRoundIntro(format,callback,tier){
- let labels={ghost:'👻 Ghost Round!',crazy:'🌀 Crazy Round!',doublecrazy:'🌪️ Double Crazy Round!',speed:'⏱️ Speed Round!',boss:tier===10?'🐲 Big Boss Battle!':'🐉 Mini Boss Battle!'};
+ let labels={ghost:'👻 Ghost Round!',crazy:'🌀 Crazy Round!',doublecrazy:'🌪️ Double Crazy Round!',speed:'⏱️ Speed Round!',lightning:'⚡ Lightning Round!',streak:'🔥 Streak Round!',boss:tier===10?'🐲 Big Boss Battle!':'🐉 Mini Boss Battle!'};
  let el=document.getElementById('roundIntro'),txt=document.getElementById('roundIntroText');
  if(!labels[format]){el.classList.remove('show');callback();return}
  txt.textContent=labels[format];
@@ -419,7 +419,7 @@ function renderModule(){document.getElementById('moduleTag').textContent=`YEAR $
  }
  renderTestsPanel();
 }
-function tierFormatIcon(tier){let f=tierFormat(tier);if(f==='ghost')return'👻';if(f==='crazy')return'🌀';if(f==='doublecrazy')return'🌪️';if(f==='speed')return'⏱️';if(f==='boss')return'🐉';if(tierInputMode(tier)==='text')return'✍️';return''}
+function tierFormatIcon(tier){let f=tierFormat(tier);if(f==='ghost')return'👻';if(f==='crazy')return'🌀';if(f==='doublecrazy')return'🌪️';if(f==='speed')return'⏱️';if(f==='lightning')return'⚡';if(f==='streak')return'🔥';if(f==='boss')return'🐉';if(tierInputMode(tier)==='text')return'✍️';return''}
 function pathNodeCoords(){
  let coords=[],rows=5,rowH=100/rows;
  for(let idx=0;idx<10;idx++){
@@ -468,7 +468,7 @@ function renderTestsPanel(){
   let locked=i>tp.unlocked,icon=tp.gold[i]?'🌟':tp.star[i]?'⭐':locked?'🔒':'▫️',fmt=tierFormatIcon(i);
   nodes+=`<button id="pathNode${i}" class="path-node ${locked?'locked':''} ${tp.gold[i]?'gold':''}" style="left:${c.x}%;top:${c.y}%" ${locked?'disabled':''} onclick="startTierTest(${topicIndex},${i})"><span class="tile-num">${i}</span><span class="tile-fmt">${fmt}</span><span class="tile-icon">${icon}</span></button>`;
  });
- card.innerHTML=`<h3 id="testsCardTitle">${mastered?'🌟 Challenges — full marks!':'Challenges'}</h3><p>Score 4/5 to unlock the next challenge — reach Challenge 5 to unlock the next topic.</p><div class="format-legend"><span class="legend-chip">👻 Ghost</span><span class="legend-chip">🌀 Crazy</span><span class="legend-chip">🌪️ Double Crazy</span><span class="legend-chip">⏱️ Speed</span><span class="legend-chip">🐉 Boss</span><span class="legend-chip">✍️ Type</span></div><details class="legend-details"><summary>How scoring works</summary><p>Score 5/5 for a gold star. Speed rounds need 8 correct to pass, 12 for gold. You can always type your answer instead of tapping.</p></details><div class="progress-path"><svg class="path-svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${pathD.trim()}" fill="none" stroke="#bfe0f0" stroke-width="3" vector-effect="non-scaling-stroke" stroke-dasharray="2 7" stroke-linecap="round" stroke-linejoin="round"/></svg>${nodes}<div id="rocketMarker" class="rocket-marker rocket-land" style="left:${rocketCoord.x}%;top:${rocketCoord.y}%">🚀</div></div>`;
+ card.innerHTML=`<h3 id="testsCardTitle">${mastered?'🌟 Challenges — full marks!':'Challenges'}</h3><p>Score 4/5 to unlock the next challenge — reach Challenge 5 to unlock the next topic.</p><div class="format-legend"><span class="legend-chip">👻 Ghost</span><span class="legend-chip">🌀 Crazy</span><span class="legend-chip">🌪️ Double Crazy</span><span class="legend-chip">⏱️ Speed</span><span class="legend-chip">⚡ Lightning</span><span class="legend-chip">🔥 Streak</span><span class="legend-chip">🐉 Boss</span><span class="legend-chip">✍️ Type</span></div><details class="legend-details"><summary>How scoring works</summary><p>Score 5/5 for a gold star. Speed rounds need 8 correct to pass, 12 for gold. Lightning gives you just a few seconds per question. Streak rounds award bonus points for consecutive correct answers. You can always type your answer instead of tapping.</p></details><div class="progress-path"><svg class="path-svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${pathD.trim()}" fill="none" stroke="#bfe0f0" stroke-width="3" vector-effect="non-scaling-stroke" stroke-dasharray="2 7" stroke-linecap="round" stroke-linejoin="round"/></svg>${nodes}<div id="rocketMarker" class="rocket-marker rocket-land" style="left:${rocketCoord.x}%;top:${rocketCoord.y}%">🚀</div></div>`;
  document.getElementById('moduleList').after(card);
  lastPathTopicKey=topicKey;
 }
@@ -569,7 +569,7 @@ function startTierTest(ti,tier){
  stopTestTimers();
  topic=data[year][ti];topicIndex=ti;practiceMode=false;currentTestTier=tier;
  testFormat=tierFormat(tier);testInputMode=tierInputMode(tier);
- testIndex=0;score=0;
+ testIndex=0;score=0;currentStreak=0;
  if(testFormat==='boss')resetBoss(tier);
  if(testFormat==='speed'){
   speedCorrect=0;speedAttempted=0;speedQueue=[];
@@ -597,6 +597,7 @@ function startPractice(i){stopTestTimers();testFormat='standard';testInputMode='
 function renderQuestion(){
  if(ghostTimer){clearTimeout(ghostTimer);ghostTimer=null}
  if(crazyInterval){clearInterval(crazyInterval);crazyInterval=null}
+ if(lightningInterval){clearInterval(lightningInterval);lightningInterval=null}
  let q=testQuestions[testIndex];
  document.getElementById('testKind').textContent=practiceMode?'QUICK PRACTICE':`CHALLENGE ${currentTestTier} OF 10`;
  document.getElementById('counter').textContent=testFormat==='speed'?`⚡ ${speedCorrect} CORRECT SO FAR`:`QUESTION ${testIndex+1} OF ${totalQuestions}`;
@@ -623,10 +624,30 @@ function renderQuestion(){
   label.textContent='Or type your answer:';
  }
  if(testFormat==='ghost'){ghostTimer=setTimeout(()=>{qEl.innerHTML='🫥 <em>Question hidden — answer from memory!</em>';qEl.classList.add('ghosted')},1500)}
+ if(testFormat==='lightning')startLightningTimer();
+}
+function startLightningTimer(){
+ lightningSecondsLeft=6;
+ let st=document.getElementById('speedTimer');
+ if(st){st.classList.remove('hidden');st.textContent=`⚡ ${lightningSecondsLeft}s`}
+ lightningInterval=setInterval(()=>{
+  lightningSecondsLeft--;
+  if(st)st.textContent=`⚡ ${lightningSecondsLeft}s`;
+  if(lightningSecondsLeft<=0){
+   clearInterval(lightningInterval);lightningInterval=null;
+   lightningTimeUp();
+  }
+ },1000);
+}
+function lightningTimeUp(){
+ let input=document.getElementById('textAnswerInput');
+ if(input&&input.disabled)return;
+ registerAnswer(false,null);
 }
 function registerAnswer(correct,selectedIdx){
  if(crazyInterval){clearInterval(crazyInterval);crazyInterval=null}
  if(ghostTimer){clearTimeout(ghostTimer);ghostTimer=null}
+ if(lightningInterval){clearInterval(lightningInterval);lightningInterval=null}
  let q=testQuestions[testIndex],buttons=[...document.querySelectorAll('.answer')];
  buttons.forEach(b=>b.disabled=true);
  document.getElementById('textAnswerInput').disabled=true;
@@ -641,6 +662,22 @@ function registerAnswer(correct,selectedIdx){
   if(correct){speedCorrect++;addPoints(5);fb.textContent='Correct!';fb.style.color='#157345'}
   else{fb.textContent=hasButtons?'Not quite!':`Not quite — the answer was "${q[1][q[2]]}".`;fb.style.color='#ad413b'}
   next.textContent='Next question →';next.classList.remove('hidden');
+  return;
+ }
+ if(testFormat==='streak'){
+  if(correct){
+   score++;currentStreak++;
+   addPoints(practiceMode?5:15);
+   let bonus=Math.min((currentStreak-1)*5,25);
+   if(bonus>0)addPoints(bonus);
+   fb.textContent=currentStreak>1?`🔥 ${currentStreak} in a row! +${bonus} streak bonus`:'Correct! Streak started 🔥';
+   fb.style.color='#c1580c';
+  } else {
+   currentStreak=0;
+   fb.textContent=hasButtons?'Streak broken! The correct answer is highlighted.':`Streak broken! The correct answer was "${q[1][q[2]]}".`;
+   fb.style.color='#ad413b';
+  }
+  next.textContent=testIndex===totalQuestions-1?'See result →':'Next question →';next.classList.remove('hidden');
   return;
  }
  if(correct){score++;addPoints(practiceMode?5:15);fb.textContent='Correct!';fb.style.color='#157345'}
