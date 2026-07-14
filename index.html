@@ -38,22 +38,53 @@ Y3:[['🔢','Numbers to 1,000','Use hundreds, tens and ones; estimate and round 
 Y4:[['🔢','Numbers to 10,000','Place value, rounding and negative numbers in context.','Number & place value','6,042','6 thousands, 0 hundreds, 4 tens, 2 ones.'],['➕','Four-digit calculation','Use efficient written addition and subtraction methods.','Calculation','3,645 − 278','Exchange when there are not enough ones or tens.'],['✖️','Times tables to 12 × 12','Recall multiplication facts and use factor pairs.','Multiplication & division','12 × 7','Ten sevens plus two sevens: 70 + 14 = 84.'],['🍰','Fractions & decimals','Find equivalent fractions, add fractions and understand decimal tenths.','Fractions','0.7','Seven tenths.'],['📏','Measurement','Convert units, and calculate perimeter and area.','Measurement','2.5 m','Two metres and fifty centimetres.'],['⏳','Time','Convert between units of time.','Measurement','3 hours = 180 minutes','Multiply hours by 60 to get minutes.'],['📐','Angles, shape & charts','Compare angles, identify symmetry and interpret graphs.','Geometry & statistics','Line of symmetry','Both sides match when folded.']],
 Y5:[['🔢','Numbers to 100,000','Use place value, Roman numerals and rounding to solve problems.','Number & place value','43,709','4 ten-thousands, 3 thousands, 7 hundreds, 0 tens, 9 ones.'],['➗','Four operations','Use formal calculation, inverse operations and estimation to check.','Calculation','4,506 ÷ 6','Share thousands, hundreds, tens and ones carefully.'],['✖️','Multiples, factors & primes','Identify multiples, factors, square numbers and prime numbers.','Multiplication & division','Factors of 12','1, 2, 3, 4, 6 and 12.'],['🍰','Fractions, decimals & percent','Compare, convert and calculate with fractions and decimals.','Fractions','0.25','Twenty-five hundredths = one quarter = 25%.'],['📏','Measure & volume','Convert units, calculate area, and estimate volume.','Measurement','Area of a rectangle','Length × width.'],['📐','Properties & statistics','Use angles, coordinates and tables to reason about data.','Geometry & statistics','180°','Angles on a straight line total 180°.']],
 Y6:[['🔢','Numbers to 10,000,000','Use place value, rounding and negative numbers in calculation.','Number & place value','5,204,019','5 millions, 2 hundred-thousands, 4 thousands, 1 ten, 9 ones.'],['➗','Fluent calculation','Choose efficient methods for all four operations and check answers.','Calculation','3,584 × 7','Partition or use a formal written method.'],['⚖️','Ratio, proportion & algebra','Use ratio, scaling and simple formulae or missing-number problems.','Ratio & algebra','3 : 2','For every 3 of one thing, there are 2 of another.'],['🍰','Fractions, decimals & percent','Calculate with fractions and use equivalence to solve problems.','Fractions','3/5 of 40','Find one fifth first (8), then multiply by 3.'],['📏','Measure & geometry','Calculate area, perimeter and volume; use coordinates and angles.','Measurement & geometry','Volume','Length × width × height.'],['📊','Statistics & reasoning','Interpret charts, averages and data questions; explain your method.','Statistics','Mean','The total shared equally between all values.']]};
+function clockSVG(h,m,size){
+ size=size||130;
+ let hourAngle=((h%12)+m/60)*30,minuteAngle=m*6,cx=size/2,cy=size/2,r=size/2-6;
+ let hx=cx+r*0.5*Math.sin(hourAngle*Math.PI/180),hy=cy-r*0.5*Math.cos(hourAngle*Math.PI/180);
+ let mx=cx+r*0.8*Math.sin(minuteAngle*Math.PI/180),my=cy-r*0.8*Math.cos(minuteAngle*Math.PI/180);
+ let ticks='';
+ for(let i=0;i<12;i++){let a=i*30*Math.PI/180,x1=cx+(r-8)*Math.sin(a),y1=cy-(r-8)*Math.cos(a),x2=cx+r*Math.sin(a),y2=cy-r*Math.cos(a);ticks+=`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#1c3a4a" stroke-width="2.5"/>`}
+ return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="display:block;margin:0 auto"><circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff" stroke="#1c3a4a" stroke-width="5"/>${ticks}<line x1="${cx}" y1="${cy}" x2="${hx.toFixed(1)}" y2="${hy.toFixed(1)}" stroke="#1c3a4a" stroke-width="6" stroke-linecap="round"/><line x1="${cx}" y1="${cy}" x2="${mx.toFixed(1)}" y2="${my.toFixed(1)}" stroke="#2f8fd6" stroke-width="4" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="3.5" fill="#1c3a4a"/></svg>`;
+}
+function timeWords(h,m){
+ h=((h-1)%12)+1;
+ if(m===0)return `${h} o'clock`;
+ if(m===30)return `half past ${h}`;
+ let next=(h%12)+1;
+ if(m<30){if(m===15)return `quarter past ${h}`;return `${m} minutes past ${h}`}
+ let toMins=60-m;
+ if(toMins===15)return `quarter to ${next}`;
+ return `${toMins} minutes to ${next}`;
+}
 const measureData={
 Y1:[
  {icon:'📏',title:'Length, mass & capacity',blurb:'Compare long/short, heavy/light and full/empty using everyday objects.',rule:'We compare things using words like longer/shorter, heavier/lighter, and full/empty — without needing to measure with numbers yet.',example:'A pencil is longer than a paperclip.',note:'Longer, shorter, heavier, lighter, full and empty are all comparing words.',
   gen:()=>[mc('Which of these is usually the heaviest?','an elephant',['a feather','a balloon','a leaf']),mc('Which of these holds the most water?','a bathtub',['a teaspoon','a cup','an eggcup']),mc('Which of these is usually the longest?','a bus',['a pencil','a paperclip','a spoon']),mc('Which word means "not empty at all"?','full',['empty','light','short']),mc('Which of these is usually the shortest?','a paperclip',['a bus','a ladder','a giraffe'])].sort(()=>Math.random()-.5).slice(0,3)},
  {icon:'💰',title:'Coins & money',cat:'money',blurb:'Recognise the value of different coins and notes.',rule:'UK coins and notes each have a value shown on them. Coins range from 1p to £2, and notes start at £5.',example:'A 50p coin is worth 50 pence.',note:'The number on a coin tells you its value.',
   gen:()=>[mc('Which coin is worth the most?','£2',['50p','20p','5p']),mc('Which coin is worth the least?','1p',['£1','10p','5p']),mc('How much is a 20p coin worth?','20 pence',['2 pence','12 pence','200 pence']),mc('Which note is worth £5?','a five-pound note',['a five-pence coin','a fifty-pound note','a five hundred pound note']),mc('How many pence is £1 worth?','100 pence',['10 pence','1 pence','1000 pence'])].sort(()=>Math.random()-.5).slice(0,3)},
- {icon:'🕒',title:'Telling the time',cat:'time',blurb:'Tell the time to the hour and half hour.',rule:'A clock has two hands. At an o’clock time the minute hand points to 12; at half past it points to 6.',example:'Half past 3',note:'The minute hand points to 6 and the hour hand sits between 3 and 4.',
-  gen:()=>{let h=rand(1,11),n=(h%12)+1;return [mc('At an o’clock time, where does the minute hand point?',12,[3,6,9]),mc(`At half past ${h}, where does the minute hand point?`,6,[12,3,9]),mc(`What comes half an hour after ${h} o’clock?`,`half past ${h}`,['quarter past '+h,'half past '+n,`${n} o’clock`])]}}
+ {icon:'🕒',title:'Telling the time',cat:'time',blurb:'Tell the time to the hour and half hour.',rule:'A clock has two hands. At an o\'clock time the minute hand points to 12; at half past it points to 6.',example:clockSVG(3,30,130)+'<div style="margin-top:10px;font-weight:850;font-size:1.05rem">Half past 3</div>',note:'The minute hand points to 6 and the hour hand sits between 3 and 4.',
+  gen:()=>{
+   let opts=[0,30];
+   function randTime(){return {h:rand(1,12),m:opts[rand(0,1)]}}
+   function readClockQ(){let t=randTime(),correct=timeWords(t.h,t.m),wrongs=new Set();while(wrongs.size<3){let w=randTime(),wl=timeWords(w.h,w.m);if(wl!==correct)wrongs.add(wl)}return mc(`<div>${clockSVG(t.h,t.m,130)}<div style="margin-top:12px">What time does this clock show?</div></div>`,correct,[...wrongs])}
+   function pickClockQ(){let t=randTime(),correctSvg=clockSVG(t.h,t.m,92),seen=new Set([t.h+':'+t.m]),wrongs=[];while(wrongs.length<3){let w=randTime(),key=w.h+':'+w.m;if(seen.has(key))continue;seen.add(key);wrongs.push(clockSVG(w.h,w.m,92))}return mc(`Which clock shows ${timeWords(t.h,t.m)}?`,correctSvg,wrongs)}
+   return shuffle([readClockQ(),readClockQ(),pickClockQ()]).slice(0,3);
+  }}
 ],
 Y2:[
  {icon:'📐',title:'Standard units',blurb:'Choose and use m/cm, kg/g and l/ml to estimate and measure.',rule:'We measure length in metres and centimetres, mass in kilograms and grams, and capacity in litres and millilitres.',example:'A pencil is about 15 cm long.',note:'cm is short for centimetres.',
   gen:()=>[mc('Which unit would you use to measure the length of a classroom?','metres',['grams','millilitres','degrees']),mc('Which unit would you use to weigh an apple?','grams',['metres','litres','hours']),mc('Which unit would you use to measure a glass of juice?','millilitres',['kilograms','metres','minutes']),mc('Which is bigger, 1 metre or 1 centimetre?','1 metre',['1 centimetre','they are equal','neither']),mc('Which is heavier, 1 kilogram or 1 gram?','1 kilogram',['1 gram','they are equal','neither'])].sort(()=>Math.random()-.5).slice(0,3)},
  {icon:'💷',title:'Money & change',blurb:'Use £ and p, and give change from £1.',rule:'Money is measured in pounds and pence. One pound is exactly 100 pence.',example:'£1 − 35p = 65p',note:'100p − 35p = 65p.',
   gen:()=>{let cost=rand(10,80),change=100-cost,pounds=rand(2,9);return [mc('How many pence are in £1?',100,[10,50,1000]),mc(`What is the change from £1 when something costs ${cost}p?`,change,[change-10,change+10,cost]),mc(`How many pence are in £${pounds}?`,pounds*100,['20','90','100'])]}},
- {icon:'🕓',title:'Telling time to 5 minutes',cat:'time',blurb:'Read quarter past, quarter to, and 5-minute intervals.',rule:'The minute hand points to a new number every 5 minutes. Quarter past is 15 minutes after the hour; quarter to is 15 minutes before the next hour.',example:'Quarter past 4',note:'The minute hand points to 3, which means 15 minutes.',
-  gen:()=>{let h=rand(1,11),n=(h%12)+1;return [mc(`At quarter past ${h}, where does the minute hand point?`,3,[6,9,12]),mc(`At quarter to ${n}, where does the minute hand point?`,9,[3,6,12]),mc('How many minutes are there in a quarter of an hour?',15,[5,10,30])]}}
+ {icon:'🕓',title:'Telling time to 5 minutes',cat:'time',blurb:'Read quarter past, quarter to, and 5-minute intervals.',rule:'The minute hand points to a new number every 5 minutes. Quarter past is 15 minutes after the hour; quarter to is 15 minutes before the next hour.',example:clockSVG(4,15,130)+'<div style="margin-top:10px;font-weight:850;font-size:1.05rem">Quarter past 4</div>',note:'The minute hand points to 3, which means 15 minutes.',
+  gen:()=>{
+   let opts=[0,5,10,15,20,25,30,35,40,45,50,55];
+   function randTime(){return {h:rand(1,12),m:opts[rand(0,opts.length-1)]}}
+   function readClockQ(){let t=randTime(),correct=timeWords(t.h,t.m),wrongs=new Set();while(wrongs.size<3){let w=randTime(),wl=timeWords(w.h,w.m);if(wl!==correct)wrongs.add(wl)}return mc(`<div>${clockSVG(t.h,t.m,130)}<div style="margin-top:12px">What time does this clock show?</div></div>`,correct,[...wrongs])}
+   function pickClockQ(){let t=randTime(),correctSvg=clockSVG(t.h,t.m,92),seen=new Set([t.h+':'+t.m]),wrongs=[];while(wrongs.length<3){let w=randTime(),key=w.h+':'+w.m;if(seen.has(key))continue;seen.add(key);wrongs.push(clockSVG(w.h,w.m,92))}return mc(`Which clock shows ${timeWords(t.h,t.m)}?`,correctSvg,wrongs)}
+   return shuffle([readClockQ(),readClockQ(),pickClockQ()]).slice(0,3);
+  }}
 ],
 Y3:[
  {icon:'📏',title:'Length, mass & capacity',blurb:'Measure and convert between mm, cm and m.',rule:'100 centimetres make 1 metre, and 1000 millimetres make 1 metre. We use these facts to convert between units.',example:'3 m = 300 cm',note:'Multiply metres by 100 to get centimetres.',
@@ -703,7 +734,7 @@ function renderQuestion(){
  let q=testQuestions[testIndex];
  document.getElementById('testKind').textContent=practiceMode?'QUICK PRACTICE':`CHALLENGE ${currentTestTier} OF 10`;
  document.getElementById('counter').textContent=testFormat==='speed'?`⚡ ${speedCorrect} CORRECT SO FAR`:`QUESTION ${testIndex+1} OF ${totalQuestions}`;
- let qEl=document.getElementById('questionText');qEl.textContent=q[0];qEl.classList.remove('ghosted');
+ let qEl=document.getElementById('questionText');qEl.innerHTML=q[0];qEl.classList.remove('ghosted');
  document.getElementById('feedback').textContent='';
  document.getElementById('testNext').classList.add('hidden');
  document.getElementById('bossWrap').classList.toggle('hidden',testFormat!=='boss');
@@ -756,7 +787,7 @@ function registerAnswer(correct,selectedIdx){
  document.querySelectorAll('#numpad button,.pad-actions button').forEach(b=>b.disabled=true);
  document.getElementById('textToggleWrap').classList.add('hidden');
  if(buttons.length){buttons[q[2]].classList.add('correct');if(selectedIdx!=null&&selectedIdx!==q[2])buttons[selectedIdx].classList.add('wrong')}
- let qEl=document.getElementById('questionText');qEl.textContent=q[0];qEl.classList.remove('ghosted');
+ let qEl=document.getElementById('questionText');qEl.innerHTML=q[0];qEl.classList.remove('ghosted');
  let fb=document.getElementById('feedback'),next=document.getElementById('testNext'),hasButtons=buttons.length>0;
  if(testFormat==='boss')bossHit(correct);
  if(testFormat==='boss'&&bossLives<=0){
