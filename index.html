@@ -6,7 +6,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<main class="app"><header><div class="brand"><span class="mark">★</span>Numstars</div><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><span id="syncBadge" class="streak hidden">☁️ Synced</span><button id="profileBadge" class="streak" style="border:0;cursor:pointer" onclick="switchProfile()">👤 Switch</button><span id="pointsBadge" class="streak">🪙 0 points</span><span id="starsBadge" class="streak">⭐ 0 stars</span><span class="streak">🔥 3 day streak</span></div></header>
+<main class="app"><header><div class="brand"><span class="mark">★</span>Numstars</div><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><span id="syncBadge" class="streak hidden">☁️ Synced</span><button id="profileBadge" class="streak" style="border:0;cursor:pointer" onclick="switchProfile()">👤 Switch</button><span id="pointsBadge" class="streak">🪙 0 points</span><span id="starsBadge" class="streak">⭐ 0 stars</span><span id="streakBadge" class="streak">🔥 0 day streak</span></div></header>
 <section id="profileScreen" class="screen"><div class="hero" style="grid-template-columns:1fr"><div><span class="tag">NUMSTARS</span><h1>Who's learning today?</h1><p>Pick your name, or add a new learner. Everyone gets their own points, stars and progress on this device.</p><div id="profileList" class="choose" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr));margin-top:22px"></div><div id="newDeviceHint" class="curriculum-note hidden" style="margin-top:18px">☁️ <b>Already got a learner set up on another device?</b> Tap <b>Cloud sync settings</b> below and sign in with the same email first — that brings back their existing points and progress. Only use "Add learner" for a brand-new learner.</div><div style="margin-top:26px"><p style="margin:0 0 8px;font-weight:850;font-size:.9rem;color:var(--ink)">Choose an icon</p><div id="newIconPicker" class="icon-picker"></div></div><div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center"><input id="newProfileName" type="text" placeholder="Type a name…" maxlength="20" autocomplete="off" style="padding:14px 16px;border-radius:15px;border:2px solid var(--line);font-size:1rem;font-weight:800;color:var(--ink);font-family:inherit;flex:1;min-width:180px" onkeydown="if(event.key==='Enter')createProfileFromInput()"><button class="primary" onclick="createProfileFromInput()">+ Add learner</button></div><div style="margin-top:18px"><button class="secondary" onclick="openSyncScreen()">☁️ Cloud sync settings</button></div></div></div></section>
 <section id="syncScreen" class="screen"><button class="back" onclick="go('profileScreen')">← Learners</button><div class="lesson-wrap"><span class="tag">CLOUD SYNC</span><h2>Sync across devices</h2><div id="syncScreenBody"></div></div></section>
 <section id="welcome" class="screen"><div class="hero"><div><span class="tag">UK PRIMARY MATHEMATICS</span><h1>Learn maths,<br>one bright step at a time.</h1><p>Friendly, short lessons built around the main National Curriculum topics. First understand the idea, then practise it with confidence.</p><button class="primary" onclick="chooseStage()">Choose my learning path →</button></div><div class="rocket">🚀</div></div></section>
@@ -253,7 +253,7 @@ function deleteProfile(id){
  if(!confirm('Remove this learner and all their progress? This cannot be undone.'))return;
  let profiles=getProfiles().filter(p=>p.id!==id);
  saveProfilesList(profiles);
- ['points','progress','lessonProgress','testProgress'].forEach(k=>storage.removeItem(`bs_${id}_${k}`));
+ ['points','progress','lessonProgress','testProgress','dayStreak','lastActiveDate'].forEach(k=>storage.removeItem(`bs_${id}_${k}`));
  if(currentProfileId===id){currentProfileId=null;storage.removeItem('numstarsCurrentProfile')}
  removeProfileFromCloud(id);
  renderProfileScreen();
@@ -263,7 +263,28 @@ function loadProfileData(){
  progress=JSON.parse(storage.getItem(pKey('progress'))||'{}');
  lessonProgress=JSON.parse(storage.getItem(pKey('lessonProgress'))||'{}');
  testProgress=JSON.parse(storage.getItem(pKey('testProgress'))||'{}');
+ dayStreak=parseInt(storage.getItem(pKey('dayStreak'))||'0',10);
+ lastActiveDate=storage.getItem(pKey('lastActiveDate'))||'';
  updatePoints();updateStars();
+ updateDayStreak();
+}
+let dayStreak=0,lastActiveDate='';
+function dateStr(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function updateDayStreak(){
+ let today=dateStr(new Date());
+ if(lastActiveDate!==today){
+  let y=new Date();y.setDate(y.getDate()-1);
+  dayStreak=(lastActiveDate===dateStr(y))?dayStreak+1:1;
+  lastActiveDate=today;
+  storage.setItem(pKey('dayStreak'),String(dayStreak));
+  storage.setItem(pKey('lastActiveDate'),lastActiveDate);
+  queueCloudPush();
+ }
+ updateStreakBadge();
+}
+function updateStreakBadge(){
+ let el=document.getElementById('streakBadge');if(!el)return;
+ el.textContent=`🔥 ${dayStreak} day${dayStreak===1?'':'s'} streak`;
 }
 function updateProfileBadge(){
  let el=document.getElementById('profileBadge');if(!el)return;
@@ -328,6 +349,8 @@ function applyCloudData(data){
   storage.setItem(`bs_${id}_progress`,JSON.stringify(cp.progress||{}));
   storage.setItem(`bs_${id}_lessonProgress`,JSON.stringify(cp.lessonProgress||{}));
   storage.setItem(`bs_${id}_testProgress`,JSON.stringify(cp.testProgress||{}));
+  storage.setItem(`bs_${id}_dayStreak`,String(cp.dayStreak||0));
+  storage.setItem(`bs_${id}_lastActiveDate`,cp.lastActiveDate||'');
  });
  if(currentProfileId&&cloudIds.includes(currentProfileId))loadProfileData();
  if(document.getElementById('profileScreen'))renderProfileScreen();
@@ -349,7 +372,9 @@ function pushToCloud(){
    points:parseInt(storage.getItem(`bs_${p.id}_points`)||'0',10),
    progress:JSON.parse(storage.getItem(`bs_${p.id}_progress`)||'{}'),
    lessonProgress:JSON.parse(storage.getItem(`bs_${p.id}_lessonProgress`)||'{}'),
-   testProgress:JSON.parse(storage.getItem(`bs_${p.id}_testProgress`)||'{}')
+   testProgress:JSON.parse(storage.getItem(`bs_${p.id}_testProgress`)||'{}'),
+   dayStreak:parseInt(storage.getItem(`bs_${p.id}_dayStreak`)||'0',10),
+   lastActiveDate:storage.getItem(`bs_${p.id}_lastActiveDate`)||''
   };
  });
  updateSyncBadge('syncing');
