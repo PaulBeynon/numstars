@@ -44,7 +44,7 @@ Y1:[
   gen:()=>[mc('Which of these is usually the heaviest?','an elephant',['a feather','a balloon','a leaf']),mc('Which of these holds the most water?','a bathtub',['a teaspoon','a cup','an eggcup']),mc('Which of these is usually the longest?','a bus',['a pencil','a paperclip','a spoon']),mc('Which word means "not empty at all"?','full',['empty','light','short']),mc('Which of these is usually the shortest?','a paperclip',['a bus','a ladder','a giraffe'])].sort(()=>Math.random()-.5).slice(0,3)},
  {icon:'💰',title:'Coins & money',blurb:'Recognise the value of different coins and notes.',rule:'UK coins and notes each have a value shown on them. Coins range from 1p to £2, and notes start at £5.',example:'A 50p coin is worth 50 pence.',note:'The number on a coin tells you its value.',
   gen:()=>[mc('Which coin is worth the most?','£2',['50p','20p','5p']),mc('Which coin is worth the least?','1p',['£1','10p','5p']),mc('How much is a 20p coin worth?','20 pence',['2 pence','12 pence','200 pence']),mc('Which note is worth £5?','a five-pound note',['a five-pence coin','a fifty-pound note','a five hundred pound note']),mc('How many pence is £1 worth?','100 pence',['10 pence','1 pence','1000 pence'])].sort(()=>Math.random()-.5).slice(0,3)},
- {icon:'🕒',title:'Telling the time',blurb:'Tell the time to the hour and half hour.',rule:'A clock has two hands. At an o’clock time the minute hand points to 12; at half past it points to 6.',example:'Half past 3',note:'The minute hand points to 6 and the hour hand sits between 3 and 4.',
+ {icon:'🕒',title:'Telling the time',cat:'time',blurb:'Tell the time to the hour and half hour.',rule:'A clock has two hands. At an o’clock time the minute hand points to 12; at half past it points to 6.',example:'Half past 3',note:'The minute hand points to 6 and the hour hand sits between 3 and 4.',
   gen:()=>{let h=rand(1,11),n=(h%12)+1;return [mc('At an o’clock time, where does the minute hand point?',12,[3,6,9]),mc(`At half past ${h}, where does the minute hand point?`,6,[12,3,9]),mc(`What comes half an hour after ${h} o’clock?`,`half past ${h}`,['quarter past '+h,'half past '+n,`${n} o’clock`])]}}
 ],
 Y2:[
@@ -52,7 +52,7 @@ Y2:[
   gen:()=>[mc('Which unit would you use to measure the length of a classroom?','metres',['grams','millilitres','degrees']),mc('Which unit would you use to weigh an apple?','grams',['metres','litres','hours']),mc('Which unit would you use to measure a glass of juice?','millilitres',['kilograms','metres','minutes']),mc('Which is bigger, 1 metre or 1 centimetre?','1 metre',['1 centimetre','they are equal','neither']),mc('Which is heavier, 1 kilogram or 1 gram?','1 kilogram',['1 gram','they are equal','neither'])].sort(()=>Math.random()-.5).slice(0,3)},
  {icon:'💷',title:'Money & change',blurb:'Use £ and p, and give change from £1.',rule:'Money is measured in pounds and pence. One pound is exactly 100 pence.',example:'£1 − 35p = 65p',note:'100p − 35p = 65p.',
   gen:()=>{let cost=rand(10,80),change=100-cost,pounds=rand(2,9);return [mc('How many pence are in £1?',100,[10,50,1000]),mc(`What is the change from £1 when something costs ${cost}p?`,change,[change-10,change+10,cost]),mc(`How many pence are in £${pounds}?`,pounds*100,['20','90','100'])]}},
- {icon:'🕓',title:'Telling time to 5 minutes',blurb:'Read quarter past, quarter to, and 5-minute intervals.',rule:'The minute hand points to a new number every 5 minutes. Quarter past is 15 minutes after the hour; quarter to is 15 minutes before the next hour.',example:'Quarter past 4',note:'The minute hand points to 3, which means 15 minutes.',
+ {icon:'🕓',title:'Telling time to 5 minutes',cat:'time',blurb:'Read quarter past, quarter to, and 5-minute intervals.',rule:'The minute hand points to a new number every 5 minutes. Quarter past is 15 minutes after the hour; quarter to is 15 minutes before the next hour.',example:'Quarter past 4',note:'The minute hand points to 3, which means 15 minutes.',
   gen:()=>{let h=rand(1,11),n=(h%12)+1;return [mc(`At quarter past ${h}, where does the minute hand point?`,3,[6,9,12]),mc(`At quarter to ${n}, where does the minute hand point?`,9,[3,6,12]),mc('How many minutes are there in a quarter of an hour?',15,[5,10,30])]}}
 ],
 Y3:[
@@ -60,7 +60,7 @@ Y3:[
   gen:()=>{let metres=rand(2,9);return [mc(`How many centimetres are in ${metres} metres?`,metres*100,[metres*10,metres*1000,metres]),mc('How many millimetres are in 1 metre?',1000,[10,100,10000]),mc('Which statement is correct?','100 cm = 1 m',['100 mm = 1 m','10 cm = 1 m','1,000 cm = 1 m'])]}},
  {icon:'🟩',title:'Perimeter',blurb:'Find the total distance around a shape.',rule:'Perimeter is the total distance all the way around the outside of a shape. Add up the length of every side.',example:'5cm + 3cm + 5cm + 3cm = 16cm',note:'Add all four sides together.',
   gen:()=>{let a=rand(3,12),b=rand(2,9),p=2*(a+b);return [mc(`A rectangle has sides ${a}cm and ${b}cm. What is its perimeter?`,p,[p-2,p+2,a*b]),mc(`A square has sides of ${a}cm. What is its perimeter?`,a*4,[a*3,a*2,a+4]),mc('What is the perimeter of a shape?','the distance all the way around the outside',['the space inside the shape','the number of corners','the length of one side'])]}},
- {icon:'⏱️',title:'Time facts',blurb:'Seconds, days, months and Roman numeral clocks.',rule:'There are 60 seconds in a minute. Different months have different numbers of days, and a leap year has one extra day in February.',example:'60 seconds = 1 minute',note:'A leap year happens roughly every 4 years.',
+ {icon:'⏱️',title:'Time facts',cat:'time',blurb:'Seconds, days, months and Roman numeral clocks.',rule:'There are 60 seconds in a minute. Different months have different numbers of days, and a leap year has one extra day in February.',example:'60 seconds = 1 minute',note:'A leap year happens roughly every 4 years.',
   gen:()=>[mc('How many seconds are in a minute?',60,[100,50,30]),mc('How many days are in a leap year?',366,[365,360,370]),mc('Which Roman numeral means 12?','XII',['VII','IX','XV'])]}
 ],
 Y4:[
@@ -68,7 +68,7 @@ Y4:[
   gen:()=>{let km=rand(2,9);return [mc(`How many metres are in ${km} kilometres?`,km*1000,[km*100,km*10,km]),mc('How many centimetres are in 1 metre?',100,[10,1000,10000]),mc('How many minutes are in 2 hours?',120,[60,90,150])]}},
  {icon:'🟦',title:'Perimeter & area',blurb:'Find the perimeter and area of rectangles.',rule:'Perimeter is the distance around a shape. Area is the amount of space inside it — for rectangles, multiply length × width.',example:'4cm × 3cm = 12cm²',note:'Multiply length by width to find area.',
   gen:()=>{let l=rand(3,9),w=rand(2,7);return [mc(`What is the area of a rectangle ${l}cm by ${w}cm?`,l*w,[l+w,l*w+1,l*w-1]),mc(`What is the perimeter of a rectangle ${l}cm by ${w}cm?`,2*(l+w),[l*w,2*(l+w)-1,2*(l+w)+1]),mc('How do you find the area of a rectangle?','multiply length by width',['add all the sides','multiply the two longest sides','count the corners'])]}},
- {icon:'⏳',title:'Time conversions',blurb:'Convert between hours, minutes, days and weeks.',rule:'We can convert between units of time: 60 minutes = 1 hour, 24 hours = 1 day, 7 days = 1 week, 12 months = 1 year.',example:'3 hours = 180 minutes',note:'Multiply hours by 60 to get minutes.',
+ {icon:'⏳',title:'Time conversions',cat:'time',blurb:'Convert between hours, minutes, days and weeks.',rule:'We can convert between units of time: 60 minutes = 1 hour, 24 hours = 1 day, 7 days = 1 week, 12 months = 1 year.',example:'3 hours = 180 minutes',note:'Multiply hours by 60 to get minutes.',
   gen:()=>{let hrs=rand(2,6),weeks=rand(2,8);return [mc(`How many minutes are in ${hrs} hours?`,hrs*60,[hrs*30,hrs*100,hrs]),mc(`How many days are in ${weeks} weeks?`,weeks*7,[weeks*5,weeks*10,weeks]),mc('How many months are in a year?',12,[10,52,365])]}}
 ],
 Y5:[
@@ -194,6 +194,14 @@ function startCrazyMovement(){let isDouble=document.getElementById('answers').cl
 function normalizeAnswer(s){return String(s).toLowerCase().trim().replace(/\s+/g,' ').replace(/[°²³]/g,'').replace(/[.,;:!?'"()]/g,'')}
 const years={KS1:['Y1','Y2'],KS2:['Y3','Y4','Y5','Y6']};
 const bbcLinks={Y1:{0:{resources:'https://www.bbc.co.uk/bitesize/topics/zpt8h4j',games:'https://www.bbc.co.uk/bitesize/topics/zhpwnk7/articles/zd4b382'},1:{resources:'https://www.bbc.co.uk/bitesize/topics/zwv39j6',games:'https://www.bbc.co.uk/bitesize/topics/zhpwnk7/articles/zf4sscw'},2:{resources:'https://www.bbc.co.uk/bitesize/articles/z97rdnb#z3r3xg8',games:'https://www.bbc.co.uk/bitesize/topics/zd63xyc/articles/zdp4pg8'},3:{resources:'https://www.bbc.co.uk/bitesize/topics/zphdp9q',games:'https://www.bbc.co.uk/bitesize/topics/zjkphbk/articles/zf4sscw'}},Y2:{0:{resources:'https://www.bbc.co.uk/bitesize/articles/z7pnm39#zqvdfdm'}}};
+const bbcLinksGrouped={4:{Y1:{measurement:{resources:'https://www.bbc.co.uk/bitesize/topics/zx2cmbk',games:'https://www.bbc.co.uk/bitesize/topics/zhpwnk7/articles/zsxf7v4'}}}};
+function resourceLinksForCat(y,ti,cat,label){
+ let entry=bbcLinksGrouped[ti]&&bbcLinksGrouped[ti][y]&&bbcLinksGrouped[ti][y][cat],cards=[];
+ if(entry&&entry.resources)cards.push({url:entry.resources,icon:'📘',label:'View resources'});
+ if(entry&&entry.games)cards.push({url:entry.games,icon:'🎮',label:'Play a game'});
+ if(!cards.length){let q=encodeURIComponent(`${label} year ${y.slice(1)}`);cards.push({url:`https://www.bbc.co.uk/bitesize/search?q=${q}`,icon:'🔎',label:'Search Bitesize'})}
+ return cards;
+}
 function resourceLinks(y,ti){
  let entry=bbcLinks[y]&&bbcLinks[y][ti],cards=[];
  if(entry&&entry.resources)cards.push({url:entry.resources,icon:'📘',label:'View resources'});
@@ -484,7 +492,16 @@ function renderJourney(){document.getElementById('stageTag').textContent=stage==
 function openModule(i){topicIndex=i;topic=data[year][i];go('module')}
 function renderModule(){document.getElementById('moduleTag').textContent=`YEAR ${year.slice(1)} · ${topic[3].toUpperCase()}`;document.getElementById('moduleTitle').textContent=topic[1];let subs=getSubs(topicIndex,year),links=resourceLinks(year,topicIndex);
  let resCard=`<article class="topic"><div class="orb">📘</div><div><span class="tag">BBC BITESIZE</span><h3>More on this topic</h3><p>Explore articles, activities and games from BBC Bitesize.</p><div class="btnrow">${links.map(l=>`<a class="primary" href="${l.url}" target="_blank" rel="noopener">${l.icon} ${l.label} →</a>`).join('')}</div></div></article>`;
- if(subs){
+ if(subs&&subs.some(s=>s.cat)){
+  let catLabels={measurement:'📏 Measurement',time:'🕒 Time'},catOrder=[],catMap={};
+  subs.forEach((s,si)=>{let c=s.cat||'measurement';if(!catMap[c]){catMap[c]=[];catOrder.push(c)}catMap[c].push({s,si})});
+  document.getElementById('moduleList').innerHTML=catOrder.map(c=>{
+   let items=catMap[c].map(({s,si})=>`<article class="topic"><div class="orb">${s.icon}</div><div><span class="tag">SUB-TOPIC</span><h3>${s.title}</h3><p>${s.blurb}</p><div class="btnrow"><button class="primary" onclick="openSubLesson(${topicIndex},${si})">Learn →</button><button class="secondary" onclick="startSubPractice(${topicIndex},${si})">Practise →</button></div></div></article>`).join('');
+   let cardLinks=resourceLinksForCat(year,topicIndex,c,`${catLabels[c]?catLabels[c].replace(/^\S+\s/,''):c} — ${data[year][topicIndex][1]}`);
+   let catCard=`<article class="topic"><div class="orb">📘</div><div><span class="tag">BBC BITESIZE</span><h3>More on this topic</h3><p>Explore articles, activities and games from BBC Bitesize.</p><div class="btnrow">${cardLinks.map(l=>`<a class="primary" href="${l.url}" target="_blank" rel="noopener">${l.icon} ${l.label} →</a>`).join('')}</div></div></article>`;
+   return `<h3 style="grid-column:1/-1;margin:18px 0 0">${catLabels[c]||c}</h3>${items}${catCard}`;
+  }).join('');
+ } else if(subs){
   document.getElementById('moduleList').innerHTML=subs.map((s,si)=>`<article class="topic"><div class="orb">${s.icon}</div><div><span class="tag">SUB-TOPIC ${si+1}</span><h3>${s.title}</h3><p>${s.blurb}</p><div class="btnrow"><button class="primary" onclick="openSubLesson(${topicIndex},${si})">Learn →</button><button class="secondary" onclick="startSubPractice(${topicIndex},${si})">Practise →</button></div></div></article>`).join('')+resCard;
  } else {
   document.getElementById('moduleList').innerHTML=`<article class="topic"><div class="orb">${topic[0]}</div><div><span class="tag">LESSON</span><h3>Learn the idea</h3><p>${topic[2]}</p><button class="primary" onclick="openLesson(${topicIndex})">Start lesson →</button></div></article>${resCard}<article class="topic"><div class="orb">🎯</div><div><span class="tag">OPTIONAL</span><h3>Quick practice</h3><p>A short 3-question warm-up. Have as many goes as you like — it's just for fun and won't change your stars.</p><button class="primary" onclick="startPractice(${topicIndex})">Start practice →</button></div></article>`;
