@@ -167,11 +167,11 @@ Y6:[
   gen:()=>[mc('If x + 5 = 12, what is x?',7,[6,8,17]),mc('If 3y = 18, what is y?',6,[3,9,15]),mc('What does a letter usually represent in algebra?','an unknown number',['a fixed word','a shape','a unit of measurement']),mc('If a = 4 and b = 4, what is a + b?',8,[16,4,0]),mc('Which is a formula for the perimeter of a square with side s?','4 × s',['s × s','s + 4','2 × s'])].sort(()=>Math.random()-.5).slice(0,3)}
 ]};
 let stage='KS1',year='Y1',topic=null,topicIndex=0,part=0,testIndex=0,score=0,testQuestions=[],currentTestTier=1;
-let testFormat='standard',testInputMode='choice',speedSecondsLeft=45,speedInterval=null,ghostTimer=null,crazyInterval=null,speedCorrect=0,speedAttempted=0,speedQueue=[],bossHP=100,bossLives=3,bossMaxLives=3,roundIntroTimeout=null,currentStreak=0,streakBonusTotal=0,lightningInterval=null,lightningSecondsLeft=6;
+let testFormat='standard',testInputMode='choice',speedSecondsLeft=45,speedInterval=null,ghostTimer=null,crazyInterval=null,speedCorrect=0,speedAttempted=0,speedQueue=[],bossHP=100,bossLives=3,bossMaxLives=3,bossDefeatedEarly=false,roundIntroTimeout=null,currentStreak=0,streakBonusTotal=0,lightningInterval=null,lightningSecondsLeft=6;
 function getNextSpeedQuestion(ti,tier){if(speedQueue.length===0)speedQueue=makeTieredQuestions(year,ti,tier);return speedQueue.shift()}
 function tierFormat(tier){if(tier===4)return'speed';if(tier===8)return'lightning';if(tier===2)return'ghost';if(tier===6)return'streak';if(tier===3)return'crazy';if(tier===7)return'doublecrazy';if(tier===5||tier===10)return'boss';return'standard'}
 function tierInputMode(tier){let f=tierFormat(tier);if(f==='ghost'||f==='crazy'||f==='doublecrazy'||f==='streak')return'choice';return tier>=6?'text':'choice'}
-function resetBoss(tier){bossMaxLives=tier===10?1:2;bossHP=100;bossLives=bossMaxLives;updateBossUI()}
+function resetBoss(tier){bossMaxLives=tier===10?1:2;bossHP=100;bossLives=bossMaxLives;bossDefeatedEarly=false;updateBossUI()}
 function updateBossUI(){let fill=document.getElementById('bossBarFill');if(fill)fill.style.width=Math.max(0,bossHP)+'%';let lives=document.getElementById('bossLivesEl');if(lives)lives.textContent='❤️'.repeat(Math.max(0,bossLives))+'🖤'.repeat(Math.max(0,bossMaxLives-bossLives))}
 function bossHit(correct){if(correct){bossHP=Math.max(0,bossHP-20);let ch=document.getElementById('bossChar');if(ch){ch.classList.remove('hit');void ch.offsetWidth;ch.classList.add('hit')}}else{bossLives=Math.max(0,bossLives-1)}updateBossUI()}
 function padInsert(ch){let input=document.getElementById('textAnswerInput');if(input.disabled)return;input.value+=ch}
@@ -659,6 +659,13 @@ function registerAnswer(correct,selectedIdx){
  let qEl=document.getElementById('questionText');qEl.textContent=q[0];qEl.classList.remove('ghosted');
  let fb=document.getElementById('feedback'),next=document.getElementById('testNext'),hasButtons=buttons.length>0;
  if(testFormat==='boss')bossHit(correct);
+ if(testFormat==='boss'&&bossLives<=0){
+  bossDefeatedEarly=true;
+  fb.textContent=(currentTestTier===10?'🐲 Big boss gobbled you up!':'🐉 Mini boss gobbled you up!');
+  fb.style.color='#ad413b';
+  next.textContent='See result →';next.classList.remove('hidden');
+  return;
+ }
  if(testFormat==='speed'){
   speedAttempted++;
   if(correct){speedCorrect++;addPoints(5);fb.textContent='Correct!';fb.style.color='#157345'}
@@ -694,6 +701,7 @@ function submitTextAnswer(){
  registerAnswer(correct,null);
 }
 function nextQuestion(){
+ if(bossDefeatedEarly){showResult();return}
  if(testFormat==='speed'){testIndex++;testQuestions[testIndex]=getNextSpeedQuestion(topicIndex,currentTestTier);renderQuestion();return}
  testIndex++;if(testIndex<totalQuestions){renderQuestion()}else{showResult()}
 }
