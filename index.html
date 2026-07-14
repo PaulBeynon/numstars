@@ -167,7 +167,7 @@ Y6:[
   gen:()=>[mc('If x + 5 = 12, what is x?',7,[6,8,17]),mc('If 3y = 18, what is y?',6,[3,9,15]),mc('What does a letter usually represent in algebra?','an unknown number',['a fixed word','a shape','a unit of measurement']),mc('If a = 4 and b = 4, what is a + b?',8,[16,4,0]),mc('Which is a formula for the perimeter of a square with side s?','4 × s',['s × s','s + 4','2 × s'])].sort(()=>Math.random()-.5).slice(0,3)}
 ]};
 let stage='KS1',year='Y1',topic=null,topicIndex=0,part=0,testIndex=0,score=0,testQuestions=[],currentTestTier=1;
-let testFormat='standard',testInputMode='choice',speedSecondsLeft=45,speedInterval=null,ghostTimer=null,crazyInterval=null,speedCorrect=0,speedAttempted=0,speedQueue=[],bossHP=100,bossLives=3,bossMaxLives=3,roundIntroTimeout=null,currentStreak=0,lightningInterval=null,lightningSecondsLeft=6;
+let testFormat='standard',testInputMode='choice',speedSecondsLeft=45,speedInterval=null,ghostTimer=null,crazyInterval=null,speedCorrect=0,speedAttempted=0,speedQueue=[],bossHP=100,bossLives=3,bossMaxLives=3,roundIntroTimeout=null,currentStreak=0,streakBonusTotal=0,lightningInterval=null,lightningSecondsLeft=6;
 function getNextSpeedQuestion(ti,tier){if(speedQueue.length===0)speedQueue=makeTieredQuestions(year,ti,tier);return speedQueue.shift()}
 function tierFormat(tier){if(tier===4)return'speed';if(tier===8)return'lightning';if(tier===2)return'ghost';if(tier===6)return'streak';if(tier===3)return'crazy';if(tier===7)return'doublecrazy';if(tier===5||tier===10)return'boss';return'standard'}
 function tierInputMode(tier){let f=tierFormat(tier);if(f==='ghost'||f==='crazy'||f==='doublecrazy'||f==='streak')return'choice';return tier>=6?'text':'choice'}
@@ -569,7 +569,7 @@ function startTierTest(ti,tier){
  stopTestTimers();
  topic=data[year][ti];topicIndex=ti;practiceMode=false;currentTestTier=tier;
  testFormat=tierFormat(tier);testInputMode=tierInputMode(tier);
- testIndex=0;score=0;currentStreak=0;
+ testIndex=0;score=0;currentStreak=0;streakBonusTotal=0;
  if(testFormat==='boss')resetBoss(tier);
  if(testFormat==='speed'){
   speedCorrect=0;speedAttempted=0;speedQueue=[];
@@ -669,7 +669,7 @@ function registerAnswer(correct,selectedIdx){
    score++;currentStreak++;
    addPoints(practiceMode?5:15);
    let bonus=Math.min((currentStreak-1)*5,25);
-   if(bonus>0)addPoints(bonus);
+   if(bonus>0){addPoints(bonus);streakBonusTotal+=bonus}
    fb.textContent=currentStreak>1?`🔥 ${currentStreak} in a row! +${bonus} streak bonus`:'Correct! Streak started 🔥';
    fb.style.color='#c1580c';
   } else {
@@ -715,7 +715,7 @@ function showResult(){
   if(score===5&&!tp.gold[tier]){tp.gold[tier]=true;newGold=true}
   if(tier===tp.unlocked&&tp.unlocked<10)tp.unlocked=tier+1;
   if(tier>=5){let before=progress[year]||0;if(before<topicIndex+1){progress[year]=topicIndex+1;storage.setItem(pKey('progress'),JSON.stringify(progress));newTopicUnlock=true;nextTopicName=data[year][topicIndex+1]?data[year][topicIndex+1][1]:null}}
-  addPoints((testFormat==='speed'?0:score*15)+(firstStar?30:0)+(newTopicUnlock?50:0));
+  addPoints((firstStar?30:0)+(newTopicUnlock?50:0));
   saveTP();
   updateStars();
  }
@@ -729,6 +729,7 @@ function showResult(){
  let msg=testFormat==='speed'?[`You answered ${speedAttempted} question${speedAttempted===1?'':'s'} in 45 seconds and got ${speedCorrect} correct.`]:[`You scored ${score} out of 5.`];
  if(passed){
   if(testFormat==='speed'){let bonus=[];if(firstStar)bonus.push('30');if(newTopicUnlock)bonus.push('50');msg.push(`You earned 5 points per correct answer${bonus.length?' plus '+bonus.join('+')+' bonus':''}.`)}
+  else if(testFormat==='streak'){let base=score*15,total=base+streakBonusTotal;msg.push(`You earned ${total} points${streakBonusTotal?` (${base} + ${streakBonusTotal} streak bonus)`:''}${firstStar?' + 30 bonus':''}${newTopicUnlock?' + 50 bonus':''}.`)}
   else msg.push(`You earned ${score*15}${firstStar?' + 30 bonus':''}${newTopicUnlock?' + 50 bonus':''} points.`);
   if(tier<10)msg.push(`Challenge ${tier+1} is now unlocked.`);
   if(newTopicUnlock)msg.push('The next topic is now unlocked!');
