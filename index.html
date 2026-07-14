@@ -235,6 +235,7 @@ function deleteProfile(id){
  saveProfilesList(profiles);
  ['points','progress','lessonProgress','testProgress'].forEach(k=>storage.removeItem(`bs_${id}_${k}`));
  if(currentProfileId===id){currentProfileId=null;storage.removeItem('numstarsCurrentProfile')}
+ removeProfileFromCloud(id);
  renderProfileScreen();
 }
 function loadProfileData(){
@@ -318,9 +319,11 @@ function queueCloudPush(){
 }
 function pushToCloud(){
  if(!cloudSyncEnabled||!cloudDb||!cloudUser)return;
- let profiles=getProfiles(),payload={profiles:{},updatedAt:Date.now()};
+ let profiles=getProfiles();
+ if(!profiles.length)return;
+ let payload={updatedAt:Date.now()};
  profiles.forEach(p=>{
-  payload.profiles[p.id]={
+  payload[`profiles.${p.id}`]={
    name:p.name,icon:p.icon,
    points:parseInt(storage.getItem(`bs_${p.id}_points`)||'0',10),
    progress:JSON.parse(storage.getItem(`bs_${p.id}_progress`)||'{}'),
@@ -329,9 +332,15 @@ function pushToCloud(){
   };
  });
  updateSyncBadge('syncing');
- cloudDb.collection('numstarsFamilies').doc(cloudUser.uid).set(payload)
+ cloudDb.collection('numstarsFamilies').doc(cloudUser.uid).set(payload,{merge:true})
   .then(()=>updateSyncBadge('synced'))
   .catch(e=>{logBSError('cloudPush',e);updateSyncBadge('error')});
+}
+function removeProfileFromCloud(id){
+ if(!cloudSyncEnabled||!cloudDb||!cloudUser)return;
+ cloudDb.collection('numstarsFamilies').doc(cloudUser.uid)
+  .set({profiles:{[id]:firebase.firestore.FieldValue.delete()}},{merge:true})
+  .catch(e=>logBSError('cloudDelete',e));
 }
 function showSyncError(msg){let el=document.getElementById('syncError');if(el){el.textContent=msg;el.classList.remove('hidden')}}
 function clearSyncError(){let el=document.getElementById('syncError');if(el){el.textContent='';el.classList.add('hidden')}}
