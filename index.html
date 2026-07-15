@@ -4,6 +4,8 @@
 .rocket-build{position:relative;width:150px;height:300px;margin:0 auto}
 .rocket-build svg{width:100%;height:100%;display:block;overflow:visible}
 .rb-flame,.rb-flame-inner{transform-box:fill-box;transform-origin:50% 0%;animation:flicker .35s infinite alternate}
+.rocket-build.rb-no-flame{transform:translateY(82px)}
+.rocket-build.rb-no-flame .rb-flame,.rocket-build.rb-no-flame .rb-flame-inner{opacity:0}
 @keyframes flicker{0%{transform:scaleY(1) scaleX(1)}100%{transform:scaleY(1.16) scaleX(.88)}}
 .rb-window{transform-box:fill-box;transform-origin:center;animation:glowpulse 1.4s ease-in-out infinite}
 @keyframes glowpulse{0%,100%{opacity:1}50%{opacity:.6}}
@@ -653,7 +655,7 @@ function renderRocketScreen(){
  let el=document.getElementById('rocketPreview'),scene=document.getElementById('rocketPadScene'),astro=document.getElementById('rocketPadAstronaut');
  if(!el)return;
  if(scene)scene.setAttribute('style','margin:20px 0;'+padStyleVars());
- el.innerHTML=rocketVisualHTML();
+ el.innerHTML=rocketVisualHTML('rb-no-flame');
  if(astro)astro.innerHTML=astronautVisualHTML();
  let info=rocketMatchInfo(),setObj=ROCKET_SETS.find(s=>s.id===info.setId),msgEl=document.getElementById('rocketMatchMsg');
  if(msgEl){
@@ -701,7 +703,7 @@ function renderLaunchScreen(){
  if(!el)return;
  if(pad)pad.setAttribute('style',padStyleVars());
  if(heading)heading.textContent='Climbing aboard…';
- el.innerHTML=rocketVisualHTML();
+ el.innerHTML=rocketVisualHTML('rb-no-flame');
  let inner=el.querySelector('.rocket-build');
  if(astro){
   astro.classList.remove('astro-enter');
@@ -720,6 +722,7 @@ function renderLaunchScreen(){
  },1400);
  setTimeout(()=>{
   if(pad)pad.classList.remove('shaking');
+  if(inner)inner.classList.remove('rb-no-flame');
   if(inner)inner.classList.add('launch-anim');
   if(smoke)smoke.classList.add('puff');
  },2050);
