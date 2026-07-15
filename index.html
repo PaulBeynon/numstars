@@ -737,6 +737,7 @@ function updateDevModeBadge(){
 function go(id,opts){
  try{if(id==='journey')renderJourney()}catch(e){logBSError('renderJourney',e)}
  try{if(id==='module'&&topic)renderModule()}catch(e){logBSError('renderModule',e)}
+ try{if(id==='rocketScreen')renderRocketScreen()}catch(e){logBSError('renderRocketScreen',e)}
  try{document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active')}catch(e){logBSError('screenSwitch',e)}
  try{
   if(id==='module'&&rocketNeedsSlide){
