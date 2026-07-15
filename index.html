@@ -31,7 +31,14 @@
 <section id="launchScreen" class="screen"><div class="lesson-wrap" style="text-align:center"><span class="tag">LAUNCHING…</span><h2>3…2…1… blast off!</h2><div id="launchPad" class="launch-pad"><div id="launchRocketWrap"></div></div></div></section>
 <section id="spaceScreen" class="screen"><div class="lesson-wrap" style="text-align:center"><span class="tag">IN FLIGHT</span><h2 id="spaceMsg">Zooming through space…</h2><div id="spaceTrack" class="space-track"></div><button id="spaceBackBtn" class="primary hidden" style="margin-top:20px" onclick="go('rocketScreen')">🏠 Back to my rocket</button></div></section>
 <section id="welcome" class="screen"><div class="hero"><div><span class="tag">UK PRIMARY MATHEMATICS</span><h1>Learn maths,<br>one bright step at a time.</h1><p>Friendly, short lessons built around the main National Curriculum topics. First understand the idea, then practise it with confidence.</p><button class="primary" onclick="chooseStage()">Choose my learning path →</button></div><div class="rocket">🚀</div></div></section>
-<section id="choose" class="screen"><button class="back" onclick="go('welcome')">← Home</button><h2>Where would you like to begin?</h2><p>Pick a key stage, then choose the year that feels right. Learners can move at their own pace.</p><div class="choose"><article class="stage"><div class="num">🌱</div><h3>Key Stage 1</h3><p>Years 1–2 · Building number sense, early calculation and everyday maths.</p><button class="primary" onclick="openStage('KS1')">Explore KS1 →</button></article><article class="stage"><div class="num">🌟</div><h3>Key Stage 2</h3><p>Years 3–6 · Deepening fluency, reasoning and problem solving.</p><button class="primary" onclick="openStage('KS2')">Explore KS2 →</button></article></div></section>
+<section id="choose" class="screen"><button class="back" onclick="go('welcome')">← Home</button><h2>Where would you like to begin?</h2><p>Pick a key stage, then choose the year that feels right. Learners can move at their own pace.</p><div class="choose"><article class="stage"><div class="num">🌱</div><h3>Key Stage 1</h3><p>Years 1–2 · Building number sense, early calculation and everyday maths.</p><button class="primary" onclick="openStage('KS1')">Explore KS1 →</button></article><article class="stage"><div class="num">🌟</div><h3>Key Stage 2</h3><p>Years 3–6 · Deepening fluency, reasoning and problem solving.</p><button class="primary" onclick="openStage('KS2')">Explore KS2 →</button></article></div>
+<!-- TEMP: Crazy Maths for Luke — delete this div, the #crazyScreen section below, and the "TEMP: Crazy Maths" JS block when done -->
+<div style="margin-top:22px;text-align:center"><button class="secondary" onclick="openCrazyQuiz()">🤪 Crazy Maths for Luke</button></div>
+<!-- END TEMP button -->
+</section>
+<!-- TEMP: Crazy Maths for Luke screen — delete along with the button above and the JS block -->
+<section id="crazyScreen" class="screen"><button class="back" onclick="go('choose')">← Key stages</button><div class="quiz"><div class="quiz-head"><span class="tag">CRAZY MATHS FOR LUKE</span><span id="crazyCounter" class="tag">QUESTION 1 OF 4</span></div><div class="question"><h2 id="crazyQuestionText"></h2><div id="crazyAnswers" class="answers"></div><div id="crazyFeedback" class="feedback"></div><button id="crazyNext" class="primary hidden" onclick="crazyNextQuestion()">Next question →</button></div></div></section>
+<!-- END TEMP screen -->
 <section id="journey" class="screen"><button class="back" onclick="chooseStage()">← Key stages</button><div class="head"><div><span id="stageTag" class="tag">KEY STAGE 1</span><h2 id="journeyTitle">Your maths journey</h2><p id="journeyText">Choose a topic. Each one starts with a short, guided lesson.</p></div></div><div id="tabs" class="year-tabs"></div><div id="badges" class="badges"></div><div id="topics" class="topics"></div></section>
 <section id="module" class="screen"><button class="back" onclick="go('journey')">← All topics</button><div class="head"><div><span id="moduleTag" class="tag">YEAR 1 · TOPIC</span><h2 id="moduleTitle">Topic lessons</h2><p>Learn the idea, then work through 10 challenges. Score 4/5 to unlock the next challenge — reach Challenge 5 to unlock the next topic.</p></div></div><div id="moduleList" class="topics"></div></section>
 <section id="lesson" class="screen"><div class="lesson-wrap"><div class="lesson-top"><button class="back" onclick="go('module')">← Topic lessons</button><span id="lessonTag" class="tag">YEAR 1 · NUMBER</span></div><div id="steps" class="steps"></div><div id="lessonCard" class="lesson-card"></div><div class="controls"><button id="prev" class="secondary" onclick="move(-1)">← Back</button><button id="next" class="primary" onclick="move(1)">Next →</button></div></div></section>
@@ -675,6 +682,35 @@ function showLanded(){
  if(backBtn)backBtn.classList.remove('hidden');
 }
 function openSyncScreen(){renderSyncScreen();go('syncScreen')}
+// ===== TEMP: Crazy Maths for Luke — delete this whole block, the button in #choose, and the #crazyScreen section when done =====
+const CRAZY_QUESTIONS=[
+ {q:'What is the closest number to 15?',options:['15','11','20','8'],correct:1},
+ {q:'What is 2 + 2?',options:['4','9','3','22'],correct:1},
+ {q:'What is half of 10?',options:['5','2','12','1'],correct:1},
+ {q:'How many days are in a week?',options:['7','3','15','100'],correct:1}
+];
+let crazyIndex=0;
+function openCrazyQuiz(){crazyIndex=0;renderCrazyQuestion();go('crazyScreen')}
+function renderCrazyQuestion(){
+ let q=CRAZY_QUESTIONS[crazyIndex];
+ document.getElementById('crazyCounter').textContent=`QUESTION ${crazyIndex+1} OF ${CRAZY_QUESTIONS.length}`;
+ document.getElementById('crazyQuestionText').textContent=q.q;
+ document.getElementById('crazyFeedback').textContent='';
+ document.getElementById('crazyNext').classList.add('hidden');
+ document.getElementById('crazyAnswers').innerHTML=q.options.map((opt,i)=>`<button class="answer" onclick="crazyAnswer(${i})">${opt}</button>`).join('');
+}
+function crazyAnswer(i){
+ let q=CRAZY_QUESTIONS[crazyIndex],buttons=document.querySelectorAll('#crazyAnswers .answer'),fb=document.getElementById('crazyFeedback');
+ buttons.forEach((b,idx)=>{b.disabled=true;if(idx===q.correct)b.classList.add('correct');else if(idx===i&&i!==q.correct)b.classList.add('wrong')});
+ fb.textContent=(i===q.correct)?'Correct! 🎉':`Not quite — the answer is ${q.options[q.correct]}!`;
+ document.getElementById('crazyNext').classList.remove('hidden');
+}
+function crazyNextQuestion(){
+ crazyIndex++;
+ if(crazyIndex>=CRAZY_QUESTIONS.length){alert("You're a Crazy Maths genius, Luke! 🤪🏆");go('choose');return}
+ renderCrazyQuestion();
+}
+// ===== END TEMP: Crazy Maths for Luke =====
 function renderSyncScreen(){
  let el=document.getElementById('syncScreenBody');if(!el)return;
  if(cloudUser){
