@@ -8,7 +8,14 @@
 .rb-window{transform-box:fill-box;transform-origin:center;animation:glowpulse 1.4s ease-in-out infinite}
 @keyframes glowpulse{0%,100%{opacity:1}50%{opacity:.6}}
 .rb-window-glint{pointer-events:none}
-.launch-pad{position:relative;height:420px;overflow:hidden;border-radius:30px;background:linear-gradient(180deg,#1c3a5e,#3a7bb5 55%,#a9e0f5);display:flex;align-items:flex-end;justify-content:center;padding-bottom:20px}
+.launch-pad{position:relative;height:420px;overflow:hidden;border-radius:30px;background:linear-gradient(180deg,#1c3a5e,#3a7bb5 55%,#a9e0f5);display:flex;align-items:flex-end;justify-content:center;padding-bottom:40px}
+#launchRocketWrap{position:relative;z-index:2}
+.pad-tower{position:absolute;left:76%;bottom:16px;width:12px;height:240px;background:linear-gradient(180deg,#9aa7b0,#5c6b74);border-radius:6px 6px 0 0;z-index:1}
+.pad-arm{position:absolute;left:-34px;bottom:190px;width:34px;height:9px;background:#5c6b74;border-radius:4px}
+.pad-platform{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);width:220px;height:20px;border-radius:6px;background:repeating-linear-gradient(135deg,#ffcf4d 0 14px,#2a2f36 14px 28px);box-shadow:0 6px 0 #384047,0 12px 16px rgba(0,0,0,.3);z-index:1}
+.pad-leg-l,.pad-leg-r{position:absolute;bottom:-26px;width:14px;height:26px;background:#4f5b63;border-radius:0 0 4px 4px}
+.pad-leg-l{left:34px}
+.pad-leg-r{right:34px}
 .launch-pad.shaking{animation:padshake .1s linear infinite}
 @keyframes padshake{0%{transform:translate(0,0)}25%{transform:translate(1px,-1px)}50%{transform:translate(-1px,1px)}75%{transform:translate(1px,1px)}100%{transform:translate(0,0)}}
 .rocket-build.launch-anim{animation:blastoff 2.3s cubic-bezier(.5,-0.1,.7,.4) forwards}
@@ -28,7 +35,7 @@
 <section id="leaderboardScreen" class="screen"><button class="back" onclick="go('profileScreen')">← Learners</button><div class="lesson-wrap"><span class="tag">FAMILY LEADERBOARD</span><h2>Who's top of the family?</h2><p id="lbSubtitle">See how everyone signed in to this account is getting on.</p><div id="lbSortTabs" class="year-tabs"></div><div id="lbList"></div></div></section>
 <section id="rocketScreen" class="screen"><button class="back" onclick="go('welcome')">← Home</button><div class="lesson-wrap" style="text-align:center"><span class="tag">MY ROCKET</span><h2>Build your rocket</h2><p id="rocketMatchMsg">Mix and match parts from the shop to design your own rocket.</p><div id="rocketPreview" style="margin:20px 0"></div><div class="btnrow" style="justify-content:center"><button class="secondary" onclick="openShop()">🛍️ Rocket Shop</button><button class="primary" onclick="launchRocket()">🚀 Launch Rocket!</button></div></div></section>
 <section id="shopScreen" class="screen"><button class="back" onclick="go('rocketScreen')">← My Rocket</button><div class="lesson-wrap"><span class="tag">ROCKET SHOP</span><h2>Kit out your rocket</h2><p id="shopPoints">🪙 0 points to spend</p><div id="shopCatTabs" class="year-tabs"></div><div id="shopList" class="topics"></div></div></section>
-<section id="launchScreen" class="screen"><div class="lesson-wrap" style="text-align:center"><span class="tag">LAUNCHING…</span><h2>3…2…1… blast off!</h2><div id="launchPad" class="launch-pad"><div id="launchRocketWrap"></div></div></div></section>
+<section id="launchScreen" class="screen"><div class="lesson-wrap" style="text-align:center"><span class="tag">LAUNCHING…</span><h2>3…2…1… blast off!</h2><div id="launchPad" class="launch-pad"><div class="pad-tower"><div class="pad-arm"></div></div><div class="pad-platform"><div class="pad-leg-l"></div><div class="pad-leg-r"></div></div><div id="launchRocketWrap"></div></div></div></section>
 <section id="spaceScreen" class="screen"><div class="lesson-wrap" style="text-align:center"><span class="tag">IN FLIGHT</span><h2 id="spaceMsg">Zooming through space…</h2><div id="spaceTrack" class="space-track"></div><button id="spaceBackBtn" class="primary hidden" style="margin-top:20px" onclick="go('rocketScreen')">🏠 Back to my rocket</button></div></section>
 <section id="welcome" class="screen"><div class="hero"><div><span class="tag">UK PRIMARY MATHEMATICS</span><h1>Learn maths,<br>one bright step at a time.</h1><p>Friendly, short lessons built around the main National Curriculum topics. First understand the idea, then practise it with confidence.</p><button class="primary" onclick="chooseStage()">Choose my learning path →</button></div><div class="rocket">🚀</div></div></section>
 <section id="choose" class="screen"><button class="back" onclick="go('welcome')">← Home</button><h2>Where would you like to begin?</h2><p>Pick a key stage, then choose the year that feels right. Learners can move at their own pace.</p><div class="choose"><article class="stage"><div class="num">🌱</div><h3>Key Stage 1</h3><p>Years 1–2 · Building number sense, early calculation and everyday maths.</p><button class="primary" onclick="openStage('KS1')">Explore KS1 →</button></article><article class="stage"><div class="num">🌟</div><h3>Key Stage 2</h3><p>Years 3–6 · Deepening fluency, reasoning and problem solving.</p><button class="primary" onclick="openStage('KS2')">Explore KS2 →</button></article></div>
@@ -282,10 +289,8 @@ function saveProfilesList(list){saveProfilesListRaw(list);queueCloudPush()}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 const profileIcons=['🦄','🚀','🐯','🦊','🐬','🦉','🐙','🌟','🐸','🦋','🐶','🐱','🐼','🦁','🐨','🐵','🦖','🐢','🐝','🌈','⚡','🍕'];
 const ROCKET_CATEGORIES=[
- {id:'antenna',name:'Antenna',icon:'📡'},
  {id:'nose',name:'Nose Cone',icon:'🔺'},
  {id:'body',name:'Main Body',icon:'🚀'},
- {id:'wings',name:'Wings',icon:'🪽'},
  {id:'lights',name:'Cabin Lights',icon:'💡'},
  {id:'boosters',name:'Fins',icon:'📐'},
  {id:'flames',name:'Engine Flames',icon:'🔥'}
@@ -583,12 +588,11 @@ function rocketVisualHTML(extraClass){
  let noseFill=rocketGradFill('nose'),noseGloss=rocketPatternFill('nose');
  let bodyFill=rocketGradFill('body'),bodyGloss=rocketPatternFill('body');
  let boosterFill=rocketGradFill('boosters');
- let wingsFill=rocketGradFill('wings'),antennaFill=rocketGradFill('antenna');
  let lightColor=(ROCKET_SETS.find(s=>s.id===(rocketEquipped.lights||'classic'))||ROCKET_SETS[0]).c1;
  let flameFill=`url(#flamegrad-${rocketEquipped.flames||'classic'})`;
  let noseD='M100,12 C130,54 141,96 141,138 L59,138 C59,96 70,54 100,12 Z';
  let bodyRect='x="60" y="98" width="80" height="198" rx="34"';
- return `<div class="rocket-build ${extraClass||''}"><svg viewBox="0 0 200 400" class="rocket-svg" preserveAspectRatio="xMidYMid meet" style="overflow:visible">${rocketDefsSVG()}<g stroke="#17364a" stroke-width="3" stroke-linejoin="round" filter="url(#rbShadow)"><path class="rb-flame" d="M100,285 C136,296 130,352 100,392 C70,352 64,296 100,285 Z" fill="${flameFill}"/><path class="rb-flame-inner" d="M100,298 C120,306 116,344 100,370 C84,344 80,306 100,298 Z" fill="#fff3c4" opacity=".85" stroke="none"/><rect x="26" y="205" width="32" height="91" rx="15" fill="${boosterFill}"/><rect x="142" y="205" width="32" height="91" rx="15" fill="${boosterFill}"/><rect ${bodyRect} fill="${bodyFill}"/>${bodyGloss?`<rect ${bodyRect} fill="${bodyGloss}" stroke="none"/>`:''}<path d="M60,142 L18,160 L60,178 Z" fill="${wingsFill}"/><path d="M140,142 L182,160 L140,178 Z" fill="${wingsFill}"/><path d="${noseD}" fill="${noseFill}"/>${noseGloss?`<path d="${noseD}" fill="${noseGloss}" stroke="none"/>`:''}<rect x="97" y="-16" width="6" height="30" rx="3" fill="${antennaFill}"/><circle cx="100" cy="-20" r="8" fill="${antennaFill}"/><circle cx="100" cy="178" r="26" fill="#17364a"/><circle class="rb-window" cx="100" cy="178" r="21" fill="${lightColor}" filter="url(#rbGlow)"/><ellipse cx="91" cy="169" rx="6" ry="4" fill="#fff" opacity=".55" stroke="none"/></g></svg></div>`;
+ return `<div class="rocket-build ${extraClass||''}"><svg viewBox="0 0 200 400" class="rocket-svg" preserveAspectRatio="xMidYMid meet" style="overflow:visible">${rocketDefsSVG()}<g stroke="#17364a" stroke-width="3" stroke-linejoin="round" filter="url(#rbShadow)"><path class="rb-flame" d="M100,285 C136,296 130,352 100,392 C70,352 64,296 100,285 Z" fill="${flameFill}"/><path class="rb-flame-inner" d="M100,298 C120,306 116,344 100,370 C84,344 80,306 100,298 Z" fill="#fff3c4" opacity=".85" stroke="none"/><rect x="26" y="205" width="32" height="91" rx="15" fill="${boosterFill}"/><rect x="142" y="205" width="32" height="91" rx="15" fill="${boosterFill}"/><rect ${bodyRect} fill="${bodyFill}"/>${bodyGloss?`<rect ${bodyRect} fill="${bodyGloss}" stroke="none"/>`:''}<path d="${noseD}" fill="${noseFill}"/>${noseGloss?`<path d="${noseD}" fill="${noseGloss}" stroke="none"/>`:''}<circle cx="100" cy="178" r="26" fill="#17364a"/><circle class="rb-window" cx="100" cy="178" r="21" fill="${lightColor}" filter="url(#rbGlow)"/><ellipse cx="91" cy="169" rx="6" ry="4" fill="#fff" opacity=".55" stroke="none"/></g></svg></div>`;
 }
 function rocketMatchInfo(){
  let counts={};
