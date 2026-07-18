@@ -263,8 +263,8 @@ Y6:[
 let stage='KS1',year='Y1',topic=null,topicIndex=0,part=0,testIndex=0,score=0,testQuestions=[],currentTestTier=1;
 let testFormat='standard',testInputMode='choice',speedSecondsLeft=45,speedInterval=null,ghostTimer=null,crazyInterval=null,speedCorrect=0,speedAttempted=0,speedQueue=[],bossHP=100,bossLives=3,bossMaxLives=3,bossDefeatedEarly=false,roundIntroTimeout=null,currentStreak=0,streakBonusTotal=0,lightningInterval=null,lightningSecondsLeft=6;
 function getNextSpeedQuestion(ti,tier){if(speedQueue.length===0)speedQueue=makeTieredQuestions(year,ti,tier);return speedQueue.shift()}
-function tierFormat(tier){if(tier===4)return'speed';if(tier===8)return'lightning';if(tier===2)return'ghost';if(tier===6)return'streak';if(tier===3)return'crazy';if(tier===7)return'doublecrazy';if(tier===5||tier===10)return'boss';return'standard'}
-function tierInputMode(tier){let f=tierFormat(tier);if(f==='ghost'||f==='crazy'||f==='doublecrazy'||f==='streak')return'choice';return tier>=6?'text':'choice'}
+function tierFormat(tier){if(tier===4)return'speed';if(tier===8)return'lightning';if(tier===2)return'ghost';if(tier===6)return'streak';if(tier===3)return'crazy';if(tier===7)return'doublecrazy';if(tier===9)return'history';if(tier===5||tier===10)return'boss';return'standard'}
+function tierInputMode(tier){let f=tierFormat(tier);if(f==='ghost'||f==='crazy'||f==='doublecrazy'||f==='streak'||f==='history')return'choice';return tier>=6?'text':'choice'}
 function resetBoss(tier){bossMaxLives=tier===10?1:2;bossHP=100;bossLives=bossMaxLives;bossDefeatedEarly=false;updateBossUI()}
 function updateBossUI(){let fill=document.getElementById('bossBarFill');if(fill)fill.style.width=Math.max(0,bossHP)+'%';let lives=document.getElementById('bossLivesEl');if(lives)lives.textContent='❤️'.repeat(Math.max(0,bossLives))+'🖤'.repeat(Math.max(0,bossMaxLives-bossLives))}
 function bossHit(correct){if(correct){bossHP=Math.max(0,bossHP-20);let ch=document.getElementById('bossChar');if(ch){ch.classList.remove('hit');void ch.offsetWidth;ch.classList.add('hit')}}else{bossLives=Math.max(0,bossLives-1)}updateBossUI()}
@@ -273,7 +273,7 @@ function padBackspace(){let input=document.getElementById('textAnswerInput');if(
 function toggleTextAnswer(){document.getElementById('textToggleWrap').classList.add('hidden');document.getElementById('textAnswerWrap').classList.remove('hidden')}
 function stopTestTimers(){if(speedInterval){clearInterval(speedInterval);speedInterval=null}if(ghostTimer){clearTimeout(ghostTimer);ghostTimer=null}if(crazyInterval){clearInterval(crazyInterval);crazyInterval=null}if(lightningInterval){clearInterval(lightningInterval);lightningInterval=null}if(roundIntroTimeout){clearTimeout(roundIntroTimeout);roundIntroTimeout=null}let st=document.getElementById('speedTimer');if(st)st.classList.add('hidden');let ri=document.getElementById('roundIntro');if(ri)ri.classList.remove('show')}
 function showRoundIntro(format,callback,tier){
- let labels={ghost:'👻 Ghost Round!',crazy:'🌀 Crazy Round!',doublecrazy:'🌪️ Double Crazy Round!',speed:'⏱️ Speed Round!',lightning:'⚡ Lightning Round!',streak:'🔥 Streak Round!',boss:tier===10?'🐲 Big Boss Battle!':'🐉 Mini Boss Battle!'};
+ let labels={ghost:'👻 Ghost Round!',crazy:'🌀 Crazy Round!',doublecrazy:'🌪️ Double Crazy Round!',speed:'⏱️ Speed Round!',lightning:'⚡ Lightning Round!',streak:'🔥 Streak Round!',history:'📜 History Round!',boss:tier===10?'🐲 Big Boss Battle!':'🐉 Mini Boss Battle!'};
  let el=document.getElementById('roundIntro'),txt=document.getElementById('roundIntroText');
  if(!labels[format]){el.classList.remove('show');callback();return}
  txt.textContent=labels[format];
@@ -881,7 +881,7 @@ function renderModule(){document.getElementById('moduleTag').textContent=`YEAR $
  }
  renderTestsPanel();
 }
-function tierFormatIcon(tier){let f=tierFormat(tier);if(f==='ghost')return'👻';if(f==='crazy')return'🌀';if(f==='doublecrazy')return'🌪️';if(f==='speed')return'⏱️';if(f==='lightning')return'⚡';if(f==='streak')return'🔥';if(f==='boss')return'🐉';if(tierInputMode(tier)==='text')return'✍️';return''}
+function tierFormatIcon(tier){let f=tierFormat(tier);if(f==='ghost')return'👻';if(f==='crazy')return'🌀';if(f==='doublecrazy')return'🌪️';if(f==='speed')return'⏱️';if(f==='lightning')return'⚡';if(f==='streak')return'🔥';if(f==='history')return'📜';if(f==='boss')return'🐉';if(tierInputMode(tier)==='text')return'✍️';return''}
 function pathNodeCoords(){
  let coords=[],rows=5,rowH=100/rows;
  for(let idx=0;idx<10;idx++){
@@ -930,7 +930,7 @@ function renderTestsPanel(){
   let locked=!devMode&&i>tp.unlocked,icon=tp.gold[i]?'🌟':tp.star[i]?'⭐':locked?'🔒':'▫️',fmt=tierFormatIcon(i);
   nodes+=`<button id="pathNode${i}" class="path-node ${locked?'locked':''} ${tp.gold[i]?'gold':''}" style="left:${c.x}%;top:${c.y}%" ${locked?'disabled':''} onclick="startTierTest(${topicIndex},${i})"><span class="tile-num">${i}</span><span class="tile-fmt">${fmt}</span><span class="tile-icon">${icon}</span></button>`;
  });
- card.innerHTML=`<h3 id="testsCardTitle">${mastered?'🌟 Challenges — full marks!':'Challenges'}</h3><p>Score 4/5 to unlock the next challenge — reach Challenge 5 to unlock the next topic.</p><div class="format-legend"><span class="legend-chip">👻 Ghost</span><span class="legend-chip">🌀 Crazy</span><span class="legend-chip">🌪️ Double Crazy</span><span class="legend-chip">⏱️ Speed</span><span class="legend-chip">⚡ Lightning</span><span class="legend-chip">🔥 Streak</span><span class="legend-chip">🐉 Boss</span><span class="legend-chip">✍️ Type</span></div><details class="legend-details"><summary>How scoring works</summary><p>Score 5/5 for a gold star. Speed rounds need 8 correct to pass, 12 for gold. Lightning gives you just a few seconds per question. Streak rounds award bonus points for consecutive correct answers. You can always type your answer instead of tapping.</p></details><div class="progress-path"><svg class="path-svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${pathD.trim()}" fill="none" stroke="#bfe0f0" stroke-width="3" vector-effect="non-scaling-stroke" stroke-dasharray="2 7" stroke-linecap="round" stroke-linejoin="round"/></svg>${nodes}<div id="rocketMarker" class="rocket-marker rocket-land" style="left:${rocketCoord.x}%;top:${rocketCoord.y}%">🚀</div></div>`;
+ card.innerHTML=`<h3 id="testsCardTitle">${mastered?'🌟 Challenges — full marks!':'Challenges'}</h3><p>Score 4/5 to unlock the next challenge — reach Challenge 5 to unlock the next topic.</p><div class="format-legend"><span class="legend-chip">👻 Ghost</span><span class="legend-chip">🌀 Crazy</span><span class="legend-chip">🌪️ Double Crazy</span><span class="legend-chip">⏱️ Speed</span><span class="legend-chip">⚡ Lightning</span><span class="legend-chip">🔥 Streak</span><span class="legend-chip">📜 History</span><span class="legend-chip">🐉 Boss</span><span class="legend-chip">✍️ Type</span></div><details class="legend-details"><summary>How scoring works</summary><p>Score 5/5 for a gold star. Speed rounds need 8 correct to pass, 12 for gold. Lightning gives you just a few seconds per question. Streak rounds award bonus points for consecutive correct answers. History rounds have one extra question — each answer is actually the answer to the question before it — so you need 5/6 to pass and 6/6 for gold. You can always type your answer instead of tapping.</p></details><div class="progress-path"><svg class="path-svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${pathD.trim()}" fill="none" stroke="#bfe0f0" stroke-width="3" vector-effect="non-scaling-stroke" stroke-dasharray="2 7" stroke-linecap="round" stroke-linejoin="round"/></svg>${nodes}<div id="rocketMarker" class="rocket-marker rocket-land" style="left:${rocketCoord.x}%;top:${rocketCoord.y}%">🚀</div></div>`;
  document.getElementById('moduleList').after(card);
  lastPathTopicKey=topicKey;
 }
@@ -1020,6 +1020,41 @@ function makeTieredQuestions(y,ti,tier){
  if(ti===2){let factorMax=Math.min(12,3+tier),facts=[],seen=new Set(),tries=0;while(facts.length<5&&tries<300){tries++;let a=rand(2,factorMax),b=rand(2,factorMax),key=`${a}x${b}`;if(!seen.has(key)){seen.add(key);facts.push([a,b,a*b])}}while(facts.length<5){let a=rand(2,factorMax),b=rand(2,factorMax);facts.push([a,b,a*b])}let [a,b,p]=facts[0],[c,d,q]=facts[1],[e,f,r]=facts[2],[g,h,s]=facts[3],[j,k,t]=facts[4];return [mc(mulPhrase(a,b,p),p,[p-a,p+a,p+1]),mc(`There are ${d} groups of ${c}. How many altogether?`,q,[q-1,q+1,c+d]),mc(divPhrase(r,e,f),f,[f-1,f+1,e]),mc(`Complete: ${g} × □ = ${s}`,h,[h-1,h+1,h+2]),mc(divPhrase(t,k,j),j,[j-1,j+1,k])]}
  let denomsByLevel={1:[2,4],2:[2,3,4,6],3:[2,4,5,8,10]},opts=denomsByLevel[level]||[2,4,5,8,10],denominator=opts[Math.min(opts.length-1,Math.floor((tier-1)*opts.length/10))],unit=rand(2,10)*denominator,part=unit/denominator;return [mc(fracPhrase(denominator,unit),part,[part-1,part+1,part+2]),mc(`How many equal parts make a whole when using fifths?`,5,[2,3,4]),mc('Which fraction is equal to one half?','2/4',['1/4','3/4','1/3']),mc(`If ${unit} sweets are shared equally between ${denominator} children, how many does each child get?`,part,[part-1,part+1,part+2]),mc('Which is the largest fraction?','3/4',['1/4','1/2','1/3'])]
 }
+const HISTORY_JOKE_QUESTIONS=[
+ {q:'What does a shy rocket say before blastoff?',wrong:['Nothing — it just blushes 🚀','Ready, set, maybe?','Umm... hi, sky?']},
+ {q:"How many jellybeans fit inside an astronaut's helmet?",wrong:['A gazillion','None — it is full of snacks','Exactly one too many']},
+ {q:"What is a ghost's favourite school subject?",wrong:['Boo-logy','Spelling (they are spooky at it)','Lunch, obviously']},
+ {q:'Why did the calculator refuse to talk to the pencil?',wrong:['It had too many problems','It felt deleted','It could not add up the chat']},
+ {q:'What do you call a dinosaur that loves maths?',wrong:['A thesaurus','A do-you-think-he-saurus','A tricera-tops-the-class']},
+ {q:'Why did the rocket eat its greens?',wrong:['To grow up big and strong','Because Mission Control said so','For extra sparkle power']},
+ {q:"What is a robot's favourite snack?",wrong:['Micro-chips','Byte-sized biscuits','Silicon crisps']}
+];
+function buildHistoryOptions(rawOptions,correctVal){
+ let cv=String(correctVal),pool=[];
+ (rawOptions||[]).forEach(v=>{if(String(v)!==cv&&pool.length<3)pool.push(v)});
+ let filler=1;while(pool.length<3){let f=`Option ${filler}`;if(f!==cv&&!pool.includes(f))pool.push(f);filler++}
+ let combined=shuffle([...pool,correctVal]);
+ return [combined,combined.findIndex(v=>String(v)===cv)];
+}
+function historyHint(text){return `<div style="font-size:.5em;font-weight:800;color:var(--muted);margin-bottom:8px">${text}</div>`}
+function buildHistoryRoundsFromBase(base,joke){
+ let rounds=[];
+ rounds.push([historyHint("🎯 Tap ANY answer for this one — it doesn't matter which!")+base[0][0],base[0][1],base[0][2],'tapAnywhere']);
+ for(let i=1;i<base.length;i++){
+  let prevCorrectVal=base[i-1][1][base[i-1][2]];
+  let [answers,correctIdx]=buildHistoryOptions(base[i][1],prevCorrectVal);
+  rounds.push([historyHint('🧠 The answer to THIS question is the answer to the LAST question.')+base[i][0],answers,correctIdx]);
+ }
+ let lastCorrectVal=base[base.length-1][1][base[base.length-1][2]];
+ let [jAnswers,jCorrectIdx]=buildHistoryOptions(joke.wrong,lastCorrectVal);
+ rounds.push([historyHint('🎁 Last one! Same rule — answer the LAST question.')+joke.q,jAnswers,jCorrectIdx]);
+ return rounds;
+}
+function makeHistoryQuestions(y,ti,tier){
+ let base=makeTieredQuestions(y,ti,tier);
+ let joke=HISTORY_JOKE_QUESTIONS[rand(0,HISTORY_JOKE_QUESTIONS.length-1)];
+ return buildHistoryRoundsFromBase(base,joke);
+}
 function expandQuestionsToEight(qs){
  let allAnswers=[];qs.forEach(q=>q[1].forEach(a=>allAnswers.push(a)));
  return qs.map(q=>{
@@ -1051,6 +1086,9 @@ function startTierTest(ti,tier){
   speedCorrect=0;speedAttempted=0;speedQueue=[];
   testQuestions=[getNextSpeedQuestion(ti,tier)];
   totalQuestions=Infinity;
+ } else if(testFormat==='history'){
+  testQuestions=makeHistoryQuestions(year,ti,tier);
+  totalQuestions=testQuestions.length;
  } else {
   testQuestions=makeTieredQuestions(year,ti,tier);
   if(testFormat==='doublecrazy')testQuestions=expandQuestionsToEight(testQuestions);
@@ -1129,7 +1167,7 @@ function registerAnswer(correct,selectedIdx){
  document.getElementById('textAnswerInput').disabled=true;
  document.querySelectorAll('#numpad button,.pad-actions button').forEach(b=>b.disabled=true);
  document.getElementById('textToggleWrap').classList.add('hidden');
- if(buttons.length){buttons[q[2]].classList.add('correct');if(selectedIdx!=null&&selectedIdx!==q[2])buttons[selectedIdx].classList.add('wrong')}
+ if(buttons.length){if(q[3]==='tapAnywhere'&&selectedIdx!=null){buttons[selectedIdx].classList.add('correct')}else{buttons[q[2]].classList.add('correct');if(selectedIdx!=null&&selectedIdx!==q[2])buttons[selectedIdx].classList.add('wrong')}}
  let qEl=document.getElementById('questionText');qEl.innerHTML=q[0];qEl.classList.remove('ghosted');
  let fb=document.getElementById('feedback'),next=document.getElementById('testNext'),hasButtons=buttons.length>0;
  if(testFormat==='boss')bossHit(correct);
@@ -1163,11 +1201,24 @@ function registerAnswer(correct,selectedIdx){
   next.textContent=testIndex===totalQuestions-1?'See result →':'Next question →';next.classList.remove('hidden');
   return;
  }
+ if(testFormat==='history'){
+  if(q[3]==='tapAnywhere'){
+   score++;addPoints(practiceMode?5:15);
+   fb.textContent='Nice tap! Remember that answer — you\'ll need it next question 🧠';fb.style.color='#157345';
+  } else if(correct){
+   score++;addPoints(practiceMode?5:15);
+   fb.textContent='Correct! Now remember THIS answer for the next question 🧠';fb.style.color='#157345';
+  } else {
+   fb.textContent=hasButtons?'Not quite — the correct answer is highlighted.':`Not quite — the correct answer was "${q[1][q[2]]}".`;fb.style.color='#ad413b';
+  }
+  next.textContent=testIndex===totalQuestions-1?'See result →':'Next question →';next.classList.remove('hidden');
+  return;
+ }
  if(correct){score++;addPoints(practiceMode?5:15);fb.textContent='Correct!';fb.style.color='#157345'}
  else{fb.textContent=hasButtons?'Not quite — the correct answer is highlighted.':`Not quite — the correct answer was "${q[1][q[2]]}".`;fb.style.color='#ad413b'}
  next.textContent=testIndex===totalQuestions-1?'See result →':'Next question →';next.classList.remove('hidden')
 }
-function answer(selected){let q=testQuestions[testIndex];registerAnswer(selected===q[2],selected)}
+function answer(selected){let q=testQuestions[testIndex];if(q[3]==='tapAnywhere'){registerAnswer(true,selected);return}registerAnswer(selected===q[2],selected)}
 function submitTextAnswer(){
  let input=document.getElementById('textAnswerInput');
  if(input.disabled||!input.value.trim())return;
@@ -1193,10 +1244,10 @@ function showResult(){
   let b=document.getElementById('resultButton');b.textContent='Back to lessons →';b.onclick=()=>go('module');
   go('results');return;
  }
- let tier=currentTestTier,tp=getTP(year,topicIndex),isBigBoss=testFormat==='boss'&&tier===10,passed=isBigBoss?score===5:score>=4,firstStar=false,newGold=false,newTopicUnlock=false,nextTopicName=null;
+ let tier=currentTestTier,tp=getTP(year,topicIndex),isBigBoss=testFormat==='boss'&&tier===10,isHistory=testFormat==='history',fullScore=isHistory?6:5,passed=isBigBoss?score===5:isHistory?score>=5:score>=4,firstStar=false,newGold=false,newTopicUnlock=false,nextTopicName=null;
  if(passed){
   if(!tp.star[tier]){tp.star[tier]=true;firstStar=true}
-  if(score===5&&!tp.gold[tier]){tp.gold[tier]=true;newGold=true}
+  if(score===fullScore&&!tp.gold[tier]){tp.gold[tier]=true;newGold=true}
   if(tier===tp.unlocked&&tp.unlocked<10)tp.unlocked=tier+1;
   if(tier>=5){let before=progress[year]||0;if(before<topicIndex+1){progress[year]=topicIndex+1;storage.setItem(pKey('progress'),JSON.stringify(progress));newTopicUnlock=true;nextTopicName=data[year][topicIndex+1]?data[year][topicIndex+1][1]:null}}
   addPoints((firstStar?30:0)+(newTopicUnlock?50:0));
@@ -1209,17 +1260,19 @@ function showResult(){
  document.getElementById('resultIcon').textContent=!passed?(testFormat==='boss'?'😱':'📘'):newMastery?'🌟':newTopicUnlock?'🚀':'🎉';
  document.getElementById('resultKind').textContent=`CHALLENGE ${tier} OF 10`;
  document.getElementById('resultTitle').textContent=passed?(tier<10?'Challenge passed!':'Final challenge complete!'):(bossFailTitle||'Almost there');
- document.getElementById('stars').textContent='★'.repeat(score)+'☆'.repeat(5-score);
- let msg=testFormat==='speed'?[`You answered ${speedAttempted} question${speedAttempted===1?'':'s'} in 45 seconds and got ${speedCorrect} correct.`]:[`You scored ${score} out of 5.`];
+ document.getElementById('stars').textContent='★'.repeat(score)+'☆'.repeat(fullScore-score);
+ let msg=testFormat==='speed'?[`You answered ${speedAttempted} question${speedAttempted===1?'':'s'} in 45 seconds and got ${speedCorrect} correct.`]:[`You scored ${score} out of ${fullScore}.`];
  if(passed){
   if(testFormat==='speed'){let bonus=[];if(firstStar)bonus.push('30');if(newTopicUnlock)bonus.push('50');msg.push(`You earned 5 points per correct answer${bonus.length?' plus '+bonus.join('+')+' bonus':''}.`)}
   else if(testFormat==='streak'){let base=score*15,total=base+streakBonusTotal;msg.push(`You earned ${total} points${streakBonusTotal?` (${base} + ${streakBonusTotal} streak bonus)`:''}${firstStar?' + 30 bonus':''}${newTopicUnlock?' + 50 bonus':''}.`)}
   else msg.push(`You earned ${score*15}${firstStar?' + 30 bonus':''}${newTopicUnlock?' + 50 bonus':''} points.`);
   if(tier<10)msg.push(`Challenge ${tier+1} is now unlocked.`);
   if(newTopicUnlock)msg.push('The next topic is now unlocked!');
-  if(score===5)msg.push(testFormat==='boss'?(tier===10?'💥 Big boss defeated — gold star earned!':'💥 Mini boss defeated — gold star earned!'):'Perfect score — gold star earned for this challenge!');
+  if(score===fullScore)msg.push(testFormat==='boss'?(tier===10?'💥 Big boss defeated — gold star earned!':'💥 Mini boss defeated — gold star earned!'):'Perfect score — gold star earned for this challenge!');
  } else if(testFormat==='boss'&&tier===10){
   msg.push('The big boss needs a perfect 5 out of 5 — no mistakes allowed. Give it another go!');
+ } else if(isHistory){
+  msg.push('You need 5 out of 6 to unlock the next challenge. Give it another go!');
  } else {
   msg.push('You need 4 out of 5 to unlock the next challenge. Give it another go!');
  }
