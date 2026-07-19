@@ -990,10 +990,20 @@ function numberQuestionGenerators(textMode,level){
   n=>n>=10?mc(`What digit is in the tens place of ${n}?`,Math.floor(n/10)%10,[n%10,(Math.floor(n/10)+1)%10,(Math.floor(n/10)+9)%10]):null
  ];
  if(!textMode)gens.push(n=>mc(`Is ${n} an odd or even number?`,n%2===0?'even':'odd',[n%2===0?'odd':'even','a fraction','neither']));
+ if(level===1){
+  gens.push(()=>{let step=[2,5,10][rand(0,2)],start=rand(0,4)*step,seq=[start,start+step,start+2*step],next=start+3*step;return mc(`Count on in ${step}s: ${seq.join(', ')}, ?`,next,[next+step,next-step,seq[2]])});
+  gens.push(()=>{let a=rand(1,20),b=rand(1,20);while(b===a)b=rand(1,20);let symbol=a>b?'>':'<',wrongSymbols=['<','>','='].filter(s=>s!==symbol).concat(['≠']);return mc(`Which symbol makes this true: ${a} ▢ ${b}?`,symbol,wrongSymbols)});
+ }
+ if(level>=3){
+  gens.push(()=>{let unitOptions=level>=5?[10,100,1000]:level===4?[10,100]:[10],unit=unitOptions[rand(0,unitOptions.length-1)],steps=rand(3,40),n=unit*steps+rand(1,unit-1),rounded=Math.round(n/unit)*unit;return mc(`Round ${n} to the nearest ${unit}.`,rounded,[rounded-unit,rounded+unit,n])});
+ }
  if(level>=4){
   let romanMax=level>=5?1000:100;
   gens.push(()=>{let r=rand(1,romanMax),roman=toRoman(r);return mc(`What number does ${roman} represent in Roman numerals?`,r,[r+1,Math.max(1,r-1),r+10])});
   if(!textMode)gens.push(()=>{let r=rand(1,romanMax),roman=toRoman(r),wrongs=new Set();while(wrongs.size<3){let w=rand(1,romanMax);if(w!==r)wrongs.add(toRoman(w))}return mc(`What is ${r} written in Roman numerals?`,roman,[...wrongs])});
+  gens.push(()=>{let a=rand(-15,15),b=rand(-15,15);while(b===a)b=rand(-15,15);return mc(`Which number is smaller, ${a} or ${b}?`,Math.min(a,b),[Math.max(a,b),a===Math.min(a,b)?b+1:a+1,0])});
+  gens.push(()=>{let n=rand(-10,8);return mc(`What is one less than ${n}?`,n-1,[n+1,n,n-2])});
+  gens.push(()=>{let t=rand(-4,10),d=rand(3,15),newTemp=t-d;return mc(`The temperature was ${t}°C and it dropped by ${d}°C. What is the new temperature?`,`${newTemp}°C`,[`${newTemp+2}°C`,`${newTemp-2}°C`,`${t+d}°C`])});
  }
  return gens;
 }
