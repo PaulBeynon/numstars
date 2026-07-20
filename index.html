@@ -263,9 +263,8 @@ Y6:[
 let stage='KS1',year='Y1',topic=null,topicIndex=0,part=0,testIndex=0,score=0,testQuestions=[],currentTestTier=1,voiceModeOn=false;
 let testFormat='standard',testInputMode='choice',speedSecondsLeft=45,speedInterval=null,ghostTimer=null,crazyInterval=null,speedCorrect=0,speedAttempted=0,speedQueue=[],bossHP=100,bossLives=3,bossMaxLives=3,bossDefeatedEarly=false,roundIntroTimeout=null,lightningInterval=null,lightningSecondsLeft=6;
 function getNextSpeedQuestion(ti,tier){if(speedQueue.length===0)speedQueue=makeTieredQuestions(year,ti,tier);return speedQueue.shift()}
-function isBackToFrontEligible(ti,y){return !getSubs(ti,y)&&(ti===1||ti===2||ti===3)}
-function tierFormat(tier,ti,y){if(tier===4)return'speed';if(tier===8)return'lightning';if(tier===2)return'ghost';if(tier===3)return'crazy';if(tier===7)return'doublecrazy';if(tier===9)return'history';if(tier===5||tier===10)return'boss';if(tier===6){let effTi=ti===undefined?topicIndex:ti,effY=y===undefined?year:y;return isBackToFrontEligible(effTi,effY)?'backtofront':'truefalse'}return'standard'}
-function tierInputMode(tier,ti,y){let f=tierFormat(tier,ti,y);if(f==='ghost'||f==='crazy'||f==='doublecrazy'||f==='backtofront'||f==='truefalse'||f==='history')return'choice';return tier>=6?'text':'choice'}
+function tierFormat(tier,ti,y){if(tier===4)return'speed';if(tier===8)return'lightning';if(tier===2)return'ghost';if(tier===3)return'crazy';if(tier===7)return'doublecrazy';if(tier===9)return'history';if(tier===5||tier===10)return'boss';if(tier===6)return'truefalse';return'standard'}
+function tierInputMode(tier,ti,y){let f=tierFormat(tier,ti,y);if(f==='ghost'||f==='crazy'||f==='doublecrazy'||f==='truefalse'||f==='history')return'choice';return tier>=6?'text':'choice'}
 function resetBoss(tier){bossMaxLives=tier===10?1:2;bossHP=100;bossLives=bossMaxLives;bossDefeatedEarly=false;updateBossUI()}
 function updateBossUI(){let fill=document.getElementById('bossBarFill');if(fill)fill.style.width=Math.max(0,bossHP)+'%';let lives=document.getElementById('bossLivesEl');if(lives)lives.textContent='❤️'.repeat(Math.max(0,bossLives))+'🖤'.repeat(Math.max(0,bossMaxLives-bossLives))}
 function bossHit(correct){if(correct){bossHP=Math.max(0,bossHP-20);let ch=document.getElementById('bossChar');if(ch){ch.classList.remove('hit');void ch.offsetWidth;ch.classList.add('hit')}}else{bossLives=Math.max(0,bossLives-1)}updateBossUI()}
@@ -314,7 +313,7 @@ function toggleVoiceMode(){
 }
 function stopTestTimers(){if(speedInterval){clearInterval(speedInterval);speedInterval=null}if(ghostTimer){clearTimeout(ghostTimer);ghostTimer=null}if(crazyInterval){clearInterval(crazyInterval);crazyInterval=null}if(lightningInterval){clearInterval(lightningInterval);lightningInterval=null}if(roundIntroTimeout){clearTimeout(roundIntroTimeout);roundIntroTimeout=null}let st=document.getElementById('speedTimer');if(st)st.classList.add('hidden');let ri=document.getElementById('roundIntro');if(ri)ri.classList.remove('show')}
 function showRoundIntro(format,callback,tier){
- let labels={ghost:'👻 Ghost Round!',crazy:'🌀 Crazy Round!',doublecrazy:'🌪️ Double Crazy Round!',speed:'⏱️ Speed Round!',lightning:'⚡ Lightning Round!',backtofront:'🙃 Back to Front Round!',truefalse:'🤔 True or False Round!',history:'📜 History Round!',boss:tier===10?'🐲 Big Boss Battle!':'🐉 Mini Boss Battle!'};
+ let labels={ghost:'👻 Ghost Round!',crazy:'🌀 Crazy Round!',doublecrazy:'🌪️ Double Crazy Round!',speed:'⏱️ Speed Round!',lightning:'⚡ Lightning Round!',truefalse:'🤔 True or False Round!',history:'📜 History Round!',boss:tier===10?'🐲 Big Boss Battle!':'🐉 Mini Boss Battle!'};
  let el=document.getElementById('roundIntro'),txt=document.getElementById('roundIntroText');
  if(!labels[format]){el.classList.remove('show');callback();return}
  txt.textContent=labels[format];
@@ -924,7 +923,7 @@ function renderModule(){document.getElementById('moduleTag').textContent=`YEAR $
  }
  renderTestsPanel();
 }
-function tierFormatIcon(tier,ti,y){let f=tierFormat(tier,ti,y);if(f==='ghost')return'👻';if(f==='crazy')return'🌀';if(f==='doublecrazy')return'🌪️';if(f==='speed')return'⏱️';if(f==='lightning')return'⚡';if(f==='backtofront')return'🙃';if(f==='truefalse')return'🤔';if(f==='history')return'📜';if(f==='boss')return'🐉';if(tierInputMode(tier,ti,y)==='text')return'✍️';return''}
+function tierFormatIcon(tier,ti,y){let f=tierFormat(tier,ti,y);if(f==='ghost')return'👻';if(f==='crazy')return'🌀';if(f==='doublecrazy')return'🌪️';if(f==='speed')return'⏱️';if(f==='lightning')return'⚡';if(f==='truefalse')return'🤔';if(f==='history')return'📜';if(f==='boss')return'🐉';if(tierInputMode(tier,ti,y)==='text')return'✍️';return''}
 function pathNodeCoords(){
  let coords=[],rows=5,rowH=100/rows;
  for(let idx=0;idx<10;idx++){
@@ -973,7 +972,7 @@ function renderTestsPanel(){
   let locked=!devMode&&i>tp.unlocked,icon=tp.gold[i]?'🌟':tp.star[i]?'⭐':locked?'🔒':'▫️',fmt=tierFormatIcon(i,topicIndex,year);
   nodes+=`<button id="pathNode${i}" class="path-node ${locked?'locked':''} ${tp.gold[i]?'gold':''}" style="left:${c.x}%;top:${c.y}%" ${locked?'disabled':''} onclick="startTierTest(${topicIndex},${i})"><span class="tile-num">${i}</span><span class="tile-fmt">${fmt}</span><span class="tile-icon">${icon}</span></button>`;
  });
- card.innerHTML=`<h3 id="testsCardTitle">${mastered?'🌟 Challenges — full marks!':'Challenges'}</h3><p>Score 4/5 to unlock the next challenge — reach Challenge 5 to unlock the next topic.</p><div class="format-legend"><span class="legend-chip">👻 Ghost</span><span class="legend-chip">🌀 Crazy</span><span class="legend-chip">🌪️ Double Crazy</span><span class="legend-chip">⏱️ Speed</span><span class="legend-chip">⚡ Lightning</span><span class="legend-chip">🙃 Back to Front</span><span class="legend-chip">🤔 True/False</span><span class="legend-chip">📜 History</span><span class="legend-chip">🐉 Boss</span><span class="legend-chip">✍️ Type</span></div><details class="legend-details"><summary>How scoring works</summary><p>Score 5/5 for a gold star. Speed rounds need 8 correct to pass, 12 for gold. Lightning gives you just a few seconds per question. Back to Front rounds show you the answer first — you pick the calculation that matches it (only on calculation topics; other topics get a True or False round instead). True or False rounds give you a statement to judge. History rounds have one extra question — each answer is actually the answer to the question before it — so you need 5/6 to pass and 6/6 for gold. You can always type your answer instead of tapping.</p></details><div class="progress-path"><svg class="path-svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${pathD.trim()}" fill="none" stroke="#bfe0f0" stroke-width="3" vector-effect="non-scaling-stroke" stroke-dasharray="2 7" stroke-linecap="round" stroke-linejoin="round"/></svg>${nodes}<div id="rocketMarker" class="rocket-marker rocket-land" style="left:${rocketCoord.x}%;top:${rocketCoord.y}%">🚀</div></div>`;
+ card.innerHTML=`<h3 id="testsCardTitle">${mastered?'🌟 Challenges — full marks!':'Challenges'}</h3><p>Score 4/5 to unlock the next challenge — reach Challenge 5 to unlock the next topic.</p><div class="format-legend"><span class="legend-chip">👻 Ghost</span><span class="legend-chip">🌀 Crazy</span><span class="legend-chip">🌪️ Double Crazy</span><span class="legend-chip">⏱️ Speed</span><span class="legend-chip">⚡ Lightning</span><span class="legend-chip">🤔 True/False</span><span class="legend-chip">📜 History</span><span class="legend-chip">🐉 Boss</span><span class="legend-chip">✍️ Type</span></div><details class="legend-details"><summary>How scoring works</summary><p>Score 5/5 for a gold star. Speed rounds need 8 correct to pass, 12 for gold. Lightning gives you just a few seconds per question. True or False rounds give you a statement to judge instead of typing an answer. History rounds have one extra question — each answer is actually the answer to the question before it — so you need 5/6 to pass and 6/6 for gold. You can always type your answer instead of tapping.</p></details><div class="progress-path"><svg class="path-svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${pathD.trim()}" fill="none" stroke="#bfe0f0" stroke-width="3" vector-effect="non-scaling-stroke" stroke-dasharray="2 7" stroke-linecap="round" stroke-linejoin="round"/></svg>${nodes}<div id="rocketMarker" class="rocket-marker rocket-land" style="left:${rocketCoord.x}%;top:${rocketCoord.y}%">🚀</div></div>`;
  document.getElementById('moduleList').after(card);
  lastPathTopicKey=topicKey;
 }
@@ -1067,45 +1066,6 @@ function makeQuestions(){let level=Number(year.slice(1)),type=topicIndex,limit=[
  if(type===3){let denominator=level<3?2:level<5?4:5,unit=rand(2,10)*denominator,part=unit/denominator;return [mc(fracPhrase(denominator,unit),part,[part-1,part+1,part+2]),mc(`How many equal parts make a whole when using fifths?`,5,[2,3,4]),mc('Which fraction is equal to one half?','2/4',['1/4','3/4','1/3']),mc(`If ${unit} sweets are shared equally between ${denominator} children, how many does each child get?`,part,[part-1,part+1,part+2]),mc('Which is the largest fraction?','3/4',['1/4','1/2','1/3'])]}
  if(level===1)return [mc('How many sides does a triangle have?',3,[2,4,5]),mc('How many corners does a square have?',4,[3,5,6]),mc('Which shape has 3 straight sides?','triangle',['circle','square','rectangle']),mc('How many sides does a rectangle have?',4,[2,3,5]),mc('Which shape has no straight sides?','circle',['triangle','square','rectangle'])];if(level===2)return [mc('How many equal sides does a square have?',4,[2,3,5]),mc('How many corners does a rectangle have?',4,[3,5,6]),mc('Which shape has 4 equal sides?','square',['triangle','circle','rectangle']),mc('How many sides does a pentagon have?',5,[3,4,6]),mc('Which shape has 3 corners?','triangle',['square','rectangle','circle'])];if(level===3)return [mc('How many degrees are in a right angle?',90,[45,180,360]),mc('How many right angles make a half turn?',2,[1,3,4]),mc('A right angle is the same as a…','quarter turn',['half turn','full turn','three-quarter turn']),mc('How many degrees are in two right angles?',180,[90,270,360]),mc('Which shape has four right angles?','rectangle',['triangle','circle','pentagon'])];if(level===4)return [mc('How many lines of symmetry does a square have?',4,[1,2,3]),mc('What does a line of symmetry make?','two matching halves',['two different halves','a right angle','a circle']),mc('How many lines of symmetry does a rectangle have?',2,[1,3,4]),mc('Which shape has no line of symmetry?','scalene triangle',['square','rectangle','circle']),mc('A vertical line of symmetry goes…','up and down',['side to side','in a circle','at a right angle only'])];if(level===5){let angle=rand(40,140),other=180-angle;return [mc(`One angle on a straight line is ${angle}°. What is the other angle?`,other,[other-10,other+10,angle]),mc('Angles on a straight line total…','180°',['90°','270°','360°']),mc('If one angle is 90° on a straight line, the other is…','90°',['45°','180°','270°']),mc(`What is 180° − ${angle}?`,other,[other-1,other+1,angle]),mc('A straight line is equal to…','180°',['90°','270°','360°'])]}let a=rand(2,8),b=rand(3,9),c=rand(4,10),mean=(a+b+c)/3;while(!Number.isInteger(mean)){c=rand(4,10);mean=(a+b+c)/3}return [mc(`What is the mean of ${a}, ${b} and ${c}?`,mean,[mean-1,mean+1,mean+2]),mc(`What is the total of ${a}, ${b} and ${c}?`,a+b+c,[a+b+c-1,a+b+c+1,a+b]),mc('To find the mean, you first…','add all the values',['multiply all the values','choose the largest value','choose the smallest value']),mc(`Share ${a+b+c} equally between 3. What is the answer?`,mean,[mean-1,mean+1,mean+2]),mc('The mean is found by…','sharing the total equally',['adding 10','doubling the largest value','counting the smallest value'])]}
 function tieredSubQuestions(subs,tier){let n=subs.length,unlockedCount=tier>=8?n:Math.min(n,Math.floor((tier-1)*n/10)+1),pool=subs.slice(0,unlockedCount),qs=[],guard=0;while(qs.length<5&&guard<10){pool.forEach(s=>{qs=qs.concat(s.gen())});guard++}return shuffle(qs).slice(0,5)}
-function backToFrontEntryAddSub(eff){
- if(Math.random()<0.5){let a=rand(2,Math.max(3,Math.floor(eff*.7))),b=rand(1,Math.max(2,Math.floor(eff*.3)));return {expr:`${a} + ${b}`,val:a+b}}
- let c=rand(3,Math.max(4,eff)),d=rand(1,c-1);return {expr:`${c} − ${d}`,val:c-d};
-}
-function backToFrontEntryMultDiv(factorMax){
- if(Math.random()<0.5){let a=rand(2,factorMax),b=rand(2,factorMax);return {expr:`${a} × ${b}`,val:a*b}}
- let a=rand(2,factorMax),b=rand(2,factorMax),p=a*b;return {expr:`${p} ÷ ${b}`,val:a};
-}
-function backToFrontEntryFraction(level,tier){
- let denomsByLevel={1:[2,4],2:[2,3,4,6],3:[2,4,5,8,10]},opts=denomsByLevel[level]||[2,4,5,8,10],maxIdx=Math.min(opts.length-1,Math.floor((tier-1)*opts.length/10)),d=opts[rand(0,maxIdx)],unit=rand(2,10)*d,part=unit/d;
- return {expr:`1/${d} of ${unit}`,val:part};
-}
-function backToFrontBuildRound(entryFn){
- let qs=[];
- for(let i=0;i<5;i++){
-  let target=entryFn(),seenVals=new Set([target.val]),seenExprs=new Set([target.expr]),wrongs=[],guard=0;
-  while(wrongs.length<3&&guard<300){
-   guard++;
-   let cand=entryFn();
-   if(seenVals.has(cand.val)||seenExprs.has(cand.expr))continue;
-   seenVals.add(cand.val);seenExprs.add(cand.expr);wrongs.push(cand.expr);
-  }
-  let gi=1;
-  while(wrongs.length<3){
-   let bumpVal=target.val+gi,expr=`${Math.max(1,bumpVal)} + 0`;
-   if(!seenVals.has(bumpVal)&&!seenExprs.has(expr)){seenVals.add(bumpVal);seenExprs.add(expr);wrongs.push(expr)}
-   gi++;
-  }
-  qs.push(mc(`Which of these equals ${target.val}?`,target.expr,wrongs));
- }
- return qs;
-}
-function backToFrontQuestions(y,ti,tier){
- let level=Number(y.slice(1));
- if(ti===1){let maxBase=[10,50,100,500,1000,5000][level-1],eff=Math.max(10,Math.round(maxBase*Math.min(1,0.2+0.08*tier)));return backToFrontBuildRound(()=>backToFrontEntryAddSub(eff))}
- if(ti===2){let factorMax=Math.min(12,3+tier);return backToFrontBuildRound(()=>backToFrontEntryMultDiv(factorMax))}
- if(ti===3)return backToFrontBuildRound(()=>backToFrontEntryFraction(level,tier));
- return [];
-}
 function tfNumClaim(trueVal,isTrue,cap){
  if(isTrue)return trueVal;
  let off=rand(1,3),down=trueVal-off,up=trueVal+off,candidates=[];
@@ -1153,19 +1113,22 @@ function genericTrueFalseFromMC(mcTuple){
  let text=`${question}<div style="margin-top:14px;font-size:.6em;font-weight:800;color:var(--blue)">Suggested answer: ${shown}</div>`;
  return {text,isTrue};
 }
-function makeTieredQuestions(y,ti,tier){
- let level=Number(y.slice(1)),subs=getSubs(ti,y),fmt=tierFormat(tier,ti,y);
- if(fmt==='backtofront')return backToFrontQuestions(y,ti,tier);
- if(fmt==='truefalse'){
-  if(ti===0)return trueFalseQuestions(y,tier);
-  let basePool=tieredSubQuestions(subs,tier);
-  return basePool.map(q=>buildTrueFalseTuple(genericTrueFalseFromMC(q)));
- }
- if(subs)return tieredSubQuestions(subs,tier);
+function makeBaseQuestions(y,ti,tier){
+ let level=Number(y.slice(1));
  if(ti===0){let limitBase=[20,100,1000,10000,1000000,10000000][level-1],lowFrac=0.05+0.08*(tier-1),highFrac=Math.min(.95,lowFrac+.15),genN=()=>{let lo=Math.max(2,Math.floor(limitBase*lowFrac)),hi=Math.max(lo+1,Math.floor(limitBase*highFrac));return rand(lo,hi)};return buildNumberQuestions(genN,tierInputMode(tier,ti,y)==='text',level)}
  if(ti===1){let maxBase=[10,50,100,500,1000,5000][level-1],effMax=Math.max(10,Math.round(maxBase*Math.min(1,0.2+0.08*tier))),pairs=[],seen=new Set(),tries=0;while(pairs.length<5&&tries<300){tries++;let a=rand(2,Math.max(3,Math.floor(effMax*.7))),b=rand(1,Math.max(2,Math.floor(effMax*.3))),key=`${a}+${b}`;if(!seen.has(key)){seen.add(key);pairs.push([a,b,a+b])}}while(pairs.length<5){let a=rand(2,Math.max(3,Math.floor(effMax*.7))),b=rand(1,Math.max(2,Math.floor(effMax*.3)));pairs.push([a,b,a+b])}let [a,b,sum]=pairs[0],[c,d,total]=pairs[1],[e,f,amount]=pairs[2],[g,h,result]=pairs[3],[j,k,answer]=pairs[4];return [mc(addPhrase(a,b,sum),sum,[sum-1,sum+1,sum+2]),mc(addPhrase(c,d,total),total,[total-1,total+1,total+2]),mc(subPhrase(amount,e,f),f,[f-1,f+1,f+2]),mc(addPhrase(g,h,result),result,[result-1,result+1,result+2]),mc(`Complete: ${j} + □ = ${answer}`,k,[k-1,k+1,k+2])]}
  if(ti===2){let factorMax=Math.min(12,3+tier),facts=[],seen=new Set(),tries=0;while(facts.length<5&&tries<300){tries++;let a=rand(2,factorMax),b=rand(2,factorMax),key=`${a}x${b}`;if(!seen.has(key)){seen.add(key);facts.push([a,b,a*b])}}while(facts.length<5){let a=rand(2,factorMax),b=rand(2,factorMax);facts.push([a,b,a*b])}let [a,b,p]=facts[0],[c,d,q]=facts[1],[e,f,r]=facts[2],[g,h,s]=facts[3],[j,k,t]=facts[4];return [mc(mulPhrase(a,b,p),p,[p-a,p+a,p+1]),mc(`There are ${d} groups of ${c}. How many altogether?`,q,[q-1,q+1,c+d]),mc(divPhrase(r,e,f),f,[f-1,f+1,e]),mc(`Complete: ${g} × □ = ${s}`,h,[h-1,h+1,h+2]),mc(divPhrase(t,k,j),j,[j-1,j+1,k])]}
  let denomsByLevel={1:[2,4],2:[2,3,4,6],3:[2,4,5,8,10]},opts=denomsByLevel[level]||[2,4,5,8,10],denominator=opts[Math.min(opts.length-1,Math.floor((tier-1)*opts.length/10))],unit=rand(2,10)*denominator,part=unit/denominator;return [mc(fracPhrase(denominator,unit),part,[part-1,part+1,part+2]),mc(`How many equal parts make a whole when using fifths?`,5,[2,3,4]),mc('Which fraction is equal to one half?','2/4',['1/4','3/4','1/3']),mc(`If ${unit} sweets are shared equally between ${denominator} children, how many does each child get?`,part,[part-1,part+1,part+2]),mc('Which is the largest fraction?','3/4',['1/4','1/2','1/3'])]
+}
+function makeTieredQuestions(y,ti,tier){
+ let subs=getSubs(ti,y),fmt=tierFormat(tier,ti,y);
+ if(fmt==='truefalse'){
+  if(ti===0)return trueFalseQuestions(y,tier);
+  let basePool=subs?tieredSubQuestions(subs,tier):makeBaseQuestions(y,ti,tier);
+  return basePool.map(q=>buildTrueFalseTuple(genericTrueFalseFromMC(q)));
+ }
+ if(subs)return tieredSubQuestions(subs,tier);
+ return makeBaseQuestions(y,ti,tier);
 }
 const HISTORY_JOKE_QUESTIONS=[
  {q:'What does a shy rocket say before blastoff?',wrong:['Nothing — it just blushes 🚀','Ready, set, maybe?','Umm... hi, sky?']},
