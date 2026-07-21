@@ -1056,6 +1056,22 @@ function buildNumberQuestions(genN,textMode,level){
  return out.slice(0,5);
 }
 function mc(question,correct,wrong){let correctText=String(correct),answers=[correctText];for(let item of wrong.map(String)){if(!answers.includes(item))answers.push(item)}let fallback=1;while(answers.length<4){let extra=Number.isFinite(Number(correct))?String(Number(correct)+fallback):`Other answer ${fallback}`;if(!answers.includes(extra))answers.push(extra);fallback++}answers=shuffle(answers.slice(0,4));return [question,answers,answers.indexOf(correctText)]}
+function isKeypadNumeric(v){let s=String(v).trim();return /^\d+(\.\d+)?$/.test(s)||/^\d+\/\d+$/.test(s)}
+function genericNumericFiller(level,count){let maxBase=[10,20,50,100,500,1000][level-1]||100,out=[];for(let i=0;i<count;i++){let a=rand(2,maxBase),b=rand(1,Math.max(2,Math.floor(maxBase/3))),sum=a+b;out.push(mc(`What is ${a} + ${b}?`,sum,[sum-1,sum+1,sum+2]))}return out}
+function enforceKeypadNumeric(getQuestionsFn,level){
+ let qs=[],seen=new Set(),guard=0;
+ while(qs.length<5&&guard<15){
+  let batch=getQuestionsFn();
+  for(let q of batch){
+   if(qs.length>=5)break;
+   let ans=q[1][q[2]];
+   if(isKeypadNumeric(ans)&&!seen.has(q[0])){seen.add(q[0]);qs.push(q)}
+  }
+  guard++;
+ }
+ if(qs.length<5)qs=qs.concat(genericNumericFiller(level,5-qs.length));
+ return qs.slice(0,5);
+}
 function tieredSubQuestions(subs,tier){let n=subs.length,unlockedCount=tier>=8?n:Math.min(n,Math.floor((tier-1)*n/10)+1),pool=subs.slice(0,unlockedCount),qs=[],guard=0;while(qs.length<5&&guard<10){pool.forEach(s=>{qs=qs.concat(s.gen())});guard++}return shuffle(qs).slice(0,5)}
 function tfNumClaim(trueVal,isTrue,cap){
  if(isTrue)return trueVal;
@@ -1190,6 +1206,9 @@ function startTierTest(ti,tier){
  } else if(testFormat==='history'){
   testQuestions=makeHistoryQuestions(year,ti,tier);
   totalQuestions=testQuestions.length;
+ } else if(testFormat==='lightning'){
+  testQuestions=enforceKeypadNumeric(()=>makeTieredQuestions(year,ti,tier),Number(year.slice(1)));
+  totalQuestions=5;
  } else {
   testQuestions=makeTieredQuestions(year,ti,tier);
   if(testFormat==='doublecrazy')testQuestions=expandQuestionsToEight(testQuestions);
