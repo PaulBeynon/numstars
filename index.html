@@ -48,7 +48,7 @@
 .space-star{position:absolute;transform:translate(-50%,-50%);pointer-events:none;animation:starTwinkle 1.8s ease-in-out infinite}
 @keyframes starTwinkle{0%,100%{opacity:.35;transform:translate(-50%,-50%) scale(.85)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}}
 #spaceRocket{position:absolute;z-index:2}@media(max-width:700px){.hero,.choose,.topics,.answers{grid-template-columns:1fr}.rocket{height:160px}.head{align-items:start;flex-direction:column}.lesson-wrap{padding:25px}.test-tiles{grid-template-columns:repeat(5,1fr);gap:6px}.test-tile .tile-num{font-size:.92rem}.test-tile .tile-fmt{font-size:.62rem}.test-tile .tile-icon{font-size:1rem}.question{padding:22px 20px}#questionText{min-height:2em}}
-.text-answer{max-width:320px;margin:14px auto 0}.text-answer-label{font-size:.85rem;color:var(--muted);font-weight:850;margin-bottom:6px}.text-answer input{width:100%;padding:11px 16px;border-radius:15px;border:2px solid var(--line);font-size:1.15rem;font-weight:800;color:var(--ink);font-family:inherit;text-align:center}.text-answer input:focus{outline:none;border-color:var(--blue)}.text-toggle{text-align:center;margin-top:22px}.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:9px}.numpad button{padding:11px 0;border-radius:14px;border:2px solid var(--line);background:#fff;font-size:1.15rem;font-weight:900;color:var(--ink)}.numpad button:active{background:#eff9ff;border-color:var(--blue)}.pad-actions{display:flex;gap:8px;margin-top:6px}.pad-actions button{flex:1;padding:11px 0;border-radius:14px;font-size:1rem;font-weight:900;border:2px solid var(--line);background:#fff;color:var(--ink)}.pad-actions .primary{color:#fff;background:var(--green);border:0;box-shadow:0 4px 0 #14804a}.answers.crazy{position:relative;min-height:230px}.answers.crazy .answer{position:absolute;width:calc(50% - 10px);transition:top .5s ease,left .5s ease}.answers.doublecrazy{min-height:340px}.answers.doublecrazy .answer{width:calc(34% - 8px);font-size:.82rem;padding:11px 6px}.answers.londoneye{position:relative;width:min(84vw,280px);height:min(96vw,320px);margin:18px auto 10px;--radius:104px;--cy:38%}.answers.londoneye::before{content:'';position:absolute;top:var(--cy);left:50%;width:calc(var(--radius) * 2);height:calc(var(--radius) * 2);margin:calc(var(--radius) * -1) 0 0 calc(var(--radius) * -1);border-radius:50%;border:6px solid var(--blue);box-sizing:border-box;z-index:1}.answers.londoneye::after{content:'';position:absolute;top:var(--cy);left:50%;width:22px;height:22px;margin:-11px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 5px #fff;z-index:3}.answers.londoneye .eyeLeg{position:absolute;top:calc(var(--cy) + var(--radius));left:50%;width:7px;height:calc(var(--radius) * .62);margin-left:-3.5px;transform-origin:top center;background:linear-gradient(var(--blue),#8fb9d8);border-radius:0 0 4px 4px;z-index:0}.answers.londoneye .eyeLegL{transform:rotate(-30deg)}.answers.londoneye .eyeLegR{transform:rotate(30deg)}.answers.londoneye .eyeSpoke{position:absolute;top:var(--cy);left:50%;width:3px;height:calc(var(--radius) + 4px);margin-left:-1.5px;background:linear-gradient(var(--blue),#bfe0f0);transform-origin:top center;transform:rotate(calc(60deg * var(--i)));animation:eyeSpokeSpin 6s linear infinite;z-index:1}.answers.londoneye .answer{position:absolute;top:var(--cy);left:50%;width:82px;height:64px;margin:-32px -41px;border-radius:20px;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;font-size:.72rem;line-height:1.12;box-sizing:border-box;border:3px solid var(--blue);box-shadow:0 4px 10px rgba(23,54,74,.18);animation:eyeOrbit 6s linear infinite;z-index:2}.answers.londoneye .answer.correct,.answers.londoneye .answer.wrong{animation-play-state:paused}@keyframes eyeOrbit{from{transform:rotate(calc(60deg * var(--i))) translate(0,calc(var(--radius) * -1)) rotate(calc(-60deg * var(--i)))}to{transform:rotate(calc(60deg * var(--i) + 360deg)) translate(0,calc(var(--radius) * -1)) rotate(calc(-60deg * var(--i) - 360deg))}}@keyframes eyeSpokeSpin{from{transform:rotate(calc(60deg * var(--i)))}to{transform:rotate(calc(60deg * var(--i) + 360deg))}}@media(max-width:600px){.answers.londoneye{--radius:88px}.answers.londoneye .answer{width:68px;height:56px;margin:-28px -34px;font-size:.6rem;padding:4px}}#questionText.ghosted{opacity:.55;font-style:italic}.boss-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:16px}.boss-wrap.hidden{display:none}.boss-char{font-size:52px;transition:transform .2s}.boss-char.hit{animation:bosshit .3s}@keyframes bosshit{0%{transform:scale(1)}45%{transform:scale(.82) rotate(-8deg)}100%{transform:scale(1)}}.boss-bar{width:100%;max-width:260px;height:16px;background:#f6dede;border-radius:10px;overflow:hidden;border:2px solid #eec2c2}.boss-bar-fill{height:100%;background:linear-gradient(90deg,#ff9169,#e2483f);transition:width .5s ease}.boss-lives{font-size:1.15rem;letter-spacing:5px}.round-intro{position:absolute;inset:0;background:rgba(255,255,255,.97);border-radius:30px;display:none;align-items:center;justify-content:center;z-index:10;text-align:center;padding:20px}.round-intro.show{display:flex}.round-intro-text{font-size:clamp(1.5rem,6vw,2.1rem);font-weight:900;color:var(--ink)}.answers.hidden{display:none}#questionText{min-height:3em;display:flex;align-items:center;justify-content:center}.test-active .header-actions{display:none}.test-active header{margin-bottom:4px}#voiceToggle{color:#a85e11;cursor:pointer;border:none}#voiceToggle.voice-on{background:var(--green);color:#fff}@media(max-width:600px){.test-active .app{padding:10px 14px;padding-bottom:max(10px,env(safe-area-inset-bottom))}.test-active header{margin-bottom:2px}.test-active .header-stats{padding:0}.test-active .header-stats .streak{padding:6px 9px;font-size:.74rem}.test-active .quiz{margin:4px auto}.test-active .quiz-head{margin-bottom:8px}.test-active .quiz-head>div{flex-wrap:nowrap;gap:5px}.test-active .question{padding:22px 18px;border-radius:24px}.test-active #questionText{min-height:2em;font-size:clamp(1.5rem,6.5vw,2.15rem);margin:8px 0}.test-active .answers{margin-top:18px;gap:12px}.test-active .answer{padding:17px;font-size:1.08rem}.test-active .feedback{margin:12px 0 0;min-height:22px;font-size:1.02rem}.test-active .controls,.test-active #testNext{margin-top:16px;padding:15px 24px}.test-active #voiceToggle{padding:6px 9px}.test-active #voiceToggle .voice-label{display:none}.test-active #counter,.test-active #speedTimer{font-size:.72rem;padding:6px 9px}}
+.text-answer{max-width:320px;margin:14px auto 0}.text-answer-label{font-size:.85rem;color:var(--muted);font-weight:850;margin-bottom:6px}.text-answer input{width:100%;padding:11px 16px;border-radius:15px;border:2px solid var(--line);font-size:1.15rem;font-weight:800;color:var(--ink);font-family:inherit;text-align:center}.text-answer input:focus{outline:none;border-color:var(--blue)}.text-toggle{text-align:center;margin-top:22px}.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:9px}.numpad button{padding:11px 0;border-radius:14px;border:2px solid var(--line);background:#fff;font-size:1.15rem;font-weight:900;color:var(--ink)}.numpad button:active{background:#eff9ff;border-color:var(--blue)}.pad-actions{display:flex;gap:8px;margin-top:6px}.pad-actions button{flex:1;padding:11px 0;border-radius:14px;font-size:1rem;font-weight:900;border:2px solid var(--line);background:#fff;color:var(--ink)}.pad-actions .primary{color:#fff;background:var(--green);border:0;box-shadow:0 4px 0 #14804a}.answers.crazy{position:relative;min-height:230px}.answers.crazy .answer{position:absolute;width:calc(50% - 10px);transition:top .5s ease,left .5s ease}.answers.doublecrazy{min-height:340px}.answers.doublecrazy .answer{width:calc(34% - 8px);font-size:.82rem;padding:11px 6px}.answers.londoneye{position:relative;width:min(84vw,280px);height:min(96vw,320px);margin:18px auto 10px;--radius:104px;--cy:38%}.answers.londoneye::before{content:'';position:absolute;top:var(--cy);left:50%;width:calc(var(--radius) * 2);height:calc(var(--radius) * 2);margin:calc(var(--radius) * -1) 0 0 calc(var(--radius) * -1);border-radius:50%;border:6px solid var(--blue);box-sizing:border-box;z-index:1}.answers.londoneye::after{content:'';position:absolute;top:var(--cy);left:50%;width:22px;height:22px;margin:-11px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 5px #fff;z-index:3}.answers.londoneye .eyeLeg{position:absolute;top:calc(var(--cy) + var(--radius));left:50%;width:7px;height:calc(var(--radius) * .62);margin-left:-3.5px;transform-origin:top center;background:linear-gradient(var(--blue),#8fb9d8);border-radius:0 0 4px 4px;z-index:0}.answers.londoneye .eyeLegL{transform:rotate(-30deg)}.answers.londoneye .eyeLegR{transform:rotate(30deg)}.answers.londoneye .eyeSpoke{position:absolute;top:var(--cy);left:50%;width:3px;height:calc(var(--radius) + 4px);margin-left:-1.5px;background:linear-gradient(var(--blue),#bfe0f0);transform-origin:top center;transform:rotate(calc(60deg * var(--i)));animation:eyeSpokeSpin 6s linear infinite;z-index:1}.answers.londoneye .answer{position:absolute;top:var(--cy);left:50%;width:82px;height:64px;margin:-32px -41px;border-radius:20px;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;font-size:.72rem;line-height:1.12;box-sizing:border-box;border:3px solid var(--blue);box-shadow:0 4px 10px rgba(23,54,74,.18);animation:eyeOrbit 6s linear infinite;z-index:2}.answers.londoneye .answer.correct,.answers.londoneye .answer.wrong{animation-play-state:paused}@keyframes eyeOrbit{from{transform:rotate(calc(60deg * var(--i))) translate(0,calc(var(--radius) * -1)) rotate(calc(-60deg * var(--i)))}to{transform:rotate(calc(60deg * var(--i) + 360deg)) translate(0,calc(var(--radius) * -1)) rotate(calc(-60deg * var(--i) - 360deg))}}@keyframes eyeSpokeSpin{from{transform:rotate(calc(60deg * var(--i)))}to{transform:rotate(calc(60deg * var(--i) + 360deg))}}@media(max-width:600px){.answers.londoneye{--radius:88px}.answers.londoneye .answer{width:68px;height:56px;margin:-28px -34px;font-size:.6rem;padding:4px}}.answers.fireworks{display:block;position:relative;min-height:330px;overflow:hidden;background:linear-gradient(180deg,#0e2a4a,#1c4a7a);border-radius:20px}.firework{position:absolute;left:50%;bottom:0;transform:translateX(-50%);cursor:pointer}.firework.launching{animation:fwLaunch .9s ease-out forwards;pointer-events:none}.firework .fw-trail{display:block;width:9px;height:9px;margin:0 auto;border-radius:50%;background:#ffd45d;box-shadow:0 0 10px 3px rgba(255,212,93,.85)}.firework .fw-burst{display:none;background:#fff;border:3px solid var(--yellow);border-radius:14px;padding:8px 13px;font-weight:900;font-size:.8rem;color:var(--ink);box-shadow:0 4px 14px rgba(0,0,0,.35);white-space:nowrap;transform:scale(.3);opacity:0}.firework.exploded{pointer-events:auto}.firework.exploded .fw-trail{display:none}.firework.exploded .fw-burst{display:inline-block;animation:fwBurst .3s ease-out forwards,fwFade .4s ease-in 1.5s forwards}.firework.correct .fw-burst,.firework.wrong .fw-burst{animation:none!important;transform:scale(1);opacity:1}.firework.correct .fw-burst{border-color:var(--green);background:#def8e9;color:#157345}.firework.wrong .fw-burst{border-color:#e26e65;background:#ffebe9;color:#ad413b}@keyframes fwLaunch{from{bottom:0}to{bottom:var(--ty,70%)}}@keyframes fwBurst{to{transform:scale(1);opacity:1}}@keyframes fwFade{to{opacity:0}}@media(max-width:600px){.answers.fireworks{min-height:270px}.firework .fw-burst{font-size:.68rem;padding:6px 10px}}#questionText.ghosted{opacity:.55;font-style:italic}.boss-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:16px}.boss-wrap.hidden{display:none}.boss-char{font-size:52px;transition:transform .2s}.boss-char.hit{animation:bosshit .3s}@keyframes bosshit{0%{transform:scale(1)}45%{transform:scale(.82) rotate(-8deg)}100%{transform:scale(1)}}.boss-bar{width:100%;max-width:260px;height:16px;background:#f6dede;border-radius:10px;overflow:hidden;border:2px solid #eec2c2}.boss-bar-fill{height:100%;background:linear-gradient(90deg,#ff9169,#e2483f);transition:width .5s ease}.boss-lives{font-size:1.15rem;letter-spacing:5px}.round-intro{position:absolute;inset:0;background:rgba(255,255,255,.97);border-radius:30px;display:none;align-items:center;justify-content:center;z-index:10;text-align:center;padding:20px}.round-intro.show{display:flex}.round-intro-text{font-size:clamp(1.5rem,6vw,2.1rem);font-weight:900;color:var(--ink)}.answers.hidden{display:none}#questionText{min-height:3em;display:flex;align-items:center;justify-content:center}.test-active .header-actions{display:none}.test-active header{margin-bottom:4px}#voiceToggle{color:#a85e11;cursor:pointer;border:none}#voiceToggle.voice-on{background:var(--green);color:#fff}@media(max-width:600px){.test-active .app{padding:10px 14px;padding-bottom:max(10px,env(safe-area-inset-bottom))}.test-active header{margin-bottom:2px}.test-active .header-stats{padding:0}.test-active .header-stats .streak{padding:6px 9px;font-size:.74rem}.test-active .quiz{margin:4px auto}.test-active .quiz-head{margin-bottom:8px}.test-active .quiz-head>div{flex-wrap:nowrap;gap:5px}.test-active .question{padding:22px 18px;border-radius:24px}.test-active #questionText{min-height:2em;font-size:clamp(1.5rem,6.5vw,2.15rem);margin:8px 0}.test-active .answers{margin-top:18px;gap:12px}.test-active .answer{padding:17px;font-size:1.08rem}.test-active .feedback{margin:12px 0 0;min-height:22px;font-size:1.02rem}.test-active .controls,.test-active #testNext{margin-top:16px;padding:15px 24px}.test-active #voiceToggle{padding:6px 9px}.test-active #voiceToggle .voice-label{display:none}.test-active #counter,.test-active #speedTimer{font-size:.72rem;padding:6px 9px}}
 </style></head><body>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -261,10 +261,10 @@ Y6:[
   gen:()=>{let d=rand(2,9),a=rand(1,10),seq=[a,a+d,a+2*d,a+3*d],total=rand(8,20),p=rand(1,total-1),q=total-p,wrongPairs=[`${p+1} and ${q-1}`,`${p} and ${q+2}`,`${Math.max(1,p-2)} and ${q}`];return [mc('If x + 5 = 12, what is x?',7,[6,8,17]),mc('If 3y = 18, what is y?',6,[3,9,15]),mc('What does a letter usually represent in algebra?','an unknown number',['a fixed word','a shape','a unit of measurement']),mc('Which is a formula for the perimeter of a square with side s?','4 × s',['s × s','s + 4','2 × s']),mc(`What is the next number in the sequence: ${seq.join(', ')}, ?`,seq[3]+d,[seq[3]+d+1,seq[3]+2*d,seq[3]+d-1]),mc(`What is the rule for the sequence ${seq.join(', ')}?`,`add ${d} each time`,[`add ${d+1} each time`,`multiply by ${d}`,`subtract ${d} each time`]),mc(`If p + q = ${total}, which pair of numbers could p and q be?`,`${p} and ${q}`,wrongPairs),mc('If a = 5, what is 2a?',10,[7,25,3]),mc('If y - 4 = 10, what is y?',14,[6,10,40]),mc('What is the formula for the area of a rectangle with length l and width w?','l × w',['l + w','2 × (l + w)','l ÷ w']),mc('If 2x + 1 = 9, what is x?',4,[5,8,10])].sort(()=>Math.random()-.5).slice(0,3)}}
 ]};
 let stage='KS1',year='Y1',topic=null,topicIndex=0,part=0,testIndex=0,score=0,testQuestions=[],currentTestTier=1,voiceModeOn=false;
-let testFormat='standard',testInputMode='choice',speedSecondsLeft=45,speedInterval=null,ghostTimer=null,crazyInterval=null,speedCorrect=0,speedAttempted=0,speedQueue=[],bossHP=100,bossLives=3,bossMaxLives=3,bossDefeatedEarly=false,roundIntroTimeout=null,lightningInterval=null,lightningSecondsLeft=6;
+let testFormat='standard',testInputMode='choice',speedSecondsLeft=45,speedInterval=null,ghostTimer=null,crazyInterval=null,speedCorrect=0,speedAttempted=0,speedQueue=[],bossHP=100,bossLives=3,bossMaxLives=3,bossDefeatedEarly=false,roundIntroTimeout=null,fireworksSpawnInterval=null,fireworksCountdown=null,fireworksSecondsLeft=9,fireworksTimeouts=[],fireworksLocked=false;
 function getNextSpeedQuestion(ti,tier){if(speedQueue.length===0)speedQueue=makeTieredQuestions(year,ti,tier);return speedQueue.shift()}
-function tierFormat(tier,ti,y){if(tier===4)return'speed';if(tier===8)return'lightning';if(tier===2)return'ghost';if(tier===3)return'crazy';if(tier===7)return'doublecrazy';if(tier===9)return'history';if(tier===5||tier===10)return'boss';if(tier===6)return'londoneye';return'standard'}
-function tierInputMode(tier,ti,y){let f=tierFormat(tier,ti,y);if(f==='ghost'||f==='crazy'||f==='doublecrazy'||f==='londoneye'||f==='history')return'choice';return tier>=6?'text':'choice'}
+function tierFormat(tier,ti,y){if(tier===4)return'speed';if(tier===8)return'fireworks';if(tier===2)return'ghost';if(tier===3)return'crazy';if(tier===7)return'doublecrazy';if(tier===9)return'history';if(tier===5||tier===10)return'boss';if(tier===6)return'londoneye';return'standard'}
+function tierInputMode(tier,ti,y){let f=tierFormat(tier,ti,y);if(f==='fireworks')return'fireworks';if(f==='ghost'||f==='crazy'||f==='doublecrazy'||f==='londoneye'||f==='history')return'choice';return tier>=6?'text':'choice'}
 function resetBoss(tier){bossMaxLives=tier===10?1:2;bossHP=100;bossLives=bossMaxLives;bossDefeatedEarly=false;updateBossUI()}
 function updateBossUI(){let fill=document.getElementById('bossBarFill');if(fill)fill.style.width=Math.max(0,bossHP)+'%';let lives=document.getElementById('bossLivesEl');if(lives)lives.textContent='❤️'.repeat(Math.max(0,bossLives))+'🖤'.repeat(Math.max(0,bossMaxLives-bossLives))}
 function bossHit(correct){if(correct){bossHP=Math.max(0,bossHP-20);let ch=document.getElementById('bossChar');if(ch){ch.classList.remove('hit');void ch.offsetWidth;ch.classList.add('hit')}}else{bossLives=Math.max(0,bossLives-1)}updateBossUI()}
@@ -311,9 +311,9 @@ function toggleVoiceMode(){
   stopSpeech();
  }
 }
-function stopTestTimers(){if(speedInterval){clearInterval(speedInterval);speedInterval=null}if(ghostTimer){clearTimeout(ghostTimer);ghostTimer=null}if(crazyInterval){clearInterval(crazyInterval);crazyInterval=null}if(lightningInterval){clearInterval(lightningInterval);lightningInterval=null}if(roundIntroTimeout){clearTimeout(roundIntroTimeout);roundIntroTimeout=null}let st=document.getElementById('speedTimer');if(st)st.classList.add('hidden');let ri=document.getElementById('roundIntro');if(ri)ri.classList.remove('show')}
+function stopTestTimers(){if(speedInterval){clearInterval(speedInterval);speedInterval=null}if(ghostTimer){clearTimeout(ghostTimer);ghostTimer=null}if(crazyInterval){clearInterval(crazyInterval);crazyInterval=null}if(fireworksSpawnInterval){clearInterval(fireworksSpawnInterval);fireworksSpawnInterval=null}if(fireworksCountdown){clearInterval(fireworksCountdown);fireworksCountdown=null}fireworksTimeouts.forEach(t=>clearTimeout(t));fireworksTimeouts=[];if(roundIntroTimeout){clearTimeout(roundIntroTimeout);roundIntroTimeout=null}let st=document.getElementById('speedTimer');if(st)st.classList.add('hidden');let ri=document.getElementById('roundIntro');if(ri)ri.classList.remove('show')}
 function showRoundIntro(format,callback,tier){
- let labels={ghost:'👻 Ghost Round!',crazy:'🌀 Crazy Round!',doublecrazy:'🌪️ Double Crazy Round!',speed:'⏱️ Speed Round!',lightning:'⚡ Lightning Round!',londoneye:'🎡 London Eye Round!',history:'📜 History Round!',boss:tier===10?'🐲 Big Boss Battle!':'🐉 Mini Boss Battle!'};
+ let labels={ghost:'👻 Ghost Round!',crazy:'🌀 Crazy Round!',doublecrazy:'🌪️ Double Crazy Round!',speed:'⏱️ Speed Round!',fireworks:'🎆 Fireworks Round!',londoneye:'🎡 London Eye Round!',history:'📜 History Round!',boss:tier===10?'🐲 Big Boss Battle!':'🐉 Mini Boss Battle!'};
  let el=document.getElementById('roundIntro'),txt=document.getElementById('roundIntroText');
  if(!labels[format]){el.classList.remove('show');callback();return}
  txt.textContent=labels[format];
@@ -922,7 +922,7 @@ function renderModule(){document.getElementById('moduleTag').textContent=`YEAR $
  }
  renderTestsPanel();
 }
-function tierFormatIcon(tier,ti,y){let f=tierFormat(tier,ti,y);if(f==='ghost')return'👻';if(f==='crazy')return'🌀';if(f==='doublecrazy')return'🌪️';if(f==='speed')return'⏱️';if(f==='lightning')return'⚡';if(f==='londoneye')return'🎡';if(f==='history')return'📜';if(f==='boss')return'🐉';if(tierInputMode(tier,ti,y)==='text')return'✍️';return''}
+function tierFormatIcon(tier,ti,y){let f=tierFormat(tier,ti,y);if(f==='ghost')return'👻';if(f==='crazy')return'🌀';if(f==='doublecrazy')return'🌪️';if(f==='speed')return'⏱️';if(f==='fireworks')return'🎆';if(f==='londoneye')return'🎡';if(f==='history')return'📜';if(f==='boss')return'🐉';if(tierInputMode(tier,ti,y)==='text')return'✍️';return''}
 function pathNodeCoords(){
  let coords=[],rows=5,rowH=100/rows;
  for(let idx=0;idx<10;idx++){
@@ -971,7 +971,7 @@ function renderTestsPanel(){
   let locked=!devMode&&i>tp.unlocked,icon=tp.gold[i]?'🌟':tp.star[i]?'⭐':locked?'🔒':'▫️',fmt=tierFormatIcon(i,topicIndex,year);
   nodes+=`<button id="pathNode${i}" class="path-node ${locked?'locked':''} ${tp.gold[i]?'gold':''}" style="left:${c.x}%;top:${c.y}%" ${locked?'disabled':''} onclick="startTierTest(${topicIndex},${i})"><span class="tile-num">${i}</span><span class="tile-fmt">${fmt}</span><span class="tile-icon">${icon}</span></button>`;
  });
- card.innerHTML=`<h3 id="testsCardTitle">${mastered?'🌟 Challenges — full marks!':'Challenges'}</h3><p>Score 4/5 to unlock the next challenge — reach Challenge 5 to unlock the next topic.</p><div class="format-legend"><span class="legend-chip">👻 Ghost</span><span class="legend-chip">🌀 Crazy</span><span class="legend-chip">🌪️ Double Crazy</span><span class="legend-chip">⏱️ Speed</span><span class="legend-chip">⚡ Lightning</span><span class="legend-chip">🎡 London Eye</span><span class="legend-chip">📜 History</span><span class="legend-chip">🐉 Boss</span><span class="legend-chip">✍️ Type</span></div><details class="legend-details"><summary>How scoring works</summary><p>Score 5/5 for a gold star. Speed rounds need 8 correct to pass, 12 for gold. Lightning gives you just a few seconds per question. London Eye rounds put six answers on a big slow-spinning wheel — tap the pod with the right answer. History rounds have one extra question — each answer is actually the answer to the question before it — so you need 5/6 to pass and 6/6 for gold. You can always type your answer instead of tapping.</p></details><div class="progress-path"><svg class="path-svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${pathD.trim()}" fill="none" stroke="#bfe0f0" stroke-width="3" vector-effect="non-scaling-stroke" stroke-dasharray="2 7" stroke-linecap="round" stroke-linejoin="round"/></svg>${nodes}<div id="rocketMarker" class="rocket-marker rocket-land" style="left:${rocketCoord.x}%;top:${rocketCoord.y}%">🚀</div></div>`;
+ card.innerHTML=`<h3 id="testsCardTitle">${mastered?'🌟 Challenges — full marks!':'Challenges'}</h3><p>Score 4/5 to unlock the next challenge — reach Challenge 5 to unlock the next topic.</p><div class="format-legend"><span class="legend-chip">👻 Ghost</span><span class="legend-chip">🌀 Crazy</span><span class="legend-chip">🌪️ Double Crazy</span><span class="legend-chip">⏱️ Speed</span><span class="legend-chip">🎆 Fireworks</span><span class="legend-chip">🎡 London Eye</span><span class="legend-chip">📜 History</span><span class="legend-chip">🐉 Boss</span><span class="legend-chip">✍️ Type</span></div><details class="legend-details"><summary>How scoring works</summary><p>Score 5/5 for a gold star. Speed rounds need 8 correct to pass, 12 for gold. Fireworks rounds launch answers into the sky, one at a time — tap the one that explodes with the right answer before it fades. Answers can repeat, so keep watching! London Eye rounds put six answers on a big slow-spinning wheel — tap the pod with the right answer. History rounds have one extra question — each answer is actually the answer to the question before it — so you need 5/6 to pass and 6/6 for gold. You can always type your answer instead of tapping.</p></details><div class="progress-path"><svg class="path-svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${pathD.trim()}" fill="none" stroke="#bfe0f0" stroke-width="3" vector-effect="non-scaling-stroke" stroke-dasharray="2 7" stroke-linecap="round" stroke-linejoin="round"/></svg>${nodes}<div id="rocketMarker" class="rocket-marker rocket-land" style="left:${rocketCoord.x}%;top:${rocketCoord.y}%">🚀</div></div>`;
  document.getElementById('moduleList').after(card);
  lastPathTopicKey=topicKey;
 }
@@ -1056,22 +1056,6 @@ function buildNumberQuestions(genN,textMode,level){
  return out.slice(0,5);
 }
 function mc(question,correct,wrong){let correctText=String(correct),answers=[correctText];for(let item of wrong.map(String)){if(!answers.includes(item))answers.push(item)}let fallback=1;while(answers.length<4){let extra=Number.isFinite(Number(correct))?String(Number(correct)+fallback):`Other answer ${fallback}`;if(!answers.includes(extra))answers.push(extra);fallback++}answers=shuffle(answers.slice(0,4));return [question,answers,answers.indexOf(correctText)]}
-function isKeypadNumeric(v){let s=String(v).trim();return /^\d+(\.\d+)?$/.test(s)||/^\d+\/\d+$/.test(s)}
-function genericNumericFiller(level,count){let maxBase=[10,20,50,100,500,1000][level-1]||100,out=[];for(let i=0;i<count;i++){let a=rand(2,maxBase),b=rand(1,Math.max(2,Math.floor(maxBase/3))),sum=a+b;out.push(mc(`What is ${a} + ${b}?`,sum,[sum-1,sum+1,sum+2]))}return out}
-function enforceKeypadNumeric(getQuestionsFn,level){
- let qs=[],seen=new Set(),guard=0;
- while(qs.length<5&&guard<15){
-  let batch=getQuestionsFn();
-  for(let q of batch){
-   if(qs.length>=5)break;
-   let ans=q[1][q[2]];
-   if(isKeypadNumeric(ans)&&!seen.has(q[0])){seen.add(q[0]);qs.push(q)}
-  }
-  guard++;
- }
- if(qs.length<5)qs=qs.concat(genericNumericFiller(level,5-qs.length));
- return qs.slice(0,5);
-}
 function tieredSubQuestions(subs,tier){let n=subs.length,unlockedCount=tier>=8?n:Math.min(n,Math.floor((tier-1)*n/10)+1),pool=subs.slice(0,unlockedCount),qs=[],guard=0;while(qs.length<5&&guard<10){pool.forEach(s=>{qs=qs.concat(s.gen())});guard++}return shuffle(qs).slice(0,5)}
 function expandAnswersTo6(mcTuple){
  let [question,answers,correctIdx]=mcTuple,correctText=answers[correctIdx],pool=answers.slice(),fallback=1;
@@ -1168,8 +1152,9 @@ function startTierTest(ti,tier){
  } else if(testFormat==='history'){
   testQuestions=makeHistoryQuestions(year,ti,tier);
   totalQuestions=testQuestions.length;
- } else if(testFormat==='lightning'){
-  testQuestions=enforceKeypadNumeric(()=>makeTieredQuestions(year,ti,tier),Number(year.slice(1)));
+ } else if(testFormat==='fireworks'){
+  let subs=getSubs(ti,year),basePool=subs?tieredSubQuestions(subs,tier):makeBaseQuestions(year,ti,tier);
+  testQuestions=basePool.map(q=>expandAnswersTo6(q));
   totalQuestions=5;
  } else {
   testQuestions=makeTieredQuestions(year,ti,tier);
@@ -1192,7 +1177,9 @@ function startTierTest(ti,tier){
 function renderQuestion(){
  if(ghostTimer){clearTimeout(ghostTimer);ghostTimer=null}
  if(crazyInterval){clearInterval(crazyInterval);crazyInterval=null}
- if(lightningInterval){clearInterval(lightningInterval);lightningInterval=null}
+ if(fireworksSpawnInterval){clearInterval(fireworksSpawnInterval);fireworksSpawnInterval=null}
+ if(fireworksCountdown){clearInterval(fireworksCountdown);fireworksCountdown=null}
+ fireworksTimeouts.forEach(t=>clearTimeout(t));fireworksTimeouts=[];
  stopSpeech();
  let q=testQuestions[testIndex];
  document.getElementById('testKind').textContent=practiceMode?'QUICK PRACTICE':`CHALLENGE ${currentTestTier} OF 10`;
@@ -1210,6 +1197,13 @@ function renderQuestion(){
   toggleWrap.classList.add('hidden');
   textWrap.classList.remove('hidden');
   label.textContent='';
+ } else if(testInputMode==='fireworks'){
+  answersEl.classList.remove('hidden');
+  answersEl.className='answers fireworks';
+  answersEl.innerHTML='';
+  textWrap.classList.add('hidden');
+  toggleWrap.classList.add('hidden');
+  label.textContent='';
  } else {
   answersEl.classList.remove('hidden');
   answersEl.className='answers'+(testFormat==='crazy'?' crazy':testFormat==='doublecrazy'?' crazy doublecrazy':testFormat==='londoneye'?' londoneye':'');
@@ -1220,32 +1214,66 @@ function renderQuestion(){
   label.textContent='Or type your answer:';
  }
  if(testFormat==='ghost'){ghostTimer=setTimeout(()=>{qEl.innerHTML='🫥 <em>Question hidden — answer from memory!</em>';qEl.classList.add('ghosted')},1500)}
- if(testFormat==='lightning')startLightningTimer();
+ if(testFormat==='fireworks')startFireworksRound();
  updateVoiceButton();
  if(voiceModeOn)speakCurrentQuestion();
 }
-function startLightningTimer(){
- lightningSecondsLeft=6;
+function startFireworksRound(){
+ fireworksLocked=false;
+ fireworksSecondsLeft=9;
  let st=document.getElementById('speedTimer');
- if(st){st.classList.remove('hidden');st.textContent=`⚡ ${lightningSecondsLeft}s`}
- lightningInterval=setInterval(()=>{
-  lightningSecondsLeft--;
-  if(st)st.textContent=`⚡ ${lightningSecondsLeft}s`;
-  if(lightningSecondsLeft<=0){
-   clearInterval(lightningInterval);lightningInterval=null;
-   lightningTimeUp();
+ if(st){st.classList.remove('hidden');st.textContent=`🎆 ${fireworksSecondsLeft}s`}
+ spawnFirework();
+ fireworksSpawnInterval=setInterval(spawnFirework,1150);
+ fireworksCountdown=setInterval(()=>{
+  fireworksSecondsLeft--;
+  if(st)st.textContent=`🎆 ${fireworksSecondsLeft}s`;
+  if(fireworksSecondsLeft<=0){
+   clearInterval(fireworksCountdown);fireworksCountdown=null;
+   if(fireworksSpawnInterval){clearInterval(fireworksSpawnInterval);fireworksSpawnInterval=null}
+   fireworksTimeUp();
   }
  },1000);
 }
-function lightningTimeUp(){
- let input=document.getElementById('textAnswerInput');
- if(input&&input.disabled)return;
+function spawnFirework(){
+ if(fireworksLocked)return;
+ let q=testQuestions[testIndex],answersEl=document.getElementById('answers');
+ if(!answersEl||!q)return;
+ let idx=rand(0,q[1].length-1),el=document.createElement('div');
+ el.className='firework launching';
+ el.style.left=rand(10,90)+'%';
+ el.style.setProperty('--ty',rand(55,85)+'%');
+ el.innerHTML=`<span class="fw-trail"></span><span class="fw-burst">${q[1][idx]}</span>`;
+ el.addEventListener('animationend',()=>{if(el.classList.contains('launching')){el.classList.remove('launching');el.classList.add('exploded')}},{once:true});
+ el.addEventListener('click',()=>fireworkTap(el,idx));
+ answersEl.appendChild(el);
+ fireworksTimeouts.push(setTimeout(()=>{if(el.parentNode)el.parentNode.removeChild(el)},2900));
+}
+function fireworkTap(el,idx){
+ if(fireworksLocked)return;
+ fireworksLocked=true;
+ if(fireworksSpawnInterval){clearInterval(fireworksSpawnInterval);fireworksSpawnInterval=null}
+ if(fireworksCountdown){clearInterval(fireworksCountdown);fireworksCountdown=null}
+ fireworksTimeouts.forEach(t=>clearTimeout(t));fireworksTimeouts=[];
+ let st=document.getElementById('speedTimer');if(st)st.classList.add('hidden');
+ document.querySelectorAll('.firework').forEach(f=>{if(f!==el)f.remove()});
+ let q=testQuestions[testIndex],correct=idx===q[2];
+ el.style.animation='none';
+ el.classList.add(correct?'correct':'wrong');
+ registerAnswer(correct,idx);
+}
+function fireworksTimeUp(){
+ if(fireworksLocked)return;
+ fireworksLocked=true;
+ fireworksTimeouts.forEach(t=>clearTimeout(t));fireworksTimeouts=[];
+ document.querySelectorAll('.firework').forEach(f=>f.remove());
  registerAnswer(false,null);
 }
 function registerAnswer(correct,selectedIdx){
  if(crazyInterval){clearInterval(crazyInterval);crazyInterval=null}
  if(ghostTimer){clearTimeout(ghostTimer);ghostTimer=null}
- if(lightningInterval){clearInterval(lightningInterval);lightningInterval=null}
+ if(fireworksSpawnInterval){clearInterval(fireworksSpawnInterval);fireworksSpawnInterval=null}
+ if(fireworksCountdown){clearInterval(fireworksCountdown);fireworksCountdown=null}
  let q=testQuestions[testIndex],buttons=[...document.querySelectorAll('.answer')];
  buttons.forEach(b=>b.disabled=true);
  document.getElementById('textAnswerInput').disabled=true;
