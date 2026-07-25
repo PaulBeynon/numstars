@@ -1057,15 +1057,26 @@ function buildNumberQuestions(genN,textMode,level){
 }
 function mc(question,correct,wrong){let correctText=String(correct),answers=[correctText];for(let item of wrong.map(String)){if(!answers.includes(item))answers.push(item)}let fallback=1;while(answers.length<4){let extra=Number.isFinite(Number(correct))?String(Number(correct)+fallback):`Other answer ${fallback}`;if(!answers.includes(extra))answers.push(extra);fallback++}answers=shuffle(answers.slice(0,4));return [question,answers,answers.indexOf(correctText)]}
 function tieredSubQuestions(subs,tier){let n=subs.length,unlockedCount=tier>=8?n:Math.min(n,Math.floor((tier-1)*n/10)+1),pool=subs.slice(0,unlockedCount),qs=[],guard=0;while(qs.length<5&&guard<10){pool.forEach(s=>{qs=qs.concat(s.gen())});guard++}return shuffle(qs).slice(0,5)}
-function expandAnswersTo6(mcTuple){
- let [question,answers,correctIdx]=mcTuple,correctText=answers[correctIdx],pool=answers.slice(),fallback=1;
- while(pool.length<6){
-  let extra=Number.isFinite(Number(correctText))?String(Number(correctText)+(pool.length%2===0?fallback:-fallback)):`Other answer ${fallback}`;
-  if(!pool.includes(extra))pool.push(extra);
-  fallback++;
- }
- pool=shuffle(pool.slice(0,6));
- return [question,pool,pool.indexOf(correctText)];
+function expandAnswersTo6(qs){
+ let allAnswers=[];qs.forEach(q=>q[1].forEach(a=>allAnswers.push(a)));
+ return qs.map(q=>{
+  let [question,answers,correctIdx]=q,correctText=answers[correctIdx],pool=answers.slice();
+  if(pool.length>=6)return q;
+  let questionNums=(question.match(/\d+(\.\d+)?/g)||[]);
+  let candidates=shuffle(allAnswers.filter(a=>!pool.includes(a)&&!questionNums.includes(String(a))));
+  for(let c of candidates){if(pool.length>=6)break;if(!pool.includes(c))pool.push(c)}
+  if(pool.length<6){
+   let numCorrect=Number(correctText),i=1;
+   while(pool.length<6&&Number.isFinite(numCorrect)&&i<60){
+    let cand=numCorrect+(i%2===0?1:-1)*Math.ceil(i/2)*3,cs=String(cand);
+    if(cand>=0&&!pool.includes(cs)&&!questionNums.includes(cs))pool.push(cs);
+    i++;
+   }
+  }
+  let gi=1;while(pool.length<6){let cs=`Other answer ${gi}`;if(!pool.includes(cs))pool.push(cs);gi++}
+  pool=shuffle(pool.slice(0,6));
+  return [question,pool,pool.indexOf(correctText)];
+ });
 }
 function makeBaseQuestions(y,ti,tier){
  let level=Number(y.slice(1));
@@ -1078,7 +1089,7 @@ function makeTieredQuestions(y,ti,tier){
  let subs=getSubs(ti,y),fmt=tierFormat(tier,ti,y);
  if(fmt==='londoneye'){
   let basePool=subs?tieredSubQuestions(subs,tier):makeBaseQuestions(y,ti,tier);
-  return basePool.map(q=>expandAnswersTo6(q));
+  return expandAnswersTo6(basePool);
  }
  if(subs)return tieredSubQuestions(subs,tier);
  return makeBaseQuestions(y,ti,tier);
@@ -1154,7 +1165,7 @@ function startTierTest(ti,tier){
   totalQuestions=testQuestions.length;
  } else if(testFormat==='fireworks'){
   let subs=getSubs(ti,year),basePool=subs?tieredSubQuestions(subs,tier):makeBaseQuestions(year,ti,tier);
-  testQuestions=basePool.map(q=>expandAnswersTo6(q));
+  testQuestions=expandAnswersTo6(basePool);
   totalQuestions=5;
  } else {
   testQuestions=makeTieredQuestions(year,ti,tier);
@@ -1244,7 +1255,7 @@ function spawnFirework(){
  el.style.left=rand(10,90)+'%';
  el.style.setProperty('--ty',rand(55,85)+'%');
  el.innerHTML=`<span class="fw-trail"></span><span class="fw-burst">${q[1][idx]}</span>`;
- el.addEventListener('animationend',()=>{if(el.classList.contains('launching')){el.classList.remove('launching');el.classList.add('exploded')}},{once:true});
+ el.addEventListener('animationend',()=>{el.classList.add('exploded')},{once:true});
  el.addEventListener('click',()=>fireworkTap(el,idx));
  answersEl.appendChild(el);
  fireworksTimeouts.push(setTimeout(()=>{if(el.parentNode)el.parentNode.removeChild(el)},2900));
