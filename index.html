@@ -460,6 +460,10 @@ function loadProfileData(){
   delete progress.Y1;delete testProgress.Y1;delete lessonProgress.Y1;
   topicVer=3;
  }
+ if(topicVer<4){
+  delete progress.Y3;delete testProgress.Y3;delete lessonProgress.Y3;
+  topicVer=4;
+ }
  if(topicVer>parseInt(storage.getItem(pKey('topicVer'))||'1',10)){
   storage.setItem(pKey('progress'),JSON.stringify(progress));
   storage.setItem(pKey('testProgress'),JSON.stringify(testProgress));
@@ -517,7 +521,7 @@ function selectProfile(id){
 }
 function switchProfile(){renderProfileScreen();go('profileScreen')}
 const FIREBASE_CONFIG={apiKey:"AIzaSyCP6KnhIExknF9TTBJEfvdgty4M9sk9SvM",authDomain:"numstars-a019c.firebaseapp.com",projectId:"numstars-a019c",storageBucket:"numstars-a019c.firebasestorage.app",messagingSenderId:"905703284183",appId:"1:905703284183:web:4d8e1e15ba6529cb6d7f92"};
-let cloudDb=null,cloudUser=null,cloudSyncEnabled=false,cloudPushTimer=null,familyDocUnsub=null,latestCloudProfiles=null,lbSort='points';
+let cloudDb=null,cloudUser=null,cloudSyncEnabled=false,cloudPushTimer=null,familyDocUnsub=null,latestCloudProfiles=null,lbSort='points',cloudSnapshotReady=false,pendingCloudPushAfterReady=false;
 function updateSyncBadge(state){
  let el=document.getElementById('syncBadge');if(!el)return;
  let map={connecting:'☁️ Connecting…',syncing:'☁️ Syncing…',synced:'☁️ Synced',error:'☁️ Sync error',off:'☁️ Not syncing — tap to sign in'};
@@ -536,6 +540,7 @@ function initFirebase(){
   firebase.auth().onAuthStateChanged(user=>{
    cloudUser=user;
    if(familyDocUnsub){familyDocUnsub();familyDocUnsub=null}
+   cloudSnapshotReady=false;pendingCloudPushAfterReady=false;
    if(user){
     cloudSyncEnabled=true;
     updateSyncBadge('connecting');
@@ -557,7 +562,9 @@ function subscribeToFamily(){
  familyDocUnsub=cloudDb.collection('numstarsFamilies').doc(cloudUser.uid).onSnapshot(doc=>{
   if(doc.metadata.hasPendingWrites)return;
   if(doc.exists)applyCloudData(doc.data());
+  cloudSnapshotReady=true;
   updateSyncBadge('synced');
+  if(pendingCloudPushAfterReady){pendingCloudPushAfterReady=false;queueCloudPush()}
  },err=>{logBSError('cloudSnapshot',err);updateSyncBadge('error')});
 }
 function applyCloudData(data){
@@ -585,6 +592,7 @@ function applyCloudData(data){
 }
 function queueCloudPush(){
  if(!cloudSyncEnabled)return;
+ if(!cloudSnapshotReady){pendingCloudPushAfterReady=true;return}
  if(cloudPushTimer)clearTimeout(cloudPushTimer);
  cloudPushTimer=setTimeout(()=>{cloudPushTimer=null;pushToCloud()},1200);
 }
