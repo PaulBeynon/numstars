@@ -261,7 +261,7 @@ Y6:[
   gen:()=>{let d=rand(2,9),a=rand(1,10),seq=[a,a+d,a+2*d,a+3*d],total=rand(8,20),p=rand(1,total-1),q=total-p,wrongPairs=[`${p+1} and ${q-1}`,`${p} and ${q+2}`,`${Math.max(1,p-2)} and ${q}`];return [mc('If x + 5 = 12, what is x?',7,[6,8,17]),mc('If 3y = 18, what is y?',6,[3,9,15]),mc('What does a letter usually represent in algebra?','an unknown number',['a fixed word','a shape','a unit of measurement']),mc('Which is a formula for the perimeter of a square with side s?','4 × s',['s × s','s + 4','2 × s']),mc(`What is the next number in the sequence: ${seq.join(', ')}, ?`,seq[3]+d,[seq[3]+d+1,seq[3]+2*d,seq[3]+d-1]),mc(`What is the rule for the sequence ${seq.join(', ')}?`,`add ${d} each time`,[`add ${d+1} each time`,`multiply by ${d}`,`subtract ${d} each time`]),mc(`If p + q = ${total}, which pair of numbers could p and q be?`,`${p} and ${q}`,wrongPairs),mc('If a = 5, what is 2a?',10,[7,25,3]),mc('If y - 4 = 10, what is y?',14,[6,10,40]),mc('What is the formula for the area of a rectangle with length l and width w?','l × w',['l + w','2 × (l + w)','l ÷ w']),mc('If 2x + 1 = 9, what is x?',4,[5,8,10])].sort(()=>Math.random()-.5).slice(0,3)}}
 ]};
 let stage='KS1',year='Y1',topic=null,topicIndex=0,part=0,testIndex=0,score=0,testQuestions=[],currentTestTier=1,voiceModeOn=false;
-let testFormat='standard',testInputMode='choice',speedSecondsLeft=45,speedInterval=null,ghostTimer=null,crazyInterval=null,speedCorrect=0,speedAttempted=0,speedQueue=[],bossHP=100,bossLives=3,bossMaxLives=3,bossDefeatedEarly=false,roundIntroTimeout=null,fireworksSpawnInterval=null,fireworksCountdown=null,fireworksSecondsLeft=9,fireworksTimeouts=[],fireworksLocked=false;
+let testFormat='standard',testInputMode='choice',speedSecondsLeft=45,speedInterval=null,ghostTimer=null,crazyInterval=null,speedCorrect=0,speedAttempted=0,speedQueue=[],bossHP=100,bossLives=3,bossMaxLives=3,bossDefeatedEarly=false,roundIntroTimeout=null,fireworksSpawnInterval=null,fireworksCountdown=null,fireworksSecondsLeft=9,fireworksTimeouts=[],fireworksLocked=false,fireworksSpawnQueue=[],fireworksSpawnIndex=0;
 function getNextSpeedQuestion(ti,tier){if(speedQueue.length===0)speedQueue=makeTieredQuestions(year,ti,tier);return speedQueue.shift()}
 function tierFormat(tier,ti,y){if(tier===4)return'speed';if(tier===8)return'fireworks';if(tier===2)return'ghost';if(tier===3)return'crazy';if(tier===7)return'doublecrazy';if(tier===9)return'history';if(tier===5||tier===10)return'boss';if(tier===6)return'londoneye';return'standard'}
 function tierInputMode(tier,ti,y){let f=tierFormat(tier,ti,y);if(f==='fireworks')return'fireworks';if(f==='ghost'||f==='crazy'||f==='doublecrazy'||f==='londoneye'||f==='history')return'choice';return tier>=6?'text':'choice'}
@@ -1229,9 +1229,16 @@ function renderQuestion(){
  updateVoiceButton();
  if(voiceModeOn)speakCurrentQuestion();
 }
+function buildFireworksSpawnQueue(q){
+ let n=q[1].length,correctIdx=q[2],slots=9,offset=rand(0,2),queue=[];
+ for(let i=0;i<slots;i++)queue.push(i%3===offset?correctIdx:rand(0,n-1));
+ return queue;
+}
 function startFireworksRound(){
  fireworksLocked=false;
  fireworksSecondsLeft=9;
+ fireworksSpawnQueue=buildFireworksSpawnQueue(testQuestions[testIndex]);
+ fireworksSpawnIndex=0;
  let st=document.getElementById('speedTimer');
  if(st){st.classList.remove('hidden');st.textContent=`🎆 ${fireworksSecondsLeft}s`}
  spawnFirework();
@@ -1250,7 +1257,9 @@ function spawnFirework(){
  if(fireworksLocked)return;
  let q=testQuestions[testIndex],answersEl=document.getElementById('answers');
  if(!answersEl||!q)return;
- let idx=rand(0,q[1].length-1),el=document.createElement('div');
+ let idx=fireworksSpawnQueue[fireworksSpawnIndex%fireworksSpawnQueue.length];
+ fireworksSpawnIndex++;
+ let el=document.createElement('div');
  el.className='firework launching';
  el.style.left=rand(10,90)+'%';
  el.style.setProperty('--ty',rand(55,85)+'%');
