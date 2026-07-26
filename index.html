@@ -1154,29 +1154,30 @@ function makeBaseQuestions(y,ti,tier){
  if(ti===2){let factorMax=Math.min(12,3+tier),facts=[],seen=new Set(),tries=0;while(facts.length<5&&tries<300){tries++;let a=rand(2,factorMax),b=rand(2,factorMax),key=`${a}x${b}`;if(!seen.has(key)){seen.add(key);facts.push([a,b,a*b])}}while(facts.length<5){let a=rand(2,factorMax),b=rand(2,factorMax);facts.push([a,b,a*b])}let [a,b,p]=facts[0],[c,d,q]=facts[1],[e,f,r]=facts[2],[g,h,s]=facts[3],[j,k,t]=facts[4];return [mc(mulPhrase(a,b,p),p,[p-a,p+a,p+1]),mc(`There are ${d} groups of ${c}. How many altogether?`,q,[q-1,q+1,c+d]),mc(divPhrase(r,e,f),f,[f-1,f+1,e]),mc(`Complete: ${g} × □ = ${s}`,h,[h-1,h+1,h+2]),mc(divPhrase(t,k,j),j,[j-1,j+1,k])]}
  let denomsByLevel={1:[2,4],2:[2,3,4,6],3:[2,4,5,8,10]},opts=denomsByLevel[level]||[2,4,5,8,10],denominator=opts[Math.min(opts.length-1,Math.floor((tier-1)*opts.length/10))],unit=rand(2,10)*denominator,part=unit/denominator;
  let denomPlural={2:'halves',3:'thirds',4:'quarters',5:'fifths',6:'sixths',8:'eighths',10:'tenths'};
- let denomSingular={2:'half',3:'third',4:'quarter',5:'fifth',6:'sixth',8:'eighth',10:'tenth'};
  let items=['sweets','stickers','marbles','grapes','counters','cars','coins','apples','buttons','conkers'];
- let item=items[rand(0,items.length-1)];
+ let item=items[rand(0,items.length-1)],item2=items[rand(0,items.length-1)];
  let otherOpts=opts.filter(x=>x!==denominator),d2=otherOpts.length?otherOpts[rand(0,otherOpts.length-1)]:(denominator===2?4:2);
  let unit2=rand(2,10)*d2,part2=unit2/d2;
  let biggerIsD1=denominator<d2,bigger=biggerIsD1?`1/${denominator}`:`1/${d2}`,smaller=biggerIsD1?`1/${d2}`:`1/${denominator}`;
  let wholeParts=opts[rand(0,opts.length-1)],wholeWord=denomPlural[wholeParts]||'parts';
  let wrongWholes=opts.filter(x=>x!==wholeParts);while(wrongWholes.length<3){let extra=wholeParts+wrongWholes.length+2;if(!wrongWholes.includes(extra))wrongWholes.push(extra)}
  let unit3=rand(2,10)*d2;while(unit3===unit2)unit3=rand(2,10)*d2;let part3=unit3/d2;
- let singWord=denomSingular[denominator]||'part';
- let wrongSings=opts.filter(x=>x!==denominator).map(x=>denomSingular[x]).filter(Boolean);
- let extraDenoms=[3,4,5,6,8,10];for(let ed of extraDenoms){if(wrongSings.length>=3)break;let w=denomSingular[ed];if(ed!==denominator&&w&&!wrongSings.includes(w))wrongSings.push(w)}
- let pool=[
+ let unit4=rand(2,10)*denominator,part4=unit4/denominator;
+ let w=rand(1,3),wholesNeeded=wholeParts*w;
+ return shuffle([
   mc(fracPhrase(denominator,unit),part,[part-1,part+1,part+2]),
   mc(`How many equal parts make a whole when using ${wholeWord}?`,wholeParts,wrongWholes.slice(0,3)),
   mc(`Which fraction is bigger, 1/${denominator} or 1/${d2}?`,bigger,[smaller,'they are equal','cannot tell']),
   mc(`Which fraction is smaller, 1/${denominator} or 1/${d2}?`,smaller,[bigger,'they are equal','cannot tell']),
   mc(`If ${unit2} ${item} are shared equally between ${d2} children, how many does each child get?`,part2,[part2-1,part2+1,part2+2]),
   mc(`What is 1/${d2} of ${unit3}?`,part3,[part3+d2,part3-d2<1?part3+d2*2:part3-d2,unit3]),
-  mc(`If something is cut into ${denominator} equal pieces, what is each piece called?`,`a ${singWord}`,wrongSings.slice(0,3).map(w=>`a ${w}`)),
-  mc(`Which is bigger, 1/${denominator} or the whole thing?`,'the whole thing',[`1/${denominator}`,'they are equal','cannot tell'])
- ];
- return shuffle(pool).slice(0,5);
+  mc(`What fraction is one piece if something is cut into ${denominator} equal pieces?`,`1/${denominator}`,[`2/${denominator}`,`3/${denominator}`,`1/${d2}`]),
+  mc(`Which is bigger, 1/${denominator} or 1 whole?`,'1',[`1/${denominator}`,'they are equal','cannot tell']),
+  mc(`How many ${wholeWord} are needed to make ${w} whole${w>1?'s':''}?`,wholesNeeded,[wholesNeeded-1,wholesNeeded+1,wholesNeeded+2]),
+  mc(`What is 1/${denominator} + 1/${denominator}?`,`2/${denominator}`,[`1/${denominator}`,`3/${denominator}`,`1/${d2}`]),
+  mc(`What is 1/${d2} + 1/${d2}?`,`2/${d2}`,[`1/${d2}`,`3/${d2}`,`1/${denominator}`]),
+  mc(`If ${unit4} ${item2} are shared equally between ${denominator} children, how many does each child get?`,part4,[part4-1,part4+1,part4+2])
+ ]).slice(0,5);
 }
 function makeTieredQuestions(y,ti,tier){
  let subs=getSubs(ti,y),fmt=tierFormat(tier,ti,y);
